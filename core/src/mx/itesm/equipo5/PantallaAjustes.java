@@ -22,6 +22,7 @@ class PantallaAjustes implements Screen {
 
     // Imagen
     private Texture fondo;
+    private float contadorTiempo=0;
 
     public PantallaAjustes (Virusito juego) { this.juego=juego; }
 
@@ -50,6 +51,13 @@ class PantallaAjustes implements Screen {
 
         batch.draw(fondo, 0,0);
         batch.end();
+
+        //prueba tiempo
+        contadorTiempo +=delta;
+        if (contadorTiempo>=5){
+            //Conto 2 s
+            juego.setScreen(new PantallaMenu(juego));
+        }
     }
 
     @Override
