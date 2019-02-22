@@ -72,19 +72,8 @@ class PantallaMenu implements Screen {
             }
         });
 
-        confBoton = new Boton("Botones/Engrane_Bttn.png").getiButton();
-        confBoton.setPosition(PantallaCargando.Ancho*(3/8f),0);
-        escenaMenu.addActor(confBoton);
-        confBoton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                juego.setScreen(new PantallaAjustes(juego));
-            }
-        });
-
         aboutBoton = new Boton("Botones/Info_Bttn.png").getiButton();
-        aboutBoton.setPosition(PantallaCargando.Ancho*(4/8f),0);
+        aboutBoton.setPosition(PantallaCargando.Ancho*(3/8f)-aboutBoton.getWidth()/2,0);
         escenaMenu.addActor(aboutBoton);
         aboutBoton.addListener(new ClickListener(){
             @Override
@@ -94,8 +83,19 @@ class PantallaMenu implements Screen {
             }
         });
 
+        confBoton = new Boton("Botones/Engrane_Bttn.png").getiButton();
+        confBoton.setPosition(PantallaCargando.Ancho*(4/8f)-confBoton.getWidth()/2,0);
+        escenaMenu.addActor(confBoton);
+        confBoton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                juego.setScreen(new PantallaAjustes(juego));
+            }
+        });
+
         helpBoton = new Boton("Botones/Help_Bttn.png").getiButton();
-        helpBoton.setPosition(PantallaCargando.Ancho*(5/8f),0);
+        helpBoton.setPosition(PantallaCargando.Ancho*(5/8f)-helpBoton.getWidth()/2,0);
         escenaMenu.addActor(helpBoton);
         helpBoton.addListener(new ClickListener(){
             @Override
