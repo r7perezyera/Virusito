@@ -35,7 +35,7 @@ class PrimerNivel implements Screen {
         vista = new StretchViewport(Ancho,Alto, camera);
         batch = new SpriteBatch();
         // Imagen
-        fondo = new Texture("Pantallas/PantallaHowTo.jpg");
+        fondo = new Texture("Pantallas/NivelUno.jpg");
     }
 
     @Override
