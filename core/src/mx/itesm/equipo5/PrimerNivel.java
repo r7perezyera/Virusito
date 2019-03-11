@@ -59,8 +59,6 @@ class PrimerNivel implements Screen {
 
         batch.draw(fondo, 0,0);
 
-        texto.mostrarTexto(batch, "Lorem ipsum: ", Alto/2f, Ancho/2f);
-
         batch.end();
 
         //prueba tiempo
