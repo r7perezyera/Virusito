@@ -22,7 +22,11 @@ class PrimerNivel implements Screen {
 
     // Imagen
     private Texture fondo;
-    private float contadorTiempo =0;
+    private float contadorTiempo = 0;
+
+    // Texto
+    private Texto texto;
+
 
     public PrimerNivel(Virusito juego) { this.juego=juego; }
 
@@ -37,6 +41,9 @@ class PrimerNivel implements Screen {
         batch = new SpriteBatch();
         // Imagen
         fondo = new Texture("Pantallas/NivelUno.jpg");
+
+        // Objeto que dibuja texto
+        texto = new Texto();
     }
 
     @Override
@@ -47,9 +54,13 @@ class PrimerNivel implements Screen {
 
         // Agregar Camara
         batch.setProjectionMatrix(camera.combined); // Escala adecuado
+
         batch.begin();
 
         batch.draw(fondo, 0,0);
+
+        texto.mostrarTexto(batch, "Lorem ipsum: ", Alto/2f, Ancho/2f);
+
         batch.end();
 
         //prueba tiempo
