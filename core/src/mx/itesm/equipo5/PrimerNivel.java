@@ -59,6 +59,8 @@ class PrimerNivel implements Screen {
 
         batch.draw(fondo, 0,0);
 
+        texto.mostrarTexto(batch, "las mascotas maravilla", Ancho / 3f, Alto / 3f);
+
         batch.end();
 
         //prueba tiempo
