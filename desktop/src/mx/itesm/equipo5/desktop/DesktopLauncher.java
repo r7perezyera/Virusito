@@ -2,7 +2,7 @@ package mx.itesm.equipo5.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import mx.itesm.equipo5.PantallaCargando;
+
 import mx.itesm.equipo5.Virusito;
 
 public class DesktopLauncher {
