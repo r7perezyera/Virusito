@@ -25,5 +25,5 @@ public class Texto {
 
     // text will be shown (drawn) within the batch.begin and .end lines,
     // in the class containing those
-    
+
 }
