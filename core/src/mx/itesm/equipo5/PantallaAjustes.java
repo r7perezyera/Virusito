@@ -9,9 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-
-public class PantallaCargando implements Screen {
-
+class PantallaAjustes implements Screen {
     //Variables de Juego
     public static final int Ancho = 1280;
     public static final int Alto = 720;
@@ -23,15 +21,10 @@ public class PantallaCargando implements Screen {
     private SpriteBatch batch;  // Optimizar los gráficos
 
     // Imagen
-    private Texture logo;
+    private Texture fondo;
+    private float contadorTiempo=0;
 
-
-    //Tiempo
-    private float contadorTiempo;
-
-
-
-    public PantallaCargando(Virusito juego) { this.juego = juego; }
+    public PantallaAjustes (Virusito juego) { this.juego=juego; }
 
     @Override
     public void show() {
@@ -43,7 +36,7 @@ public class PantallaCargando implements Screen {
         vista = new StretchViewport(Ancho,Alto, camera);
         batch = new SpriteBatch();
         // Imagen
-        logo = new Texture("Logo/TecMonterrey.png");
+        fondo = new Texture("Pantallas/PantallaAjustes.jpg");
     }
 
     @Override
@@ -56,16 +49,15 @@ public class PantallaCargando implements Screen {
         batch.setProjectionMatrix(camera.combined); // Escala adecuado
         batch.begin();
 
-        batch.draw(logo, Ancho/2-logo.getWidth()/2, Alto/2-logo.getHeight()/2);
+        batch.draw(fondo, 0,0);
         batch.end();
 
         //prueba tiempo
         contadorTiempo +=delta;
-        if (contadorTiempo>=2){
+        if (contadorTiempo>=5){
             //Conto 2 s
             juego.setScreen(new PantallaMenu(juego));
         }
-
     }
 
     @Override
@@ -88,7 +80,7 @@ public class PantallaCargando implements Screen {
 
     @Override
     public void dispose() {
-        logo.dispose();
         batch.dispose();
+        fondo.dispose();
     }
 }
