@@ -59,8 +59,11 @@ class PrimerNivel implements Screen {
 
         batch.draw(fondo, 0,0);
 
-        texto.mostrarTexto(batch, "Las mascotas maravilla (fuente texto)", Ancho / 3f, Alto / 3f);
-        texto.mostrarTextoHUD(batch, "Al rescate van (fuente botones)", Ancho/3f, Alto/3f - 50);
+        texto.mostrarTexto(batch, "Las mascotas maravilla (fuente texto)", Ancho / 3f, Alto / 3f + 50);
+        texto.mostrarTextoHUD(batch, "Al rescate van (fuente botones)", Ancho/3f, Alto/3f);
+        texto.mostrarDialogo(batch, "A un bebe virusito (fuente dialogos)", Ancho/3f, Alto/3f - 50);
+        texto.mostrarTxtBotonPix(batch, "Pequena soy (fuente boton - pixeled 40)", Ancho/3f, Alto/3f - 100);
+        texto.mostrarTxtBotonSm(batch, "al rescate voy (fuente boton - smooth 35)", Ancho/3f, Alto/3f - 150);
 
         batch.end();
 
