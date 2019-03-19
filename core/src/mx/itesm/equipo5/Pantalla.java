@@ -16,10 +16,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public abstract class Pantalla implements Screen
 {
 
-    public final Virusito juego;
+
     // Atributos disponibles en todas las clases del proyecto
     public static final float ancho = 1280;
     public static final float alto = 720;
+    public final Virusito juego;
 
     // Atributos disponibles solo en las subclases
     // Todas las pantallas tienen una cámara y una vista
@@ -45,12 +46,15 @@ public abstract class Pantalla implements Screen
     protected void borrarPantalla() {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.setProjectionMatrix(camara.combined);
     }
 
     // Borra la pantalla con el color RGB (r,g,b)
     protected void borrarPantalla(float r, float g, float b) {
         Gdx.gl.glClearColor(r,g,b,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.setProjectionMatrix(camara.combined);
+
     }
 
     @Override
