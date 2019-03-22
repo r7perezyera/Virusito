@@ -63,13 +63,13 @@ class PrimerNivel implements Screen {
         texto.mostrarTexto(batch, "Las mascotas maravilla (fuente texto)", Ancho / 3f, Alto / 3f + 50);
         texto.mostrarTextoHUD(batch, "Al rescate van (fuente HUD)", Ancho/3f, Alto/3f);
         texto.mostrarDialogo(batch, "A un bebe virusito (fuente dialogos)", Ancho/3f, Alto/3f - 50);
-        texto.mostrarTxtBotonSm(batch, "al rescate voy (fuente boton - smooth 35)", Ancho/3f, Alto/3f - 100);
+        texto.mostrarTxtBotonSm(batch, "woa salvar (fuente boton - smooth 35)", Ancho/3f, Alto/3f - 100);
 
         batch.end();
 
         //prueba tiempo
         contadorTiempo +=delta;
-        if (contadorTiempo>=5){
+        if (contadorTiempo>=25){
             //Conto 2 s
             juego.setScreen(new PantallaMenu(juego));
         }
