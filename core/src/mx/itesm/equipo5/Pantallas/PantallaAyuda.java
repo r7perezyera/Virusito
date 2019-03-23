@@ -4,8 +4,8 @@ import com.badlogic.gdx.Screen;
 
 import mx.itesm.equipo5.Virusito;
 
-class PantallaTutorial implements Screen {
-    public PantallaTutorial(Virusito juego) {
+class PantallaAyuda implements Screen {
+    public PantallaAyuda(Virusito juego) {
     }
 
     @Override
