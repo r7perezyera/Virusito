@@ -9,16 +9,18 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-class PrimerNivel implements Screen {
+class PrimerNivel extends Pantalla implements Screen {
     //Variables de Juego
     public static final int Ancho = 1280;
     public static final int Alto = 720;
     private final Virusito juego;
 
+    /*
     // Camara del juego
     private OrthographicCamera camera;
     private Viewport vista; //Escalar
     private SpriteBatch batch;  // Optimizar los gráficos
+    */
 
     // Imagen
     private Texture fondo;
