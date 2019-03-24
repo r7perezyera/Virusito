@@ -45,7 +45,7 @@ public class Texto {
         fuenteDialogo.draw(batch, glyph, x - anchoTexto/2, y);
     }
 
-    public void mostrarTxtBotonSm(SpriteBatch batch, String mensaje, float x, float y) {
+    public void mostrarTxtBoton(SpriteBatch batch, String mensaje, float x, float y) {
         GlyphLayout glyph = new GlyphLayout();
         glyph.setText(fuenteBoton, mensaje);
         fuenteBoton.setColor(1,1,1,1);
