@@ -2,10 +2,13 @@ package mx.itesm.equipo5.Pantallas;
 
 import com.badlogic.gdx.Screen;
 
+import mx.itesm.equipo5.Pantalla;
 import mx.itesm.equipo5.Virusito;
 
-class PrimerNivel implements Screen {
+class PrimerNivel extends Pantalla {
+
     public PrimerNivel(Virusito juego) {
+        super(juego);
     }
 
     @Override
