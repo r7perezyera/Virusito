@@ -5,9 +5,9 @@ import com.badlogic.gdx.Screen;
 import mx.itesm.equipo5.Pantalla;
 import mx.itesm.equipo5.Virusito;
 
-class PrimerNivel extends Pantalla {
+class Nivel extends Pantalla {
 
-    public PrimerNivel(Virusito juego) {
+    public Nivel(Virusito juego) {
         super(juego);
     }
 
