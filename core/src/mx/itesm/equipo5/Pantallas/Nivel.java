@@ -4,8 +4,8 @@ import com.badlogic.gdx.Screen;
 
 import mx.itesm.equipo5.Virusito;
 
-class PrimerNivel implements Screen {
-    public PrimerNivel(Virusito juego) {
+class Nivel implements Screen {
+    public Nivel(Virusito juego) {
     }
 
     @Override
