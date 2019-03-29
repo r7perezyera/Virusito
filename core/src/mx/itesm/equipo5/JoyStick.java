@@ -27,7 +27,7 @@ public class JoyStick {
         style.knob = skin.getDrawable("boton");
 
         // Crea el pad
-        pad = new Touchpad(64, style);    // puedo mover x pixeles la palanquita y no responde, es hasta despues
+        pad = new Touchpad(5, style);    // puedo mover x pixeles la palanquita y no responde, es hasta despues
         pad.setBounds(16, 16, 256, 256);
 
         // Listener del pad
