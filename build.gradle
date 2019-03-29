@@ -12,6 +12,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.1'
         classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.5'
+
         
 
     }
@@ -89,7 +90,8 @@ project(":core") {
 
 
     dependencies {
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         
     }
 }
