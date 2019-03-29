@@ -40,32 +40,6 @@ public class PantallaMenu extends Pantalla {
     private void crearBotones() {
         escenaMenu = new Stage(vista);
 
-<<<<<<< HEAD
-        //creacion, posicion y que hace el boton
-        playBoton = new Boton("Botones/Play_Bttn.png").getiButton();
-        playBoton.setPosition(PantallaCargando.ancho/2-playBoton.getWidth()/2,
-                PantallaCargando.alto/3f-playBoton.getHeight()/4f);
-        escenaMenu.addActor(playBoton);
-        playBoton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                juego.setScreen(new Nivel(juego));
-            }
-        });
-
-        aboutBoton = new Boton("Botones/Info_Bttn.png").getiButton();
-        aboutBoton.setPosition(PantallaCargando.ancho*(3/8f)-aboutBoton.getWidth()/2,0);
-        escenaMenu.addActor(aboutBoton);
-        aboutBoton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                juego.setScreen(new PantallaAbout(juego));
-            }
-        });
-=======
->>>>>>> origin/Trabajo_Bonbi
 
 
         playBoton = new Boton("Botones/Play_Bttn.png").getiButton();
