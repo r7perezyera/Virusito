@@ -2,10 +2,18 @@ package mx.itesm.equipo5.Pantallas;
 
 import com.badlogic.gdx.Screen;
 
+import mx.itesm.equipo5.Pantalla;
 import mx.itesm.equipo5.Virusito;
 
+<<<<<<< HEAD:core/src/mx/itesm/equipo5/Pantallas/Nivel.java
 class Nivel implements Screen {
     public Nivel(Virusito juego) {
+=======
+class Nivel extends Pantalla {
+
+    public Nivel(Virusito juego) {
+        super(juego);
+>>>>>>> origin/Trabajo_Bonbi:core/src/mx/itesm/equipo5/Pantallas/Nivel.java
     }
 
     @Override

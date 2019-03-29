@@ -2,10 +2,12 @@ package mx.itesm.equipo5.Pantallas;
 
 import com.badlogic.gdx.Screen;
 
+import mx.itesm.equipo5.Pantalla;
 import mx.itesm.equipo5.Virusito;
 
-class PantallaAyuda implements Screen {
+class PantallaAyuda extends Pantalla {
     public PantallaAyuda(Virusito juego) {
+        super(juego);
     }
 
     @Override

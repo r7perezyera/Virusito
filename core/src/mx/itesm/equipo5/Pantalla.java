@@ -18,8 +18,8 @@ public abstract class Pantalla implements Screen
 
 
     // Atributos disponibles en todas las clases del proyecto
-    public static final float ancho = 1280;
-    public static final float alto = 720;
+    public static final float ANCHO = 1280;
+    public static final float ALTO = 720;
     public final Virusito juego;
 
     // Atributos disponibles solo en las subclases
@@ -32,12 +32,12 @@ public abstract class Pantalla implements Screen
     public Pantalla(Virusito juego) {
         this.juego = juego;
         // Crea la cámara con las dimensiones del mundo
-        camara = new OrthographicCamera(ancho, alto);
+        camara = new OrthographicCamera(ANCHO, ALTO);
         // En el centro de la pantalla
-        camara.position.set(ancho / 2, alto / 2, 0);
+        camara.position.set(ANCHO / 2, ALTO / 2, 0);
         camara.update();
         // La vista que escala los elementos gráficos
-        vista = new StretchViewport(ancho, alto, camara);
+        vista = new StretchViewport(ANCHO, ALTO, camara);
         // El objeto que administra los trazos gráficos
         batch = new SpriteBatch();
     }

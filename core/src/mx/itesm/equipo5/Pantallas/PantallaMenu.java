@@ -40,6 +40,7 @@ public class PantallaMenu extends Pantalla {
     private void crearBotones() {
         escenaMenu = new Stage(vista);
 
+<<<<<<< HEAD
         //creacion, posicion y que hace el boton
         playBoton = new Boton("Botones/Play_Bttn.png").getiButton();
         playBoton.setPosition(PantallaCargando.ancho/2-playBoton.getWidth()/2,
@@ -63,26 +64,17 @@ public class PantallaMenu extends Pantalla {
                 juego.setScreen(new PantallaAbout(juego));
             }
         });
+=======
+>>>>>>> origin/Trabajo_Bonbi
 
-        confBoton = new Boton("Botones/Engrane_Bttn.png").getiButton();
-        confBoton.setPosition(PantallaCargando.ancho*(4/8f)-confBoton.getWidth()/2,0);
-        escenaMenu.addActor(confBoton);
-        confBoton.addListener(new ClickListener(){
+
+        playBoton = new Boton("Botones/Play_Bttn.png").getiButton();
+        playBoton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                juego.setScreen(new PantallaAjustes(juego));
-            }
-        });
-
-        helpBoton = new Boton("Botones/Help_Bttn.png").getiButton();
-        helpBoton.setPosition(PantallaCargando.ancho*(5/8f)-helpBoton.getWidth()/2,0);
-        escenaMenu.addActor(helpBoton);
-        helpBoton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                juego.setScreen(new PantallaAyuda(juego));
+                // Responder al evento del boton
+                juego.setScreen(new Nivel(juego));
             }
         });
 
