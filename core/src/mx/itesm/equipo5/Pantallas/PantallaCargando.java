@@ -26,7 +26,7 @@ public class PantallaCargando extends Pantalla {
         borrarPantalla(1,1,1);
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
-        batch.draw(logo, ancho /2-logo.getWidth()/2, alto /2-logo.getHeight()/2);
+        batch.draw(logo, ANCHO /2-logo.getWidth()/2, ALTO /2-logo.getHeight()/2);
         batch.end();
 
         //prueba tiempo

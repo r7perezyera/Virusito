@@ -4,19 +4,27 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import mx.itesm.equipo5.Pantalla;
 import mx.itesm.equipo5.Virusito;
 
 class PantallaAjustes extends Pantalla {
+
+    private Texture background;
+
+    private Stage escenaAjustes;
+
     public PantallaAjustes(Virusito juego) {
         super(juego);
     }
 
     @Override
     public void show() {
+        background = new Texture("Pantallas/PantallaAjustes.jpg");
         camara = new OrthographicCamera(PantallaCargando.ANCHO, PantallaCargando.ALTO);
         camara.position.set(PantallaCargando.ANCHO/2, PantallaCargando.ALTO/2,0);
         camara.update();
