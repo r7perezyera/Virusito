@@ -43,7 +43,8 @@ public class PantallaMenu extends Pantalla {
     private void crearBotones() {
 
         playBoton = new Boton("Botones/Play_Bttn.png").getiButton();
-        playBoton.setPosition(PantallaMenu.ANCHO/3f, PantallaMenu.ALTO/3f);
+        playBoton.setPosition(Pantalla.ANCHO/2-playBoton.getWidth()/2,
+                Pantalla.ALTO/2-playBoton.getHeight()/2);
         escenaMenu.addActor(playBoton);
         playBoton.addListener(new ClickListener() {
             @Override
