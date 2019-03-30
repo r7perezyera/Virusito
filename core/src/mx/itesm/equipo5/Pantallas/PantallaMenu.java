@@ -41,10 +41,9 @@ public class PantallaMenu extends Pantalla {
     }
 
     private void crearBotones() {
-
+        // Play Button
         playBoton = new Boton("Botones/Play_Bttn.png").getiButton();
-        playBoton.setPosition(Pantalla.ANCHO/2-playBoton.getWidth()/2,
-                Pantalla.ALTO/2-playBoton.getHeight()/2);
+        playBoton.setPosition(Pantalla.ANCHO/2-playBoton.getWidth()/2, Pantalla.ALTO/2-playBoton.getHeight()/2);
         escenaMenu.addActor(playBoton);
         playBoton.addListener(new ClickListener() {
             @Override
@@ -52,7 +51,45 @@ public class PantallaMenu extends Pantalla {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
                 juego.setScreen(new Nivel(juego));
-                System.out.println("hizo algo pero ahora aqui");
+            }
+        });
+
+        // Help button
+        helpBoton = new Boton("Botones/Help_Bttn.png").getiButton();
+        helpBoton.setPosition((Pantalla.ANCHO/3-helpBoton.getWidth()/2)+50, Pantalla.ALTO/6f-helpBoton.getHeight()/2);
+        escenaMenu.addActor(helpBoton);
+        helpBoton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                // Responder al evento del boton
+                juego.setScreen(new PantallaAyuda(juego));
+            }
+        });
+
+        // Settings button
+        confBoton = new Boton("Botones/Engrane_Bttn.png").getiButton();
+        confBoton.setPosition(Pantalla.ANCHO/2-confBoton.getWidth()/2, Pantalla.ALTO/6f-confBoton.getHeight()/2);
+        escenaMenu.addActor(confBoton);
+        confBoton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                // Responder al evento del boton
+                juego.setScreen(new PantallaAjustes(juego));
+            }
+        });
+
+        // About button
+        aboutBoton = new Boton("Botones/Info_Bttn.png").getiButton();
+        aboutBoton.setPosition((2*Pantalla.ANCHO/3-helpBoton.getWidth()/2)-50, Pantalla.ALTO/6f-aboutBoton.getHeight()/2);
+        escenaMenu.addActor(aboutBoton);
+        aboutBoton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                // Responder al evento del boton
+                juego.setScreen(new PantallaAbout(juego));
             }
         });
 
