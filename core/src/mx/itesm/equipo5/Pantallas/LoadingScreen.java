@@ -23,7 +23,7 @@ public class LoadingScreen extends MasterScreen {
 
     @Override
     public void render(float delta) {
-        borrarPantalla(1,1,1);
+        eraseScreen(1,1,1);
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         batch.draw(logo, WIDTH /2-logo.getWidth()/2, HEIGHT /2-logo.getHeight()/2);
@@ -33,7 +33,7 @@ public class LoadingScreen extends MasterScreen {
         timeCounter +=delta;
         if (timeCounter >=4){
             //Conto 4 s
-            juego.setScreen(new MenuScreen(juego));
+            game.setScreen(new MenuScreen(game));
         }
 
     }

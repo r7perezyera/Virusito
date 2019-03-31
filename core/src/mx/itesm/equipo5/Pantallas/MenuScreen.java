@@ -48,7 +48,7 @@ public class MenuScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                juego.setScreen(new Level(juego));
+                game.setScreen(new Level(game));
             }
         });
 
@@ -61,7 +61,7 @@ public class MenuScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                juego.setScreen(new HelpScreen(juego));
+                game.setScreen(new HelpScreen(game));
             }
         });
 
@@ -74,7 +74,7 @@ public class MenuScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                juego.setScreen(new SettingsScreen(juego));
+                game.setScreen(new SettingsScreen(game));
             }
         });
 
@@ -87,7 +87,7 @@ public class MenuScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                juego.setScreen(new AboutScreen(juego));
+                game.setScreen(new AboutScreen(game));
             }
         });
 
@@ -99,7 +99,7 @@ public class MenuScreen extends MasterScreen {
     @Override
     public void render(float delta) {
 
-        borrarPantalla();
+        eraseScreen();
         batch.begin();
 
         //Dibujar
