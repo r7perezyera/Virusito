@@ -2,10 +2,10 @@ package mx.itesm.equipo5.Pantallas;
 
 import com.badlogic.gdx.graphics.Texture;
 
-import mx.itesm.equipo5.Pantalla;
+import mx.itesm.equipo5.MasterScreen;
 import mx.itesm.equipo5.Virusito;
 
-public class LoadingScreen extends Pantalla {
+public class LoadingScreen extends MasterScreen {
 
     private Texture logo;
 
