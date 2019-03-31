@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  * parte del juego
  */
 
-public abstract class Pantalla implements Screen
+public abstract class MasterScreen implements Screen
 {
 
 
@@ -29,7 +29,7 @@ public abstract class Pantalla implements Screen
     // Todas las pantallas dibujan algo :)
     protected SpriteBatch batch;
 
-    public Pantalla(Virusito juego) {
+    public MasterScreen(Virusito juego) {
         this.juego = juego;
         // Crea la cámara con las dimensiones del mundo
         camera = new OrthographicCamera(WIDTH, HEIGHT);

@@ -4,11 +4,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
-import mx.itesm.equipo5.Pantalla;
+import mx.itesm.equipo5.MasterScreen;
 import mx.itesm.equipo5.Text;
 import mx.itesm.equipo5.Virusito;
 
-class Level extends Pantalla {
+class Level extends MasterScreen {
 
 
 

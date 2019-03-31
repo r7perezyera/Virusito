@@ -8,10 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import mx.itesm.equipo5.Button;
-import mx.itesm.equipo5.Pantalla;
+import mx.itesm.equipo5.MasterScreen;
 import mx.itesm.equipo5.Virusito;
 
-public class MenuScreen extends Pantalla {
+public class MenuScreen extends MasterScreen {
 
     private Texture background;
 
@@ -41,7 +41,7 @@ public class MenuScreen extends Pantalla {
     private void createButtons() {
         // Play Button
         playBoton = new Button("Botones/Play_Bttn.png").getiButton();
-        playBoton.setPosition(Pantalla.WIDTH /2-playBoton.getWidth()/2, Pantalla.HEIGHT /2-playBoton.getHeight()/2);
+        playBoton.setPosition(MasterScreen.WIDTH /2-playBoton.getWidth()/2, MasterScreen.HEIGHT /2-playBoton.getHeight()/2);
         menuStage.addActor(playBoton);
         playBoton.addListener(new ClickListener() {
             @Override
@@ -54,7 +54,7 @@ public class MenuScreen extends Pantalla {
 
         // Help button
         helpBoton = new Button("Botones/Help_Bttn.png").getiButton();
-        helpBoton.setPosition((Pantalla.WIDTH /3-helpBoton.getWidth()/2)+50, Pantalla.HEIGHT /6f-helpBoton.getHeight()/2);
+        helpBoton.setPosition((MasterScreen.WIDTH /3-helpBoton.getWidth()/2)+50, MasterScreen.HEIGHT /6f-helpBoton.getHeight()/2);
         menuStage.addActor(helpBoton);
         helpBoton.addListener(new ClickListener() {
             @Override
@@ -67,7 +67,7 @@ public class MenuScreen extends Pantalla {
 
         // Settings button
         confBoton = new Button("Botones/Engrane_Bttn.png").getiButton();
-        confBoton.setPosition(Pantalla.WIDTH /2-confBoton.getWidth()/2, Pantalla.HEIGHT /6f-confBoton.getHeight()/2);
+        confBoton.setPosition(MasterScreen.WIDTH /2-confBoton.getWidth()/2, MasterScreen.HEIGHT /6f-confBoton.getHeight()/2);
         menuStage.addActor(confBoton);
         confBoton.addListener(new ClickListener() {
             @Override
@@ -80,7 +80,7 @@ public class MenuScreen extends Pantalla {
 
         // About button
         aboutBoton = new Button("Botones/Info_Bttn.png").getiButton();
-        aboutBoton.setPosition((2*Pantalla.WIDTH /3-helpBoton.getWidth()/2)-50, Pantalla.HEIGHT /6f-aboutBoton.getHeight()/2);
+        aboutBoton.setPosition((2* MasterScreen.WIDTH /3-helpBoton.getWidth()/2)-50, MasterScreen.HEIGHT /6f-aboutBoton.getHeight()/2);
         menuStage.addActor(aboutBoton);
         aboutBoton.addListener(new ClickListener() {
             @Override

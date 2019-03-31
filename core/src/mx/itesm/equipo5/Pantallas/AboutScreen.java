@@ -1,11 +1,9 @@
 package mx.itesm.equipo5.Pantallas;
 
-import com.badlogic.gdx.Screen;
-
-import mx.itesm.equipo5.Pantalla;
+import mx.itesm.equipo5.MasterScreen;
 import mx.itesm.equipo5.Virusito;
 
-class AboutScreen extends Pantalla {
+class AboutScreen extends MasterScreen {
     public AboutScreen(Virusito juego) {
         super(juego);
     }
