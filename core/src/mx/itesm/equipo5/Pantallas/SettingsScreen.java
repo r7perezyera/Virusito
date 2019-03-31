@@ -41,7 +41,7 @@ class SettingsScreen extends MasterScreen {
 
     private void createButtons() {
         homeButton = new Button("Botones/Home_Bttn.png").getiButton();
-        homeButton.setPosition(5, (MasterScreen.HEIGHT-homeButton.getHeight())-5);
+        homeButton.setPosition(15, (MasterScreen.HEIGHT-homeButton.getHeight())-10);
         settingsStage.addActor(homeButton);
         homeButton.addListener(new ClickListener() {
             @Override
