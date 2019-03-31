@@ -5,9 +5,13 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
+import mx.itesm.equipo5.Button;
 import mx.itesm.equipo5.MasterScreen;
 import mx.itesm.equipo5.Virusito;
 
@@ -17,34 +21,48 @@ class SettingsScreen extends MasterScreen {
 
     private Stage settingsStage;
 
+    private ImageButton homeButton;
+
     public SettingsScreen(Virusito juego) {
         super(juego);
     }
 
     @Override
     public void show() {
-        background = new Texture("Pantallas/SettingsScreen.jpg");
-        camera = new OrthographicCamera(LoadingScreen.WIDTH, LoadingScreen.HEIGHT);
-        camera.position.set(LoadingScreen.WIDTH /2, LoadingScreen.HEIGHT /2,0);
-        camera.update();
-        // Vista
-        view = new StretchViewport(LoadingScreen.WIDTH, LoadingScreen.HEIGHT, camera);
-        batch = new SpriteBatch();
+        settingsStage = new Stage(view);
 
+        background = new Texture("Pantallas/PantallaAjustes.jpg");
+
+        createButtons();
+
+        Gdx.input.setInputProcessor(settingsStage);
+        Gdx.input.setCatchBackKey(false);
+    }
+
+    private void createButtons() {
+        homeButton = new Button("Botones/Home_Bttn.png").getiButton();
+        homeButton.setPosition(5, (MasterScreen.HEIGHT-homeButton.getHeight())-5);
+        settingsStage.addActor(homeButton);
+        homeButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                // Responder al evento del boton
+                game.setScreen(new MenuScreen(game));
+            }
+        });
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0,0,0,1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        batch.setProjectionMatrix(camera.combined);        // para escalar
-
+        eraseScreen();
 
         batch.begin();
-
+        batch.draw(background, 0, 0);
 
         batch.end();
+
+        settingsStage.draw();
 
     }
 
@@ -65,7 +83,8 @@ class SettingsScreen extends MasterScreen {
 
     @Override
     public void hide() {
-        batch.dispose();
+        background.dispose();
+        settingsStage.dispose();
     }
 
     @Override
