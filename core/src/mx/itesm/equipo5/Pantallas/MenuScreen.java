@@ -21,7 +21,7 @@ public class MenuScreen extends Pantalla {
     private ImageButton aboutBoton;
 
     //Menu escenas, Indp de la camara de mov
-    private Stage escenaMenu; //Contenedor de Botones
+    private Stage menuStage; //Contenedor de Botones
 
     public MenuScreen(Virusito juego) {
         super(juego);
@@ -29,20 +29,20 @@ public class MenuScreen extends Pantalla {
 
     @Override
     public void show() {
-        escenaMenu = new Stage(vista);
+        menuStage = new Stage(vista);
 
         background = new Texture("Pantallas/PantallaMenu.jpg");
-        crearBotones();
+        createButtons();
         //Pasamoe el control de input a la escenea
-        Gdx.input.setInputProcessor(escenaMenu);
+        Gdx.input.setInputProcessor(menuStage);
         Gdx.input.setCatchBackKey(false);
     }
 
-    private void crearBotones() {
+    private void createButtons() {
         // Play Button
         playBoton = new Boton("Botones/Play_Bttn.png").getiButton();
         playBoton.setPosition(Pantalla.ANCHO/2-playBoton.getWidth()/2, Pantalla.ALTO/2-playBoton.getHeight()/2);
-        escenaMenu.addActor(playBoton);
+        menuStage.addActor(playBoton);
         playBoton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -55,7 +55,7 @@ public class MenuScreen extends Pantalla {
         // Help button
         helpBoton = new Boton("Botones/Help_Bttn.png").getiButton();
         helpBoton.setPosition((Pantalla.ANCHO/3-helpBoton.getWidth()/2)+50, Pantalla.ALTO/6f-helpBoton.getHeight()/2);
-        escenaMenu.addActor(helpBoton);
+        menuStage.addActor(helpBoton);
         helpBoton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -68,7 +68,7 @@ public class MenuScreen extends Pantalla {
         // Settings button
         confBoton = new Boton("Botones/Engrane_Bttn.png").getiButton();
         confBoton.setPosition(Pantalla.ANCHO/2-confBoton.getWidth()/2, Pantalla.ALTO/6f-confBoton.getHeight()/2);
-        escenaMenu.addActor(confBoton);
+        menuStage.addActor(confBoton);
         confBoton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -81,7 +81,7 @@ public class MenuScreen extends Pantalla {
         // About button
         aboutBoton = new Boton("Botones/Info_Bttn.png").getiButton();
         aboutBoton.setPosition((2*Pantalla.ANCHO/3-helpBoton.getWidth()/2)-50, Pantalla.ALTO/6f-aboutBoton.getHeight()/2);
-        escenaMenu.addActor(aboutBoton);
+        menuStage.addActor(aboutBoton);
         aboutBoton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -108,7 +108,7 @@ public class MenuScreen extends Pantalla {
 
         batch.end();
 
-        escenaMenu.draw();
+        menuStage.draw();
 
     }
 
@@ -125,6 +125,6 @@ public class MenuScreen extends Pantalla {
     @Override
     public void dispose() {
     background.dispose();
-    escenaMenu.dispose();
+    menuStage.dispose();
     }
 }
