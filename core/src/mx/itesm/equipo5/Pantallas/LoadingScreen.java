@@ -5,14 +5,14 @@ import com.badlogic.gdx.graphics.Texture;
 import mx.itesm.equipo5.Pantalla;
 import mx.itesm.equipo5.Virusito;
 
-public class PantallaCargando extends Pantalla {
+public class LoadingScreen extends Pantalla {
 
     private Texture logo;
 
     //Tiempo
     private float contadorTiempo;
 
-    public PantallaCargando(Virusito juego) {
+    public LoadingScreen(Virusito juego) {
         super(juego);
     }
 
@@ -33,7 +33,7 @@ public class PantallaCargando extends Pantalla {
         contadorTiempo +=delta;
         if (contadorTiempo>=4){
             //Conto 4 s
-            juego.setScreen(new PantallaMenu(juego));
+            juego.setScreen(new MenuScreen(juego));
         }
 
     }

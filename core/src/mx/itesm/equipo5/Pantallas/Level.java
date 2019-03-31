@@ -1,8 +1,6 @@
 package mx.itesm.equipo5.Pantallas;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
@@ -10,24 +8,24 @@ import mx.itesm.equipo5.Pantalla;
 import mx.itesm.equipo5.Texto;
 import mx.itesm.equipo5.Virusito;
 
-class Nivel extends Pantalla {
+class Level extends Pantalla {
 
 
 
     private Texto text;
 
-    public Nivel(Virusito juego) {
+    public Level(Virusito juego) {
         super(juego);
     }
 
     @Override
     public void show() {
 
-        camara = new OrthographicCamera(PantallaCargando.ANCHO, PantallaCargando.ALTO);
-        camara.position.set(PantallaCargando.ANCHO/2, PantallaCargando.ALTO/2,0);
+        camara = new OrthographicCamera(LoadingScreen.ANCHO, LoadingScreen.ALTO);
+        camara.position.set(LoadingScreen.ANCHO/2, LoadingScreen.ALTO/2,0);
         camara.update();
         // Vista
-        vista = new StretchViewport(PantallaCargando.ANCHO, PantallaCargando.ALTO,camara);
+        vista = new StretchViewport(LoadingScreen.ANCHO, LoadingScreen.ALTO,camara);
         batch = new SpriteBatch();
 
     }

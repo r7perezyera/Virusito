@@ -2,18 +2,16 @@ package mx.itesm.equipo5.Pantallas;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import mx.itesm.equipo5.Boton;
 import mx.itesm.equipo5.Pantalla;
 import mx.itesm.equipo5.Virusito;
 
-public class PantallaMenu extends Pantalla {
+public class MenuScreen extends Pantalla {
 
     private Texture background;
 
@@ -25,7 +23,7 @@ public class PantallaMenu extends Pantalla {
     //Menu escenas, Indp de la camara de mov
     private Stage escenaMenu; //Contenedor de Botones
 
-    public PantallaMenu(Virusito juego) {
+    public MenuScreen(Virusito juego) {
         super(juego);
     }
 
@@ -50,7 +48,7 @@ public class PantallaMenu extends Pantalla {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                juego.setScreen(new Nivel(juego));
+                juego.setScreen(new Level(juego));
             }
         });
 
@@ -63,7 +61,7 @@ public class PantallaMenu extends Pantalla {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                juego.setScreen(new PantallaAyuda(juego));
+                juego.setScreen(new HelpScreen(juego));
             }
         });
 
@@ -76,7 +74,7 @@ public class PantallaMenu extends Pantalla {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                juego.setScreen(new PantallaAjustes(juego));
+                juego.setScreen(new SettingsScreen(juego));
             }
         });
 
@@ -89,7 +87,7 @@ public class PantallaMenu extends Pantalla {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                juego.setScreen(new PantallaAbout(juego));
+                juego.setScreen(new AboutScreen(juego));
             }
         });
 

@@ -5,8 +5,8 @@ import com.badlogic.gdx.Screen;
 import mx.itesm.equipo5.Pantalla;
 import mx.itesm.equipo5.Virusito;
 
-class PantallaAbout extends Pantalla {
-    public PantallaAbout(Virusito juego) {
+class AboutScreen extends Pantalla {
+    public AboutScreen(Virusito juego) {
         super(juego);
     }
 
