@@ -17,12 +17,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import mx.itesm.equipo5.Boton;
+import mx.itesm.equipo5.Button;
 import mx.itesm.equipo5.JoyStick;
-import mx.itesm.equipo5.Pantalla;
+import mx.itesm.equipo5.MasterScreen;
 import mx.itesm.equipo5.Virusito;
 
-public class PantallaMenu extends Pantalla {
+public class PantallaMenu extends MasterScreen {
 
     private Texture background;
 
@@ -54,25 +54,24 @@ public class PantallaMenu extends Pantalla {
     public void show() {
 
         background = new Texture("Pantallas/PantallaMenu.jpg");
-        crearBotones();
+        createButtons();
 
         Gdx.input.setCatchBackKey(false);
     }
 
-    private void crearBotones() {
-        escenaMenu = new Stage(vista);
+    private void createButtons() {
+        escenaMenu = new Stage(view);
 
-
-
-        playBoton = new Boton("Botones/Play_Bttn.png").getiButton();
+        playBoton = new Button("Botones/Play_Bttn.png").getiButton();
         playBoton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                juego.setScreen(new Nivel(juego));
+                game.setScreen(new Level(game));
             }
         });
+
         Box2D.init();
         mundo = new World(new Vector2(0f,-9.81f), true);
         BodyDef def = new BodyDef();
@@ -82,10 +81,10 @@ public class PantallaMenu extends Pantalla {
 
         pad = new JoyStick("HUD/Pad/padBack.png", "HUD/Pad/padKnob.png", cuerpo).getPad();
 
-        camaraHUD = new OrthographicCamera(ANCHO, ALTO);
-        camaraHUD.position.set(ANCHO/2, ALTO/2, 0);
+        camaraHUD = new OrthographicCamera(WIDTH, HEIGHT);
+        camaraHUD.position.set(WIDTH/2, HEIGHT/2, 0);
         camaraHUD.update();
-        vistaHUD = new StretchViewport(ANCHO, ALTO, camaraHUD);
+        vistaHUD = new StretchViewport(WIDTH, HEIGHT, camaraHUD);
 
         // Agregar la escena, finalmente
         escenaHUD = new Stage(vistaHUD);
@@ -101,7 +100,7 @@ public class PantallaMenu extends Pantalla {
     @Override
     public void render(float delta) {
 
-        borrarPantalla();
+        eraseScreen();
         batch.begin();
 
         //Dibujar
