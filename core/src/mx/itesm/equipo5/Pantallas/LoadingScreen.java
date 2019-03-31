@@ -2,17 +2,17 @@ package mx.itesm.equipo5.Pantallas;
 
 import com.badlogic.gdx.graphics.Texture;
 
-import mx.itesm.equipo5.Pantalla;
+import mx.itesm.equipo5.MasterScreen;
 import mx.itesm.equipo5.Virusito;
 
-public class PantallaCargando extends Pantalla {
+public class LoadingScreen extends MasterScreen {
 
     private Texture logo;
 
     //Tiempo
-    private float contadorTiempo;
+    private float timeCounter;
 
-    public PantallaCargando(Virusito juego) {
+    public LoadingScreen(Virusito juego) {
         super(juego);
     }
 
@@ -23,17 +23,17 @@ public class PantallaCargando extends Pantalla {
 
     @Override
     public void render(float delta) {
-        borrarPantalla(1,1,1);
-        batch.setProjectionMatrix(camara.combined);
+        eraseScreen(1,1,1);
+        batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        batch.draw(logo, ANCHO /2-logo.getWidth()/2, ALTO /2-logo.getHeight()/2);
+        batch.draw(logo, WIDTH /2-logo.getWidth()/2, HEIGHT /2-logo.getHeight()/2);
         batch.end();
 
         //prueba tiempo
-        contadorTiempo +=delta;
-        if (contadorTiempo>=4){
+        timeCounter +=delta;
+        if (timeCounter >=4){
             //Conto 4 s
-            juego.setScreen(new PantallaMenu(juego));
+            game.setScreen(new MenuScreen(game));
         }
 
     }
@@ -53,4 +53,3 @@ public class PantallaCargando extends Pantalla {
         logo.dispose();
     }
 }
-
