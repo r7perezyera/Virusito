@@ -15,7 +15,7 @@ class SettingsScreen extends Pantalla {
 
     private Texture background;
 
-    private Stage escenaAjustes;
+    private Stage settingsStage;
 
     public SettingsScreen(Virusito juego) {
         super(juego);

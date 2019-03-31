@@ -10,7 +10,7 @@ public class LoadingScreen extends Pantalla {
     private Texture logo;
 
     //Tiempo
-    private float contadorTiempo;
+    private float timeCounter;
 
     public LoadingScreen(Virusito juego) {
         super(juego);
@@ -30,8 +30,8 @@ public class LoadingScreen extends Pantalla {
         batch.end();
 
         //prueba tiempo
-        contadorTiempo +=delta;
-        if (contadorTiempo>=4){
+        timeCounter +=delta;
+        if (timeCounter >=4){
             //Conto 4 s
             juego.setScreen(new MenuScreen(juego));
         }
