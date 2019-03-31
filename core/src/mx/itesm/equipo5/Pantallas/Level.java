@@ -21,11 +21,11 @@ class Level extends Pantalla {
     @Override
     public void show() {
 
-        camara = new OrthographicCamera(LoadingScreen.ANCHO, LoadingScreen.ALTO);
-        camara.position.set(LoadingScreen.ANCHO/2, LoadingScreen.ALTO/2,0);
-        camara.update();
+        camera = new OrthographicCamera(LoadingScreen.WIDTH, LoadingScreen.HEIGHT);
+        camera.position.set(LoadingScreen.WIDTH /2, LoadingScreen.HEIGHT /2,0);
+        camera.update();
         // Vista
-        vista = new StretchViewport(LoadingScreen.ANCHO, LoadingScreen.ALTO,camara);
+        view = new StretchViewport(LoadingScreen.WIDTH, LoadingScreen.HEIGHT, camera);
         batch = new SpriteBatch();
 
     }

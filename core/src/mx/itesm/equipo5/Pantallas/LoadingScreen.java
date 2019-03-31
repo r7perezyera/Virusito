@@ -24,9 +24,9 @@ public class LoadingScreen extends Pantalla {
     @Override
     public void render(float delta) {
         borrarPantalla(1,1,1);
-        batch.setProjectionMatrix(camara.combined);
+        batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        batch.draw(logo, ANCHO /2-logo.getWidth()/2, ALTO /2-logo.getHeight()/2);
+        batch.draw(logo, WIDTH /2-logo.getWidth()/2, HEIGHT /2-logo.getHeight()/2);
         batch.end();
 
         //prueba tiempo

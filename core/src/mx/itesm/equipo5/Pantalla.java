@@ -18,26 +18,26 @@ public abstract class Pantalla implements Screen
 
 
     // Atributos disponibles en todas las clases del proyecto
-    public static final float ANCHO = 1280;
-    public static final float ALTO = 720;
+    public static final float WIDTH = 1280;
+    public static final float HEIGHT = 720;
     public final Virusito juego;
 
     // Atributos disponibles solo en las subclases
-    // Todas las pantallas tienen una cámara y una vista
-    protected OrthographicCamera camara;
-    protected Viewport vista;
+    // Todas las pantallas tienen una cámara y una view
+    protected OrthographicCamera camera;
+    protected Viewport view;        // TODO could be renamed to viewport, review w/ team
     // Todas las pantallas dibujan algo :)
     protected SpriteBatch batch;
 
     public Pantalla(Virusito juego) {
         this.juego = juego;
         // Crea la cámara con las dimensiones del mundo
-        camara = new OrthographicCamera(ANCHO, ALTO);
+        camera = new OrthographicCamera(WIDTH, HEIGHT);
         // En el centro de la pantalla
-        camara.position.set(ANCHO / 2, ALTO / 2, 0);
-        camara.update();
-        // La vista que escala los elementos gráficos
-        vista = new StretchViewport(ANCHO, ALTO, camara);
+        camera.position.set(WIDTH / 2, HEIGHT / 2, 0);
+        camera.update();
+        // La view que escala los elementos gráficos
+        view = new StretchViewport(WIDTH, HEIGHT, camera);
         // El objeto que administra los trazos gráficos
         batch = new SpriteBatch();
     }
@@ -46,20 +46,20 @@ public abstract class Pantalla implements Screen
     protected void borrarPantalla() {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.setProjectionMatrix(camara.combined);
+        batch.setProjectionMatrix(camera.combined);
     }
 
     // Borra la pantalla con el color RGB (r,g,b)
     protected void borrarPantalla(float r, float g, float b) {
         Gdx.gl.glClearColor(r,g,b,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.setProjectionMatrix(camara.combined);
+        batch.setProjectionMatrix(camera.combined);
 
     }
 
     @Override
     public void resize(int width, int height) {
-        vista.update(width, height);
+        view.update(width, height);
     }
 
     @Override

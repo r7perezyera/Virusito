@@ -24,11 +24,11 @@ class SettingsScreen extends Pantalla {
     @Override
     public void show() {
         background = new Texture("Pantallas/SettingsScreen.jpg");
-        camara = new OrthographicCamera(LoadingScreen.ANCHO, LoadingScreen.ALTO);
-        camara.position.set(LoadingScreen.ANCHO/2, LoadingScreen.ALTO/2,0);
-        camara.update();
+        camera = new OrthographicCamera(LoadingScreen.WIDTH, LoadingScreen.HEIGHT);
+        camera.position.set(LoadingScreen.WIDTH /2, LoadingScreen.HEIGHT /2,0);
+        camera.update();
         // Vista
-        vista = new StretchViewport(LoadingScreen.ANCHO, LoadingScreen.ALTO,camara);
+        view = new StretchViewport(LoadingScreen.WIDTH, LoadingScreen.HEIGHT, camera);
         batch = new SpriteBatch();
 
     }
@@ -38,7 +38,7 @@ class SettingsScreen extends Pantalla {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        batch.setProjectionMatrix(camara.combined);        // para escalar
+        batch.setProjectionMatrix(camera.combined);        // para escalar
 
 
         batch.begin();
