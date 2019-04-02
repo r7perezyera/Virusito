@@ -14,7 +14,7 @@ public class Text {
 
     public Text() {
         // load font
-        textFont = new BitmapFont(Gdx.files.internal("Fuentes/simplySquare_45.fnt"));  // font name
+        textFont = new BitmapFont(Gdx.files.internal("Fuentes/simplySquare_45.fnt"));
         HUDFont = new BitmapFont(Gdx.files.internal("Fuentes/disposableDroid_45.fnt"));
         dialogFont = new BitmapFont(Gdx.files.internal("Fuentes/dataControl_45.fnt"));
         buttonFont = new BitmapFont(Gdx.files.internal("Fuentes/kemcoSmooth_35.fnt"));
