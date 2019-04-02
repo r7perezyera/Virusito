@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import mx.itesm.equipo5.Button;
 import mx.itesm.equipo5.MasterScreen;
+import mx.itesm.equipo5.Text;
 import mx.itesm.equipo5.Virusito;
 
 class AboutScreen extends MasterScreen {
@@ -18,6 +19,8 @@ class AboutScreen extends MasterScreen {
     private Stage aboutStage;
 
     private ImageButton homeButton;
+
+    private Text text;
 
     public AboutScreen(Virusito juego) {
         super(juego);
@@ -55,6 +58,10 @@ class AboutScreen extends MasterScreen {
 
         batch.begin();
         batch.draw(background, 0, 0);
+
+        // construir Text
+        text = new Text();
+        text.displayText(batch, "ABOUT US", MasterScreen.WIDTH/2, 5*(MasterScreen.HEIGHT/6)+100);
 
         batch.end();
 
