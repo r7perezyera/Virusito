@@ -2,7 +2,7 @@
 
 We are developing a mobile game using Android Studio and LibGDX in about three months for our Videogame Development Project course.
 
-## Authors
+## Authors :pen:
 
 * **Daniela Belmonte** - *Game Art* - [Daniela's GitHub](https://github.com/DanyBelmonte)
 * **Rudolf Fanchini** - *Programmer* - [Rudolf's GitHub](https://github.com/FanchiniRudolf)
