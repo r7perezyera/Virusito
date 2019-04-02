@@ -63,6 +63,14 @@ class AboutScreen extends MasterScreen {
         text = new Text();
         text.displayText(batch, "ABOUT US", MasterScreen.WIDTH/2, 5*(MasterScreen.HEIGHT/6)+100);
 
+        // LHS
+        text.displayText(batch, "Rudy\nLead Programmer", MasterScreen.WIDTH/4, 5*(MasterScreen.HEIGHT/6));
+        text.displayText(batch, "Joaquin\nLead Programmer", MasterScreen.WIDTH/4, 3*(MasterScreen.HEIGHT/6));
+
+        // RHS
+        text.displayText(batch, "Dany\nGame Art", MasterScreen.WIDTH/2, 5*(MasterScreen.HEIGHT/6));
+        text.displayText(batch, "Bobby\nProgrammer", (MasterScreen.WIDTH/2)+50, 3*(MasterScreen.HEIGHT/6));
+
         batch.end();
 
         aboutStage.draw();
