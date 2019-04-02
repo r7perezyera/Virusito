@@ -1,4 +1,4 @@
-# Motherboard (AKA Virusito) ::
+# Motherboard (AKA Virusito)
 
 We are developing a mobile game using Android Studio and LibGDX in about three months for our Videogame Development Project course.
 
