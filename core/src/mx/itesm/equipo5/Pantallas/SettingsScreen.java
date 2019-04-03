@@ -26,6 +26,9 @@ class SettingsScreen extends MasterScreen {
     private ImageButton homeButton;
     private ImageButton musicOnButton;
     private ImageButton musicOffButton;
+    private ImageButton SFXOnButton;
+    private ImageButton SFXOffButton;
+
 
     public SettingsScreen(Virusito juego) {
         super(juego);
@@ -57,7 +60,7 @@ class SettingsScreen extends MasterScreen {
         });
 
         musicOnButton = new Button("Botones/On_Bttn.png", "Botones/Off_Bttn.png").getiButton();
-        musicOnButton.setPosition(MasterScreen.WIDTH/2, (MasterScreen.HEIGHT/2)+35);
+        musicOnButton.setPosition(MasterScreen.WIDTH/2, (MasterScreen.HEIGHT/2)+50);
         settingsStage.addActor(musicOnButton);
         musicOnButton.addListener(new ClickListener() {
             @Override
@@ -70,7 +73,7 @@ class SettingsScreen extends MasterScreen {
         });
 
         musicOffButton = new Button("Botones/Off_Bttn.png", "Botones/On_Bttn.png").getiButton();
-        musicOffButton.setPosition(MasterScreen.WIDTH/2, (MasterScreen.HEIGHT/2)+35);
+        musicOffButton.setPosition(MasterScreen.WIDTH/2, (MasterScreen.HEIGHT/2)+50);
         //settingsStage.addActor(musicOffButton);
         musicOffButton.addListener(new ClickListener() {
             @Override
@@ -82,9 +85,31 @@ class SettingsScreen extends MasterScreen {
             }
         });
 
+        SFXOnButton = new Button("Botones/On_Bttn.png", "Botones/Off_Bttn.png").getiButton();
+        SFXOnButton.setPosition(MasterScreen.WIDTH/2, (MasterScreen.HEIGHT/2)-125);
+        settingsStage.addActor(SFXOnButton);
+        SFXOnButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                // Responder al evento del boton
+                settingsStage.addActor(SFXOffButton);
+                SFXOnButton.remove();
+            }
+        });
 
-
-
+        SFXOffButton = new Button("Botones/Off_Bttn.png", "Botones/On_Bttn.png").getiButton();
+        SFXOffButton.setPosition(MasterScreen.WIDTH/2, (MasterScreen.HEIGHT/2)-125);
+        //settingsStage.addActor(musicOffButton);
+        SFXOffButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                // Responder al evento del boton
+                settingsStage.addActor(SFXOnButton);
+                SFXOffButton.remove();
+            }
+        });
     }
 
     @Override
