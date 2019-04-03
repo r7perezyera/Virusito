@@ -29,6 +29,9 @@ class SettingsScreen extends MasterScreen {
     private ImageButton SFXOnButton;
     private ImageButton SFXOffButton;
 
+    Texture musicLabelTexture = new Texture("Botones/Music.png");
+    Texture SFXLabelTexture = new Texture("Botones/Vfx.png");
+
 
     public SettingsScreen(Virusito juego) {
         super(juego);
@@ -121,6 +124,9 @@ class SettingsScreen extends MasterScreen {
 
         Text text = new Text();
         text.displayText(batch, "SETTINGS", MasterScreen.WIDTH/2, 5*(MasterScreen.HEIGHT/6)+100);
+
+        batch.draw(musicLabelTexture, (MasterScreen.WIDTH/2)-160, (MasterScreen.HEIGHT/2)+50);
+        batch.draw(SFXLabelTexture, (MasterScreen.WIDTH/2)-160, (MasterScreen.HEIGHT/2)-125);
 
         batch.end();
 
