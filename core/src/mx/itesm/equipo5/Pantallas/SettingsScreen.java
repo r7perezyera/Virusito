@@ -57,7 +57,7 @@ class SettingsScreen extends MasterScreen {
         });
 
         musicOnButton = new Button("Botones/On_Bttn.png", "Botones/Off_Bttn.png").getiButton();
-        musicOnButton.setPosition(MasterScreen.WIDTH/2, MasterScreen.HEIGHT/2);
+        musicOnButton.setPosition(MasterScreen.WIDTH/2, (MasterScreen.HEIGHT/2)+35);
         settingsStage.addActor(musicOnButton);
         musicOnButton.addListener(new ClickListener() {
             @Override
@@ -65,11 +65,12 @@ class SettingsScreen extends MasterScreen {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
                 settingsStage.addActor(musicOffButton);
+                musicOnButton.remove();
             }
         });
 
         musicOffButton = new Button("Botones/Off_Bttn.png", "Botones/On_Bttn.png").getiButton();
-        musicOffButton.setPosition(MasterScreen.WIDTH/2, MasterScreen.HEIGHT/2);
+        musicOffButton.setPosition(MasterScreen.WIDTH/2, (MasterScreen.HEIGHT/2)+35);
         //settingsStage.addActor(musicOffButton);
         musicOffButton.addListener(new ClickListener() {
             @Override
@@ -77,6 +78,7 @@ class SettingsScreen extends MasterScreen {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
                 settingsStage.addActor(musicOnButton);
+                musicOffButton.remove();
             }
         });
 
