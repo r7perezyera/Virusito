@@ -22,7 +22,7 @@ public class Button {
         TextureRegionDrawable trdBotonOn =
                 new TextureRegionDrawable(new TextureRegion(botonOn));
 
-        Texture botonOff = new Texture(pathOn);
+        Texture botonOff = new Texture(pathOff);
         TextureRegionDrawable trdBotonOff =
                 new TextureRegionDrawable(new TextureRegion(botonOff));
 

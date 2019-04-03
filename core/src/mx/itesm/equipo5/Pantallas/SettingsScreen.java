@@ -7,12 +7,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import mx.itesm.equipo5.Button;
 import mx.itesm.equipo5.MasterScreen;
+import mx.itesm.equipo5.Text;
 import mx.itesm.equipo5.Virusito;
 
 class SettingsScreen extends MasterScreen {
@@ -22,6 +24,8 @@ class SettingsScreen extends MasterScreen {
     private Stage settingsStage;
 
     private ImageButton homeButton;
+    private ImageButton musicOnButton;
+    private ImageButton musicOffButton;
 
     public SettingsScreen(Virusito juego) {
         super(juego);
@@ -51,6 +55,34 @@ class SettingsScreen extends MasterScreen {
                 game.setScreen(new MenuScreen(game));
             }
         });
+
+        musicOnButton = new Button("Botones/On_Bttn.png", "Botones/Off_Bttn.png").getiButton();
+        musicOnButton.setPosition(MasterScreen.WIDTH/2, MasterScreen.HEIGHT/2);
+        settingsStage.addActor(musicOnButton);
+        musicOnButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                // Responder al evento del boton
+                settingsStage.addActor(musicOffButton);
+            }
+        });
+
+        musicOffButton = new Button("Botones/Off_Bttn.png", "Botones/On_Bttn.png").getiButton();
+        musicOffButton.setPosition(MasterScreen.WIDTH/2, MasterScreen.HEIGHT/2);
+        //settingsStage.addActor(musicOffButton);
+        musicOffButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                // Responder al evento del boton
+                settingsStage.addActor(musicOnButton);
+            }
+        });
+
+
+
+
     }
 
     @Override
@@ -59,6 +91,9 @@ class SettingsScreen extends MasterScreen {
 
         batch.begin();
         batch.draw(background, 0, 0);
+
+        Text text = new Text();
+        text.displayText(batch, "SETTINGS", MasterScreen.WIDTH/2, 5*(MasterScreen.HEIGHT/6)+100);
 
         batch.end();
 
