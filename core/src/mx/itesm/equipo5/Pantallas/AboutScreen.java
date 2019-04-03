@@ -68,8 +68,8 @@ class AboutScreen extends MasterScreen {
         text.displayText(batch, "Joaquin\nLead Programmer", MasterScreen.WIDTH/4, 3*(MasterScreen.HEIGHT/6));
 
         // screen right-hand side
-        text.displayText(batch, "Dany\nGame Art", MasterScreen.WIDTH/2, 5*(MasterScreen.HEIGHT/6));
-        text.displayText(batch, "Bobby\nProgrammer", (MasterScreen.WIDTH/2)+50, 3*(MasterScreen.HEIGHT/6));
+        text.displayText(batch, "Dany\nGame Art", MasterScreen.WIDTH/2+100, 5*(MasterScreen.HEIGHT/6));
+        text.displayText(batch, "Roberto\nProgrammer", (MasterScreen.WIDTH/2)+150, 3*(MasterScreen.HEIGHT/6));
 
         batch.end();
 
