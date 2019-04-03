@@ -5,24 +5,24 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-public class Boton {
+public class Button {
 
-    private String direOn;
-    private String direOff;
-    private Texture botonOn;
-    private Texture botonOff;
+    private String pathOn;
+    private String pathOff;
+    private Texture buttonOn;
+    private Texture buttonOff;
     private ImageButton iButton;
 
     //Crear un boton con dos estados
-    public Boton(String direOn, String direOff) {
-        this.direOn = direOn;
-        this.direOff = direOff;
+    public Button(String pathOn, String pathOff) {
+        this.pathOn = pathOn;
+        this.pathOff = pathOff;
 
-        Texture botonOn = new Texture(direOn);
+        Texture botonOn = new Texture(pathOn);
         TextureRegionDrawable trdBotonOn =
                 new TextureRegionDrawable(new TextureRegion(botonOn));
 
-        Texture botonOff = new Texture(direOn);
+        Texture botonOff = new Texture(pathOn);
         TextureRegionDrawable trdBotonOff =
                 new TextureRegionDrawable(new TextureRegion(botonOff));
 
@@ -32,9 +32,9 @@ public class Boton {
     }
 
     //Crear un boton con un estado
-    public Boton(String direOn) {
-        this.direOn = direOn;
-        Texture botonOn = new Texture(direOn);
+    public Button(String pathOn) {
+        this.pathOn = pathOn;
+        Texture botonOn = new Texture(pathOn);
         TextureRegionDrawable trdBotonOn =
                 new TextureRegionDrawable(new TextureRegion(botonOn));
         iButton = new ImageButton(trdBotonOn);
