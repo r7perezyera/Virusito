@@ -5,6 +5,6 @@ We are developing a mobile game using Android Studio and LibGDX in about three m
 ## Authors :black_nib:
 
 * **Daniela Belmonte** - *Game Art :art:* - [Daniela's GitHub](https://github.com/DanyBelmonte)
-* **Rudolf Fanchini** - *Programmer :computer:* - [Rudolf's GitHub](https://github.com/FanchiniRudolf)
-* **Joaquin Rios** - *Programmer :computer:* - [Joaquin's GitHub](https://github.com/joaquinrios)
-* **Roberto Tellez** - *Programmer :computer:* - [Roberto's GitHub](https://github.com/r7perezyera)
+* **Rudolf Fanchini** - *Developer :computer:* - [Rudolf's GitHub](https://github.com/FanchiniRudolf)
+* **Joaquin Rios** - *Developer :computer:* - [Joaquin's GitHub](https://github.com/joaquinrios)
+* **Roberto Tellez** - *Developer :computer:* - [Roberto's GitHub](https://github.com/r7perezyera)
