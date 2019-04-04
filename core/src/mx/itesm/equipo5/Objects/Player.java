@@ -1,4 +1,4 @@
-package mx.itesm.equipo5;
+package mx.itesm.equipo5.Objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -23,14 +23,15 @@ public class Player extends Entity {
     private float animationTimer;
 
     public Player(float x, float y, float health) {
-        //Load texture
-        Texture texture = new Texture("texture.path");
 
-        //Region
-        TextureRegion region = new TextureRegion(texture);
+        this.health = health;
+
+        //Load texture
+        Texture texture = new Texture("Personajes/Main_Down.png");
 
         //Sprites
         sprite = new Sprite(texture);
+        sprite.setPosition(x,y);
     }
 
     public void render(SpriteBatch batch) {
