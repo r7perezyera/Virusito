@@ -1,7 +1,6 @@
-package mx.itesm.equipo5;
+package mx.itesm.equipo5.Objects;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class FriendlyBullet extends Projectile {
     public FriendlyBullet(float x, float y, float direction) {
