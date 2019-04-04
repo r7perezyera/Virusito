@@ -81,6 +81,11 @@ class Level extends MasterScreen {
 
     @Override
     public void render(float delta) {
+        eraseScreen();
+
+        // render the game map
+        mapRenderer.render();
+
 
     }
 
