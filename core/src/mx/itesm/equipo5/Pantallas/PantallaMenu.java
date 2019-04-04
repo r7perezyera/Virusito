@@ -9,15 +9,12 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import mx.itesm.equipo5.Button;
 import mx.itesm.equipo5.JoyStick;
 import mx.itesm.equipo5.MasterScreen;
 import mx.itesm.equipo5.Virusito;
@@ -30,7 +27,8 @@ public class PantallaMenu extends MasterScreen {
     private ImageButton confBoton;
     private ImageButton helpBoton;
     private ImageButton aboutBoton;
-    private Touchpad pad;
+    private Touchpad shootingStick;
+    private Touchpad movingStick;
     private Stage escenaHUD;
 
     // BOX2D FISICA
@@ -62,15 +60,6 @@ public class PantallaMenu extends MasterScreen {
     private void createButtons() {
         escenaMenu = new Stage(view);
 
-        playBoton = new Button("Botones/Play_Bttn.png").getiButton();
-        playBoton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                // Responder al evento del boton
-                game.setScreen(new Level(game));
-            }
-        });
 
         Box2D.init();
         mundo = new World(new Vector2(0f,-9.81f), true);
@@ -79,7 +68,10 @@ public class PantallaMenu extends MasterScreen {
         def.position.set(0, 0);
         cuerpo = mundo.createBody(def);
 
-        pad = new JoyStick("HUD/Pad/padBack.png", "HUD/Pad/padKnob.png", cuerpo).getPad();
+        movingStick = new JoyStick("HUD/Pad/padBack.png", "HUD/Pad/padKnob.png", cuerpo).getPad();
+        movingStick.setPosition(16,16);
+        shootingStick = new JoyStick("HUD/Pad/padBack.png", "HUD/Pad/padKnob.png", cuerpo).getPad();
+        shootingStick.setPosition(WIDTH-256,16);
 
         camaraHUD = new OrthographicCamera(WIDTH, HEIGHT);
         camaraHUD.position.set(WIDTH/2, HEIGHT/2, 0);
@@ -88,7 +80,8 @@ public class PantallaMenu extends MasterScreen {
 
         // Agregar la escena, finalmente
         escenaHUD = new Stage(vistaHUD);
-        escenaHUD.addActor(pad);
+        escenaHUD.addActor(shootingStick);
+        escenaHUD.addActor(movingStick);
 
         // ahora la escena es quien atiende los eventos
         Gdx.input.setInputProcessor(escenaHUD);

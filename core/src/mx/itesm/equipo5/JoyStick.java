@@ -55,4 +55,8 @@ public class JoyStick {
         return pad;
     }
 
+    public void setPosition(int x, int y){
+        pad.setBounds(x,y,256,256);
+    }
+
 }
