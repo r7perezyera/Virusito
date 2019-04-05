@@ -78,4 +78,8 @@ public abstract class Entity {
     public void check(){
         //All of the conditions that would destroy the entity
     }
+
+    public boolean collides(){ //TODO, revisa colisión con paredes
+        return true;
+    }
 }
