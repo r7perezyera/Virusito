@@ -15,6 +15,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -36,6 +37,7 @@ import mx.itesm.equipo5.JoyStick;
 import mx.itesm.equipo5.MasterScreen;
 import mx.itesm.equipo5.Objects.FriendlyBullet;
 import mx.itesm.equipo5.Objects.Player;
+import mx.itesm.equipo5.Objects.ShootingEnemy;
 import mx.itesm.equipo5.Text;
 import mx.itesm.equipo5.Virusito;
 
@@ -49,6 +51,10 @@ class Level extends MasterScreen {
 
     private LinkedList<FriendlyBullet> bullets = new LinkedList<FriendlyBullet>();
     private float timeSinceShot;
+
+    private LinkedList<ShootingEnemy> shootingEnemies = new LinkedList<ShootingEnemy>();
+    private float enemyShotCooldown;
+
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
@@ -74,6 +80,8 @@ class Level extends MasterScreen {
     private Player player; //Personaje
     private Array<Rectangle> doors;
 
+    private ShootingEnemy enemy1;
+
 
     public Level(Virusito juego) {
         super(juego);
@@ -91,6 +99,9 @@ class Level extends MasterScreen {
         getDoors();
 
         player = new Player(300,300,20);
+
+        enemy1 = new ShootingEnemy(500,500,10);
+        shootingEnemies.add(enemy1);
 
         Gdx.input.setCatchBackKey(false);
     }
@@ -167,11 +178,14 @@ class Level extends MasterScreen {
     @Override
     public void render(float delta) {
 
-        timeSinceShot += delta;
-        shoot();
+    timeSinceShot += delta;
+    enemyShotCooldown += delta;
+    shoot();
 
 
     updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY());
+
+    updateEnemies();
 
         batch.setProjectionMatrix(camera.combined);
         // render the game map
@@ -179,6 +193,7 @@ class Level extends MasterScreen {
         mapRenderer.render();
 
         batch.begin();
+        enemy1.render(batch);
         player.render(batch);
         if (!bullets.isEmpty()){
             for (FriendlyBullet bullet: bullets){
@@ -192,6 +207,25 @@ class Level extends MasterScreen {
         HUDstage.draw();
 
 
+    }
+
+    //TODO arreglar angulo
+    private void updateEnemies() {
+        float playerX = player.getX();
+        float playerY = player.getY();
+        float enemyX, enemyY;
+        for(ShootingEnemy shootingEnemy : shootingEnemies){
+            enemyX = shootingEnemy.getX();
+            enemyY = shootingEnemy.getY();
+            float angle =(float) (MathUtils.atan2(enemyY-playerY,enemyX-playerX)*180.0)/ MathUtils.PI;
+
+
+            if(enemyShotCooldown>=2){
+                FriendlyBullet bullet = new FriendlyBullet(shootingEnemy.getX()+shootingEnemy.getWidth()/2, shootingEnemy.getY()+shootingEnemy.getHeight()/2, angle);
+                bullets.add(bullet);
+                enemyShotCooldown=0;
+            }
+        }
     }
 
     private void shoot() {

@@ -29,7 +29,7 @@ public class ShootingEnemy extends Entity {
         this.health = health;
         this.speed = 7;
         //Load texture
-        texture = new Texture("Personajes/Main_Down.png");
+        texture = new Texture("Personajes/Enemigo_1.png");
 
         animation = new Animation(0.15f,texture);
         animation.setPlayMode(Animation.PlayMode.LOOP);
@@ -45,5 +45,7 @@ public class ShootingEnemy extends Entity {
     public void render(SpriteBatch batch) {
         batch.draw(texture, sprite.getX(), sprite.getY());
     }
+
+
 
 }
