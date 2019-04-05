@@ -33,8 +33,12 @@ import java.util.LinkedList;
 
 import mx.itesm.equipo5.JoyStick;
 import mx.itesm.equipo5.MasterScreen;
+import mx.itesm.equipo5.Objects.Enemy;
 import mx.itesm.equipo5.Objects.FriendlyBullet;
 import mx.itesm.equipo5.Objects.Player;
+import mx.itesm.equipo5.Objects.difficulty;
+import mx.itesm.equipo5.Objects.enemyType;
+import mx.itesm.equipo5.Objects.movementPattern;
 import mx.itesm.equipo5.Text;
 import mx.itesm.equipo5.Virusito;
 
@@ -46,6 +50,7 @@ class Level extends MasterScreen {
     private ShapeRenderer sr;
 
     private LinkedList<FriendlyBullet> bullets = new LinkedList<FriendlyBullet>();
+    private LinkedList<Enemy> enemies = new LinkedList<Enemy>();
     private float timeSinceShot;
 
     private TiledMap map;
@@ -84,6 +89,7 @@ class Level extends MasterScreen {
         buildHUD();
         createJoysticks();
         getWalls();
+        spawn();
 
         player = new Player(300,300,20);
 
@@ -117,9 +123,6 @@ class Level extends MasterScreen {
         // ahora la escena es quien atiende los eventos
         Gdx.input.setInputProcessor(HUDstage);
 
-        // siguiendo el codigo de roman, aqui irian los pads, pero no se si haya una forma mejor
-
-
 
         // TODO en caso de tener un pad, agregarlo como actor a HUDstage justo aqui
 
@@ -142,12 +145,6 @@ class Level extends MasterScreen {
         shootingStick = new JoyStick("HUD/Pad/padBack.png", "HUD/Pad/padKnob.png", cuerpo).getPad();
         shootingStick.setPosition(WIDTH-256,16);
 
-        /*
-        HUDcamera = new OrthographicCamera(WIDTH, HEIGHT);
-        HUDcamera.position.set(WIDTH/2, HEIGHT/2, 0);
-        HUDcamera.update();
-        HUDview = new StretchViewport(WIDTH, HEIGHT, HUDcamera);
-        */
 
         // Agregar la escena, finalmente
         HUDstage.addActor(shootingStick);
@@ -161,6 +158,7 @@ class Level extends MasterScreen {
 
     @Override
     public void render(float delta) {
+
 
         timeSinceShot += delta;
         shoot();
@@ -179,13 +177,24 @@ class Level extends MasterScreen {
                 bullet.update();
             }
         }
+        if (!enemies.isEmpty()){
+            for (Enemy enemy: enemies){
+                enemy.render(batch);
+                enemy.move(player.getX(), player.getY());
+            }
+        }
         batch.end();
-
-        //escenaMenu.draw();
         HUDstage.draw();
 
 
 
+    }
+
+    private void spawn() {
+        Enemy enemy = new Enemy(enemyType.RAMMER, movementPattern.FOLLOWER, difficulty.EASY, 400, 400);
+        enemies.add(enemy);
+        enemy = new Enemy(enemyType.RAMMER, movementPattern.FOLLOWER, difficulty.EASY, 400, 300);
+        enemies.add(enemy);
     }
 
     private void shoot() {
