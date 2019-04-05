@@ -146,6 +146,9 @@ class Level extends MasterScreen {
 
     @Override
     public void render(float delta) {
+
+        updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY());
+
         eraseScreen();
 
         batch.setProjectionMatrix(camera.combined);
@@ -162,6 +165,11 @@ class Level extends MasterScreen {
 
 
 
+    }
+
+    private void updateCharacter(float dx, float dy) {
+        player.moveX(dx);
+        player.moveY(dy);
     }
 
     @Override

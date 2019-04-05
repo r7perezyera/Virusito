@@ -59,4 +59,11 @@ public class JoyStick {
         pad.setBounds(x,y,256,256);
     }
 
+    public float getDx() {
+        return dx;
+    }
+
+    public float getDy() {
+        return dy;
+    }
 }
