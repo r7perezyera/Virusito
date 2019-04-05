@@ -65,7 +65,7 @@ class Level extends MasterScreen {
 
         loadMap();
         buildHUD();
-        //createJoysticks();
+        createJoysticks();
 
         Gdx.input.setCatchBackKey(false);
     }
