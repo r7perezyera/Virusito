@@ -3,6 +3,7 @@ package mx.itesm.equipo5.Objects;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 
 public abstract class Projectile {
 
@@ -12,11 +13,13 @@ public abstract class Projectile {
     protected boolean destroyed = false;
     protected Sprite sprite;
     protected Texture texture;
+    protected Rectangle rectangle;
 
     public Projectile(float x, float y, float direction){
         this.direction = direction;
         this.x = x;
         this.y = y;
+        rectangle = new Rectangle();
     }
 
     public void update(){

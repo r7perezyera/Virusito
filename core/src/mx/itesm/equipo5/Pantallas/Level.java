@@ -29,6 +29,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import mx.itesm.equipo5.JoyStick;
@@ -42,7 +43,8 @@ class Level extends MasterScreen {
 
 
     //Esto es para probar colisiones
-    public Array<Rectangle> walls;
+    private Array<Rectangle> walls;
+    private Array<Rectangle> tvs;
     private ShapeRenderer sr;
 
     private LinkedList<FriendlyBullet> bullets = new LinkedList<FriendlyBullet>();
@@ -70,6 +72,7 @@ class Level extends MasterScreen {
     private Box2DDebugRenderer debug;
 
     private Player player; //Personaje
+    private Array<Rectangle> doors;
 
 
     public Level(Virusito juego) {
@@ -84,6 +87,8 @@ class Level extends MasterScreen {
         buildHUD();
         createJoysticks();
         getWalls();
+        getTVs();
+        getDoors();
 
         player = new Player(300,300,20);
 
@@ -164,7 +169,9 @@ class Level extends MasterScreen {
 
         timeSinceShot += delta;
         shoot();
-        updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY());
+
+
+    updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY());
 
         batch.setProjectionMatrix(camera.combined);
         // render the game map
@@ -185,7 +192,6 @@ class Level extends MasterScreen {
         HUDstage.draw();
 
 
-
     }
 
     private void shoot() {
@@ -198,19 +204,19 @@ class Level extends MasterScreen {
         System.out.println(angle);
         if(timeSinceShot>=1f) {
             if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
-                FriendlyBullet bullet = new FriendlyBullet(player.getX(), player.getY(), 0);
+                FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, 0);
                 bullets.add(bullet);
                 timeSinceShot = 0;
             } else if (46 <= angle && angle <= 136) {
-                FriendlyBullet bullet = new FriendlyBullet(player.getX(), player.getY(), (float) Math.PI / 2);
+                FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) Math.PI / 2);
                 bullets.add(bullet);
                 timeSinceShot=0;
             } else if (136 <= angle && angle <= 225) {
-                FriendlyBullet bullet = new FriendlyBullet(player.getX(), player.getY(), (float) Math.PI);
+                FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) Math.PI);
                 bullets.add(bullet);
                 timeSinceShot=0;
             } else if (226 <= angle && angle <= 315) {
-                FriendlyBullet bullet = new FriendlyBullet(player.getX(), player.getY(), (float) (3 * Math.PI) / 2);
+                FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) (3 * Math.PI) / 2);
                 bullets.add(bullet);
                 timeSinceShot=0;
             }
@@ -220,12 +226,31 @@ class Level extends MasterScreen {
     }
 
     private void getWalls(){
-        sr = new ShapeRenderer();
         walls = new Array<Rectangle>();
         for(MapObject object : map.getLayers().get("Paredes").getObjects()){
             if(object instanceof RectangleMapObject){
                 Rectangle rect = ((RectangleMapObject) object).getRectangle();
                 walls.add(rect);
+            }
+        }
+    }
+
+    private void getTVs(){
+        tvs = new Array<Rectangle>();
+        for(MapObject object : map.getLayers().get("Teles").getObjects()){
+            if(object instanceof RectangleMapObject){
+                Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                tvs.add(rect);
+            }
+        }
+    }
+
+    private void getDoors(){
+        doors = new Array<Rectangle>();
+        for(MapObject object : map.getLayers().get("Teles").getObjects()){
+            if(object instanceof RectangleMapObject){
+                Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                doors.add(rect);
             }
         }
     }
@@ -240,10 +265,18 @@ class Level extends MasterScreen {
         checkRectangle.setPosition(newPosX, newPosY);
 
 
-        boolean collides = collidesWith(walls, checkRectangle);
+        boolean collides = collidesWith(walls, checkRectangle) || collidesWith(tvs,checkRectangle);
         if (!collides) {
             player.moveX(dx);
             player.moveY(dy);
+        }
+    }
+
+    private void updateBullet(){
+        for(FriendlyBullet bullet : bullets){
+            if(collidesWith(walls,bullet.getRectangle())||collidesWith(walls,bullet.getRectangle())){
+                //TODO eliminar bullet
+            };
         }
     }
 
