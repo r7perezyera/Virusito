@@ -65,7 +65,7 @@ class Level extends MasterScreen {
 
         loadMap();
         buildHUD();
-        createButtons();
+        //createJoysticks();
 
         Gdx.input.setCatchBackKey(false);
     }
@@ -76,9 +76,9 @@ class Level extends MasterScreen {
     private void loadMap() {
         AssetManager manager = new AssetManager();
         manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
-        manager.load("Mapa 1/1-1.tmx", TiledMap.class);
+        manager.load("Mapa1/1-1.tmx", TiledMap.class);
         manager.finishLoading();
-        map = manager.get("Mapa 1/1-1.tmx");
+        map = manager.get("Mapa1/1-1.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(map);
         System.out.println("cargo el mapa");
     }
@@ -106,8 +106,8 @@ class Level extends MasterScreen {
 
     }
 
-    private void createButtons() {
-        //escenaMenu = new Stage(view);
+    private void createJoysticks() {
+
 
 
         Box2D.init();
@@ -144,6 +144,7 @@ class Level extends MasterScreen {
         eraseScreen();
 
         // render the game map
+        mapRenderer.setView(camera);
         mapRenderer.render();
 
         //escenaMenu.draw();
