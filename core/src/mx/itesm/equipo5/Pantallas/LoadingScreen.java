@@ -31,7 +31,7 @@ public class LoadingScreen extends MasterScreen {
 
         //prueba tiempo
         timeCounter +=delta;
-        if (timeCounter >=4){
+        if (timeCounter >=1){
             //Conto 4 s
             game.setScreen(new MenuScreen(game));
         }
