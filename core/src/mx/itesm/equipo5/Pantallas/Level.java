@@ -185,7 +185,6 @@ class Level extends MasterScreen {
 
     updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY());
 
-    updateEnemies();
 
         batch.setProjectionMatrix(camera.combined);
         // render the game map
@@ -209,6 +208,7 @@ class Level extends MasterScreen {
 
     }
 
+    /*
     //TODO arreglar angulo
     private void updateEnemies() {
         float playerX = player.getX();
@@ -227,7 +227,7 @@ class Level extends MasterScreen {
             }
         }
     }
-
+*/
     private void shoot() {
         float changeX = shootingStick.getKnobPercentX();
         float changeY = shootingStick.getKnobPercentY();
