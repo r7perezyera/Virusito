@@ -54,7 +54,7 @@ class WinScreen extends MasterScreen {
 
         //Dibujar
 
-        batch.draw(background, WIDTH/2-background.getWidth(),500);
+        batch.draw(background, WIDTH/2,200);
 
         batch.end();
 
