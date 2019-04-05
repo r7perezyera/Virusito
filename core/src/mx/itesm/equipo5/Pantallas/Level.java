@@ -45,6 +45,7 @@ class Level extends MasterScreen {
     private Array<Rectangle> walls;
     private Array<Rectangle> tvs;
     private ShapeRenderer sr;
+    private float timeSinceDamage;
 
     private LinkedList<FriendlyBullet> bullets = new LinkedList<FriendlyBullet>();
     private LinkedList<minion> enemies = new LinkedList<minion>();
@@ -171,6 +172,7 @@ class Level extends MasterScreen {
 
         timeSinceShot += delta;
         timeSinceAttack+=delta;
+        timeSinceDamage+=delta;
         shoot();
         updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY());
 
@@ -310,7 +312,10 @@ class Level extends MasterScreen {
             player.moveY(dy);
         }
         if (collidesWith(enemyRect, checkRectangle)) {
-            player.setHealth(player.getHealth()-1);
+            if(timeSinceDamage>2){
+                player.setHealth(player.getHealth()-1);
+                timeSinceDamage=0;
+            }
         }
         if (collidesWith(doors,checkRectangle)){
             game.setScreen(new WinScreen(game));
