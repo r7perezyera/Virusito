@@ -28,7 +28,7 @@ public abstract class Projectile {
     }
 
     public void render(SpriteBatch batch) {
-        batch.draw(texture, sprite.getX(), sprite.getY(),10,10);
+        if (!destroyed) batch.draw(texture, sprite.getX(), sprite.getY(),10,10);
     }
 
     public void launchX(){  //DX is with vector2 and .angle
@@ -46,4 +46,8 @@ public abstract class Projectile {
     }
 
     public Sprite getSprite() {return sprite;}
+
+    public float getSpeed() {
+        return speed;
+    }
 }

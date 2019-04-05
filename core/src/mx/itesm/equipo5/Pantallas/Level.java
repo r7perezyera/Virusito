@@ -4,18 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -24,27 +18,22 @@ import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import mx.itesm.equipo5.JoyStick;
 import mx.itesm.equipo5.MasterScreen;
-import mx.itesm.equipo5.Objects.Enemy;
+import mx.itesm.equipo5.Objects.minion;
 import mx.itesm.equipo5.Objects.FriendlyBullet;
 import mx.itesm.equipo5.Objects.Player;
-<<<<<<< HEAD
 import mx.itesm.equipo5.Objects.difficulty;
 import mx.itesm.equipo5.Objects.enemyType;
 import mx.itesm.equipo5.Objects.movementPattern;
-=======
-import mx.itesm.equipo5.Objects.ShootingEnemy;
->>>>>>> f780a7d5a6b13b5fd4524e393f7716c1ad717a08
+
 import mx.itesm.equipo5.Text;
 import mx.itesm.equipo5.Virusito;
 
@@ -57,10 +46,10 @@ class Level extends MasterScreen {
     private ShapeRenderer sr;
 
     private LinkedList<FriendlyBullet> bullets = new LinkedList<FriendlyBullet>();
-    private LinkedList<Enemy> enemies = new LinkedList<Enemy>();
+    private LinkedList<minion> enemies = new LinkedList<minion>();
     private float timeSinceShot;
+    private float timeSinceAttack;
 
-    private LinkedList<ShootingEnemy> shootingEnemies = new LinkedList<ShootingEnemy>();
     private float enemyShotCooldown;
 
 
@@ -87,8 +76,8 @@ class Level extends MasterScreen {
 
     private Player player; //Personaje
     private Array<Rectangle> doors;
+    private Array<Rectangle> enemyRect;
 
-    private ShootingEnemy enemy1;
 
 
     public Level(Virusito juego) {
@@ -103,17 +92,13 @@ class Level extends MasterScreen {
         buildHUD();
         createJoysticks();
         getWalls();
-<<<<<<< HEAD
         spawn();
-=======
         getTVs();
         getDoors();
->>>>>>> f780a7d5a6b13b5fd4524e393f7716c1ad717a08
+        getEnemies();
+
 
         player = new Player(300,300,20);
-
-        enemy1 = new ShootingEnemy(500,500,10);
-        shootingEnemies.add(enemy1);
 
         Gdx.input.setCatchBackKey(false);
     }
@@ -181,20 +166,15 @@ class Level extends MasterScreen {
     @Override
     public void render(float delta) {
 
-<<<<<<< HEAD
-
         timeSinceShot += delta;
+        timeSinceAttack+=delta;
         shoot();
         updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY());
-=======
-    timeSinceShot += delta;
-    enemyShotCooldown += delta;
-    shoot();
+
 
 
     updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY());
 
->>>>>>> f780a7d5a6b13b5fd4524e393f7716c1ad717a08
 
         batch.setProjectionMatrix(camera.combined);
         // render the game map
@@ -202,18 +182,18 @@ class Level extends MasterScreen {
         mapRenderer.render();
 
         batch.begin();
-        enemy1.render(batch);
         player.render(batch);
         if (!bullets.isEmpty()){
             for (FriendlyBullet bullet: bullets){
                 bullet.render(batch);
                 bullet.update();
+                updateBullet();
             }
         }
         if (!enemies.isEmpty()){
-            for (Enemy enemy: enemies){
-                enemy.render(batch);
-                enemy.move(player.getX(), player.getY());
+            for (minion minion : enemies){
+                minion.render(batch);
+                minion.move(player.getX(), player.getY());
             }
         }
         batch.end();
@@ -222,36 +202,15 @@ class Level extends MasterScreen {
 
     }
 
-<<<<<<< HEAD
     private void spawn() {
-        Enemy enemy = new Enemy(enemyType.RAMMER, movementPattern.FOLLOWER, difficulty.EASY, 400, 400);
-        enemies.add(enemy);
-        enemy = new Enemy(enemyType.RAMMER, movementPattern.FOLLOWER, difficulty.EASY, 400, 300);
-        enemies.add(enemy);
+        minion minion = new minion(enemyType.RAMMER, movementPattern.FOLLOWER, difficulty.EASY, 800, 400);
+        enemies.add(minion);
+        minion = new minion(enemyType.RAMMER, movementPattern.FOLLOWER, difficulty.EASY, 800, 300);
+        enemies.add(minion);
     }
 
-=======
-    /*
-    //TODO arreglar angulo
-    private void updateEnemies() {
-        float playerX = player.getX();
-        float playerY = player.getY();
-        float enemyX, enemyY;
-        for(ShootingEnemy shootingEnemy : shootingEnemies){
-            enemyX = shootingEnemy.getX();
-            enemyY = shootingEnemy.getY();
-            float angle =(float) (MathUtils.atan2(enemyY-playerY,enemyX-playerX)*180.0)/ MathUtils.PI;
 
 
-            if(enemyShotCooldown>=2){
-                FriendlyBullet bullet = new FriendlyBullet(shootingEnemy.getX()+shootingEnemy.getWidth()/2, shootingEnemy.getY()+shootingEnemy.getHeight()/2, angle);
-                bullets.add(bullet);
-                enemyShotCooldown=0;
-            }
-        }
-    }
-*/
->>>>>>> f780a7d5a6b13b5fd4524e393f7716c1ad717a08
     private void shoot() {
         float changeX = shootingStick.getKnobPercentX();
         float changeY = shootingStick.getKnobPercentY();
@@ -259,24 +218,22 @@ class Level extends MasterScreen {
         Vector2 vector = new Vector2(changeX,changeY);
         float angle = vector.angle();
 
-        System.out.println(angle);
-        if(timeSinceShot>=1f) {
+        if(timeSinceShot<=1f) {
             if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
                 FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, 0);
                 bullets.add(bullet);
-                timeSinceShot = 0;
             } else if (46 <= angle && angle <= 136) {
                 FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) Math.PI / 2);
                 bullets.add(bullet);
-                timeSinceShot=0;
             } else if (136 <= angle && angle <= 225) {
                 FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) Math.PI);
                 bullets.add(bullet);
-                timeSinceShot=0;
             } else if (226 <= angle && angle <= 315) {
                 FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) (3 * Math.PI) / 2);
                 bullets.add(bullet);
-                timeSinceShot=0;
+            }
+            else {
+                timeSinceShot=0.0f;
             }
         }
 
@@ -313,6 +270,15 @@ class Level extends MasterScreen {
         }
     }
 
+    private void getEnemies(){
+        enemyRect = new Array<Rectangle>();
+        for(minion enemy :enemies){
+                Rectangle rect = enemy.getRectangle();
+                enemyRect.add(rect);
+            }
+        }
+
+
     private void updateCharacter(float dx, float dy) {
         Rectangle checkRectangle;
         checkRectangle = new Rectangle();
@@ -323,22 +289,38 @@ class Level extends MasterScreen {
         checkRectangle.setPosition(newPosX, newPosY);
 
 
-        boolean collides = collidesWith(walls, checkRectangle) || collidesWith(tvs,checkRectangle);
+        boolean collides = collidesWith(walls, checkRectangle) || collidesWith(tvs, checkRectangle);
         if (!collides) {
             player.moveX(dx);
             player.moveY(dy);
+        }
+        if (collidesWith(enemyRect, checkRectangle)) {
+            player.setHealth(player.getHealth()-1);
         }
     }
 
     private void updateBullet(){
         for(FriendlyBullet bullet : bullets){
-            if(collidesWith(walls,bullet.getRectangle())||collidesWith(walls,bullet.getRectangle())){
-                //TODO eliminar bullet
-            };
+
+            Rectangle checkRectangle;
+            checkRectangle = new Rectangle();
+            checkRectangle.set(bullet.getRectangle());
+            float newPosY = bullet.getSprite().getY() + bullet.getSpeed();
+            float newPosX = bullet.getSprite().getX() + bullet.getSpeed();
+            checkRectangle.setPosition(newPosX, newPosY);
+            if(collidesWith(walls,checkRectangle)||collidesWith(doors,checkRectangle)) {
+                bullet.destroy();
+            }
+            for (minion enemy:enemies ){
+                    if (checkRectangle.overlaps(enemy.getRectangle())){
+                        bullet.destroy();
+                        enemy.destroy();
+                    }
+            }
         }
     }
 
-    public boolean collidesWith(Array<Rectangle> rectangles,Rectangle checkRectangle){
+    public boolean collidesWith(Array<Rectangle> rectangles, Rectangle checkRectangle){
         for(Rectangle rectangle : rectangles){
             if(checkRectangle.overlaps(rectangle)) return true;
         }
@@ -368,7 +350,6 @@ class Level extends MasterScreen {
 
     @Override
     public void dispose() {
-        //escenaMenu.dispose();
         HUDstage.dispose();
         mapRenderer.dispose();
     }

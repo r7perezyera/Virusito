@@ -22,6 +22,13 @@ public abstract class Entity {
         //The constructor varies depending on the type of entity
     }
 
+    public float getHealth() {
+        return health;
+    }
+
+    public void setHealth(float health) {
+        this.health = health;
+    }
 
     public float getX() {
         return sprite.getX();

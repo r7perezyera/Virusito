@@ -3,14 +3,15 @@ package mx.itesm.equipo5.Objects;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
-public class Enemy extends Entity {
+public class minion extends Entity {
 
     private enemyType attack;
     private movementPattern move;
     private difficulty diff;
 
-    public Enemy(enemyType attack, movementPattern move, difficulty diffc, float x, float y){
+    public minion(enemyType attack, movementPattern move, difficulty diffc, float x, float y){
         this.attack = attack;
         this.move = move;
         this.diff = diffc;
@@ -29,13 +30,19 @@ public class Enemy extends Entity {
     }
 
     public void render(SpriteBatch batch){
-        batch.draw(texture, sprite.getX(), sprite.getY());
+        if (!destroyed) {
+            batch.draw(texture, sprite.getX(), sprite.getY());
+            rectangle.set(sprite.getX(), sprite.getY(), texture.getWidth(), texture.getHeight());
+        }
     }
     public void move(float x, float y){
         if (attack==enemyType.RAMMER){
-            
-            moveX(x-sprite.getX());
-            moveY(y-sprite.getY());
+            Vector2 vector = new Vector2(x-sprite.getX(),y-sprite.getY());
+            float angle = vector.angle();
+            float dx = (float) (speed*Math.cos(angle));
+            float dy = (float) (speed*Math.sin(angle));
+            moveX(dx);
+            moveY(dy);
         }
     }
 
