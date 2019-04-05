@@ -32,6 +32,7 @@ import mx.itesm.equipo5.Virusito;
 
 class Level extends MasterScreen {
 
+    private FriendlyBullet bullet;
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
@@ -46,7 +47,7 @@ class Level extends MasterScreen {
 
     private Touchpad shootingStick;
     private Touchpad movingStick;
-    //private Stage escenaHUD;
+
 
     // BOX2D FISICA
     // vamos a agregar una simulacion de fisica
@@ -56,11 +57,6 @@ class Level extends MasterScreen {
 
     private Player player; //Personaje
 
-
-    //Menu escenas, Indp de la camara de mov
-    //private Stage escenaMenu; //Contenedor de Botones
-    //private Viewport vistaHUD;
-    //private OrthographicCamera camaraHUD;
 
     public Level(Virusito juego) {
         super(juego);
@@ -150,13 +146,8 @@ class Level extends MasterScreen {
     @Override
     public void render(float delta) {
 
-
         shoot();
-
         updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY());
-
-
-        eraseScreen();
 
         batch.setProjectionMatrix(camera.combined);
         // render the game map
@@ -165,6 +156,10 @@ class Level extends MasterScreen {
 
         batch.begin();
         player.render(batch);
+        if (bullet!=null){
+            bullet.render(batch);
+            bullet.update();
+        }
         batch.end();
 
         //escenaMenu.draw();
@@ -180,6 +175,21 @@ class Level extends MasterScreen {
         //Checks angle of shot
         Vector2 vector = new Vector2(changeX,changeY);
         float angle = vector.angle();
+
+        System.out.println(angle);
+
+        if((0<angle && angle<=45) || (316<=angle && angle<=360)){
+            bullet = new FriendlyBullet(player.getX(),player.getY(),0);
+        }
+        else if (46<=angle && angle<=136){
+            bullet = new FriendlyBullet(player.getX(),player.getY(),(float) Math.PI/2);
+        }else if (136<=angle && angle<= 225){
+            bullet = new FriendlyBullet(player.getX(),player.getY(),(float) Math.PI);
+        }else if (226<=angle && angle<=315){
+            bullet = new FriendlyBullet(player.getX(),player.getY(),(float) (3*Math.PI)/2);
+        } else if(angle==0){
+
+        }
 
 
     }
