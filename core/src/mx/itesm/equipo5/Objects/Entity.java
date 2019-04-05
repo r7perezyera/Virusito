@@ -22,11 +22,11 @@ public abstract class Entity {
 
 
     public float getX() {
-        return x;
+        return sprite.getX();
     }
 
     public float getY() {
-        return y;
+        return sprite.getY();
     }
 
     public float getHeight() {

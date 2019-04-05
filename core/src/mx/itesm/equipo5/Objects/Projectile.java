@@ -2,6 +2,7 @@ package mx.itesm.equipo5.Objects;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public abstract class Projectile {
 
@@ -19,15 +20,17 @@ public abstract class Projectile {
     }
 
     public void update(){
-        while(!destroyed){
             moveX(speed);
             moveY(speed);
-        }
+    }
+
+    public void render(SpriteBatch batch) {
+        batch.draw(texture, x, y);
     }
 
     public void moveX(float dx){  //DX is with vector2 and .angle
         float factor = (float) Math.cos(direction);
-        sprite.setX(sprite.getX()+(factor));
+        sprite.setX(sprite.getX()+(dx*factor));
     }
 
     public void moveY(float dy){
@@ -38,4 +41,6 @@ public abstract class Projectile {
     public void destroy(){
         destroyed = true;
     }
+
+    public Sprite getSprite() {return sprite;}
 }

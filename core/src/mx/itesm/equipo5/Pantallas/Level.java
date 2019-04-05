@@ -21,13 +21,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.LinkedList;
+
 import mx.itesm.equipo5.JoyStick;
 import mx.itesm.equipo5.MasterScreen;
+import mx.itesm.equipo5.Objects.FriendlyBullet;
 import mx.itesm.equipo5.Objects.Player;
 import mx.itesm.equipo5.Text;
 import mx.itesm.equipo5.Virusito;
 
 class Level extends MasterScreen {
+
+    private LinkedList<FriendlyBullet> friendlyBullets = new LinkedList<FriendlyBullet>();
+    private FriendlyBullet bullet;
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
@@ -147,7 +153,11 @@ class Level extends MasterScreen {
     @Override
     public void render(float delta) {
 
+
+        shoot();
+
         updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY());
+
 
         eraseScreen();
 
@@ -167,10 +177,21 @@ class Level extends MasterScreen {
 
     }
 
+    private void shoot() {
+        float changeX = shootingStick.getKnobPercentX();
+        float changeY = shootingStick.getKnobPercentY();
+        //Checks angle of shot
+        Vector2 vector = new Vector2(changeX,changeY);
+        float angle = vector.angle();
+
+
+    }
+
     private void updateCharacter(float dx, float dy) {
         player.moveX(dx);
         player.moveY(dy);
     }
+
 
     @Override
     public void resize(int width, int height) {
