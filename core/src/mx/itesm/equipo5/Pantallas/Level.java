@@ -32,7 +32,7 @@ import mx.itesm.equipo5.Virusito;
 
 class Level extends MasterScreen {
 
-    private FriendlyBullet bullet;
+    private LinkedList<FriendlyBullet> bullets = new LinkedList<FriendlyBullet>();
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
@@ -156,9 +156,11 @@ class Level extends MasterScreen {
 
         batch.begin();
         player.render(batch);
-        if (bullet!=null){
-            bullet.render(batch);
-            bullet.update();
+        if (!bullets.isEmpty()){
+            for (FriendlyBullet bullet: bullets){
+                bullet.render(batch);
+                bullet.update();
+            }
         }
         batch.end();
 
@@ -179,16 +181,17 @@ class Level extends MasterScreen {
         System.out.println(angle);
 
         if((0<angle && angle<=45) || (316<=angle && angle<=360)){
-            bullet = new FriendlyBullet(player.getX(),player.getY(),0);
-        }
-        else if (46<=angle && angle<=136){
-            bullet = new FriendlyBullet(player.getX(),player.getY(),(float) Math.PI/2);
-        }else if (136<=angle && angle<= 225){
-            bullet = new FriendlyBullet(player.getX(),player.getY(),(float) Math.PI);
-        }else if (226<=angle && angle<=315){
-            bullet = new FriendlyBullet(player.getX(),player.getY(),(float) (3*Math.PI)/2);
-        } else if(angle==0){
-
+            FriendlyBullet bullet = new FriendlyBullet(player.getX(),player.getY(),0);
+            bullets.add(bullet);
+        } else if (46<=angle && angle<=136){
+            FriendlyBullet bullet = new FriendlyBullet(player.getX(),player.getY(),(float) Math.PI/2);
+            bullets.add(bullet);
+        } else if (136<=angle && angle<= 225){
+            FriendlyBullet bullet = new FriendlyBullet(player.getX(),player.getY(),(float) Math.PI);
+            bullets.add(bullet);
+        } else if (226<=angle && angle<=315){
+            FriendlyBullet bullet = new FriendlyBullet(player.getX(),player.getY(),(float) (3*Math.PI)/2);
+            bullets.add(bullet);
         }
 
 
