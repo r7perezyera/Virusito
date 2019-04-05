@@ -34,4 +34,8 @@ public abstract class Projectile {
         float factor = (float) Math.sin(direction);
         sprite.setY(sprite.getY()+(dy*factor));
     }
+
+    public void destroy(){
+        destroyed = true;
+    }
 }
