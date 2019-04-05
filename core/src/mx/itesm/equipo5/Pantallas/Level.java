@@ -33,6 +33,7 @@ import mx.itesm.equipo5.Virusito;
 class Level extends MasterScreen {
 
     private LinkedList<FriendlyBullet> bullets = new LinkedList<FriendlyBullet>();
+    private float timeSinceShot;
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
@@ -146,6 +147,7 @@ class Level extends MasterScreen {
     @Override
     public void render(float delta) {
 
+        timeSinceShot += delta;
         shoot();
         updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY());
 
@@ -179,19 +181,24 @@ class Level extends MasterScreen {
         float angle = vector.angle();
 
         System.out.println(angle);
-
-        if((0<angle && angle<=45) || (316<=angle && angle<=360)){
-            FriendlyBullet bullet = new FriendlyBullet(player.getX(),player.getY(),0);
-            bullets.add(bullet);
-        } else if (46<=angle && angle<=136){
-            FriendlyBullet bullet = new FriendlyBullet(player.getX(),player.getY(),(float) Math.PI/2);
-            bullets.add(bullet);
-        } else if (136<=angle && angle<= 225){
-            FriendlyBullet bullet = new FriendlyBullet(player.getX(),player.getY(),(float) Math.PI);
-            bullets.add(bullet);
-        } else if (226<=angle && angle<=315){
-            FriendlyBullet bullet = new FriendlyBullet(player.getX(),player.getY(),(float) (3*Math.PI)/2);
-            bullets.add(bullet);
+        if(timeSinceShot>=1f) {
+            if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
+                FriendlyBullet bullet = new FriendlyBullet(player.getX(), player.getY(), 0);
+                bullets.add(bullet);
+                timeSinceShot = 0;
+            } else if (46 <= angle && angle <= 136) {
+                FriendlyBullet bullet = new FriendlyBullet(player.getX(), player.getY(), (float) Math.PI / 2);
+                bullets.add(bullet);
+                timeSinceShot=0;
+            } else if (136 <= angle && angle <= 225) {
+                FriendlyBullet bullet = new FriendlyBullet(player.getX(), player.getY(), (float) Math.PI);
+                bullets.add(bullet);
+                timeSinceShot=0;
+            } else if (226 <= angle && angle <= 315) {
+                FriendlyBullet bullet = new FriendlyBullet(player.getX(), player.getY(), (float) (3 * Math.PI) / 2);
+                bullets.add(bullet);
+                timeSinceShot=0;
+            }
         }
 
 
