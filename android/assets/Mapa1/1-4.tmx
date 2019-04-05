@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-up" width="17" height="11" tilewidth="64" tileheight="64" infinite="0" nextlayerid="8" nextobjectid="35">
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-up" width="20" height="11" tilewidth="64" tileheight="64" infinite="0" nextlayerid="11" nextobjectid="44">
  <tileset firstgid="1" name="AssetsTiles" tilewidth="64" tileheight="64" tilecount="96" columns="12">
-  <image source="AssetsTiles.png" width="810" height="540"/>
+  <image source="../../../../Escritorio/AssetsTiles.png" width="810" height="540"/>
  </tileset>
- <layer id="2" name="Capa de Patrones 1" width="17" height="11">
+ <layer id="8" name="Capa de Patrones 1" width="20" height="11">
   <data encoding="csv">
-26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,
-26,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,26,
-26,2,2,38,2,2,2,1610612774,1610612786,1610612786,1610612786,1610612786,1610612786,1610612786,1610612798,2,26,
-26,2,2,62,2,2,2,2,2,2,2,2,2,2,2,26,26,
-26,2,2,2,2,2,2,2,2,2,2,38,1610612774,1610612798,2,2,2147483675,
-26,2,2,2,2,38,2,2,2,2,2,62,2,2,2,2,2147483687,
-26,2,2,2,2,50,2,2,2,2,2,2,2,2,2,26,26,
-26,2,1610612774,1610612786,1610612798,62,2,2,1610612774,1610612786,1610612786,1610612786,1610612798,2,2,2,26,
-26,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,26,
-26,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,26,
-26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26
+26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,
+26,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,26,
+26,2,2,38,2,2,2,1610612774,1610612786,1610612786,1610612786,1610612786,1610612786,1610612786,1610612798,2,2,2,2,26,
+26,2,2,62,2,2,2,2,2,2,2,2,2,2,2,2,2,2,26,26,
+26,2,2,2,2,2,2,2,2,2,2,38,1610612774,1610612798,2,2,2,2,2,2684354567,
+26,2,2,2,2,38,2,2,2,2,2,62,2,2,2,2,38,2,2,2684354568,
+26,2,2,2,2,50,2,2,2,2,2,2,2,2,2,2,50,2,26,26,
+26,2,1610612774,1610612786,1610612798,62,2,2,1610612774,1610612786,1610612786,1610612786,1610612798,2,2,2,62,2,2,26,
+26,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,26,
+26,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,26,
+26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26
 </data>
  </layer>
  <objectgroup id="5" name="Piso Resbaloso">
@@ -26,17 +26,18 @@
   <object id="24" x="320" y="320" width="64" height="192"/>
   <object id="25" x="128" y="448" width="192" height="64"/>
   <object id="26" x="512" y="448" width="320" height="64"/>
+  <object id="42" x="1024" y="320" width="64" height="192"/>
  </objectgroup>
- <objectgroup id="6" name="Paredes">
-  <object id="27" x="0" y="0" width="1088" height="64"/>
-  <object id="28" x="1024" y="64" width="64" height="192"/>
-  <object id="29" x="960" y="192" width="64" height="64"/>
-  <object id="30" x="0" y="64" width="64" height="640"/>
-  <object id="31" x="64" y="640" width="1024" height="64"/>
-  <object id="32" x="1024" y="384" width="64" height="256"/>
-  <object id="33" x="960" y="384" width="64" height="64"/>
+ <objectgroup id="10" name="Puerta">
+  <object id="43" x="1216" y="256" width="64" height="128"/>
  </objectgroup>
- <objectgroup id="7" name="Puerta">
-  <object id="34" x="1024" y="256" width="64" height="128"/>
+ <objectgroup id="9" name="Paredes">
+  <object id="35" x="0" y="0" width="1280" height="64"/>
+  <object id="36" x="0" y="64" width="64" height="640"/>
+  <object id="37" x="64" y="640" width="1216" height="64"/>
+  <object id="38" x="1216" y="384" width="64" height="256"/>
+  <object id="39" x="1216" y="64" width="64" height="192"/>
+  <object id="40" x="1152" y="192" width="64" height="64"/>
+  <object id="41" x="1152" y="384" width="64" height="64"/>
  </objectgroup>
 </map>
