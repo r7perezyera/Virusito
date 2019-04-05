@@ -27,7 +27,7 @@ public class Player extends Entity {
     public Player(float x, float y, float health) {
 
         this.health = health;
-        this.speed = 5;
+        this.speed = 7;
         //Load texture
         texture = new Texture("Personajes/Main_Down.png");
 
