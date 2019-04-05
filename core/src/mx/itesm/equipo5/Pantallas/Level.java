@@ -23,6 +23,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import mx.itesm.equipo5.JoyStick;
 import mx.itesm.equipo5.MasterScreen;
+import mx.itesm.equipo5.Objects.Player;
 import mx.itesm.equipo5.Text;
 import mx.itesm.equipo5.Virusito;
 
@@ -49,6 +50,8 @@ class Level extends MasterScreen {
     private Body cuerpo;    // quien recibe / esta dentro de la simulacion
     private Box2DDebugRenderer debug;
 
+    private Player player; //Personaje
+
 
     //Menu escenas, Indp de la camara de mov
     //private Stage escenaMenu; //Contenedor de Botones
@@ -66,6 +69,8 @@ class Level extends MasterScreen {
         loadMap();
         buildHUD();
         createJoysticks();
+
+        player = new Player(300,300,20);
 
         Gdx.input.setCatchBackKey(false);
     }
@@ -143,12 +148,18 @@ class Level extends MasterScreen {
     public void render(float delta) {
         eraseScreen();
 
+        batch.setProjectionMatrix(camera.combined);
         // render the game map
         mapRenderer.setView(camera);
         mapRenderer.render();
 
+        batch.begin();
+        player.render(batch);
+        batch.end();
+
         //escenaMenu.draw();
         HUDstage.draw();
+
 
 
     }

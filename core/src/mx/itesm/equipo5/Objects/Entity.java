@@ -14,6 +14,7 @@ public abstract class Entity {
     //AQUI FALTA UN protected Pantalla pantalla, tenemos que definir la superclase primero
     protected boolean destroyed = false; //When true, delete entity
     protected float health; //When health<0, destroyed = True
+    protected Texture texture;
 
     public Entity(){
         //The constructor varies depending on the type of entity

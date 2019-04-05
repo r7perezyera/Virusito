@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import java.util.LinkedList;
 import java.util.List;
 
+import mx.itesm.equipo5.Text;
+
 public class Player extends Entity {
 
     private List<Sprite> sprites = new LinkedList<Sprite>();
@@ -27,7 +29,11 @@ public class Player extends Entity {
         this.health = health;
 
         //Load texture
-        Texture texture = new Texture("Personajes/Main_Down.png");
+        texture = new Texture("Personajes/Main_Down.png");
+
+        animation = new Animation(0.15f,texture);
+        animation.setPlayMode(Animation.PlayMode.LOOP);
+        animationTimer = 0;
 
         //Sprites
         sprite = new Sprite(texture);
@@ -35,8 +41,6 @@ public class Player extends Entity {
     }
 
     public void render(SpriteBatch batch) {
-        animationTimer += Gdx.graphics.getDeltaTime();
-        TextureRegion region = (TextureRegion) animation.getKeyFrame(animationTimer);
-        batch.draw(region, sprite.getX(), sprite.getY());
+        batch.draw(texture, sprite.getX(), sprite.getY());
     }
 }
