@@ -15,6 +15,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -29,6 +30,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import mx.itesm.equipo5.JoyStick;
@@ -36,9 +38,13 @@ import mx.itesm.equipo5.MasterScreen;
 import mx.itesm.equipo5.Objects.Enemy;
 import mx.itesm.equipo5.Objects.FriendlyBullet;
 import mx.itesm.equipo5.Objects.Player;
+<<<<<<< HEAD
 import mx.itesm.equipo5.Objects.difficulty;
 import mx.itesm.equipo5.Objects.enemyType;
 import mx.itesm.equipo5.Objects.movementPattern;
+=======
+import mx.itesm.equipo5.Objects.ShootingEnemy;
+>>>>>>> f780a7d5a6b13b5fd4524e393f7716c1ad717a08
 import mx.itesm.equipo5.Text;
 import mx.itesm.equipo5.Virusito;
 
@@ -46,12 +52,17 @@ class Level extends MasterScreen {
 
 
     //Esto es para probar colisiones
-    public Array<Rectangle> walls;
+    private Array<Rectangle> walls;
+    private Array<Rectangle> tvs;
     private ShapeRenderer sr;
 
     private LinkedList<FriendlyBullet> bullets = new LinkedList<FriendlyBullet>();
     private LinkedList<Enemy> enemies = new LinkedList<Enemy>();
     private float timeSinceShot;
+
+    private LinkedList<ShootingEnemy> shootingEnemies = new LinkedList<ShootingEnemy>();
+    private float enemyShotCooldown;
+
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
@@ -75,6 +86,9 @@ class Level extends MasterScreen {
     private Box2DDebugRenderer debug;
 
     private Player player; //Personaje
+    private Array<Rectangle> doors;
+
+    private ShootingEnemy enemy1;
 
 
     public Level(Virusito juego) {
@@ -89,9 +103,17 @@ class Level extends MasterScreen {
         buildHUD();
         createJoysticks();
         getWalls();
+<<<<<<< HEAD
         spawn();
+=======
+        getTVs();
+        getDoors();
+>>>>>>> f780a7d5a6b13b5fd4524e393f7716c1ad717a08
 
         player = new Player(300,300,20);
+
+        enemy1 = new ShootingEnemy(500,500,10);
+        shootingEnemies.add(enemy1);
 
         Gdx.input.setCatchBackKey(false);
     }
@@ -159,10 +181,20 @@ class Level extends MasterScreen {
     @Override
     public void render(float delta) {
 
+<<<<<<< HEAD
 
         timeSinceShot += delta;
         shoot();
         updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY());
+=======
+    timeSinceShot += delta;
+    enemyShotCooldown += delta;
+    shoot();
+
+
+    updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY());
+
+>>>>>>> f780a7d5a6b13b5fd4524e393f7716c1ad717a08
 
         batch.setProjectionMatrix(camera.combined);
         // render the game map
@@ -170,6 +202,7 @@ class Level extends MasterScreen {
         mapRenderer.render();
 
         batch.begin();
+        enemy1.render(batch);
         player.render(batch);
         if (!bullets.isEmpty()){
             for (FriendlyBullet bullet: bullets){
@@ -187,9 +220,9 @@ class Level extends MasterScreen {
         HUDstage.draw();
 
 
-
     }
 
+<<<<<<< HEAD
     private void spawn() {
         Enemy enemy = new Enemy(enemyType.RAMMER, movementPattern.FOLLOWER, difficulty.EASY, 400, 400);
         enemies.add(enemy);
@@ -197,6 +230,28 @@ class Level extends MasterScreen {
         enemies.add(enemy);
     }
 
+=======
+    /*
+    //TODO arreglar angulo
+    private void updateEnemies() {
+        float playerX = player.getX();
+        float playerY = player.getY();
+        float enemyX, enemyY;
+        for(ShootingEnemy shootingEnemy : shootingEnemies){
+            enemyX = shootingEnemy.getX();
+            enemyY = shootingEnemy.getY();
+            float angle =(float) (MathUtils.atan2(enemyY-playerY,enemyX-playerX)*180.0)/ MathUtils.PI;
+
+
+            if(enemyShotCooldown>=2){
+                FriendlyBullet bullet = new FriendlyBullet(shootingEnemy.getX()+shootingEnemy.getWidth()/2, shootingEnemy.getY()+shootingEnemy.getHeight()/2, angle);
+                bullets.add(bullet);
+                enemyShotCooldown=0;
+            }
+        }
+    }
+*/
+>>>>>>> f780a7d5a6b13b5fd4524e393f7716c1ad717a08
     private void shoot() {
         float changeX = shootingStick.getKnobPercentX();
         float changeY = shootingStick.getKnobPercentY();
@@ -207,19 +262,19 @@ class Level extends MasterScreen {
         System.out.println(angle);
         if(timeSinceShot>=1f) {
             if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
-                FriendlyBullet bullet = new FriendlyBullet(player.getX(), player.getY(), 0);
+                FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, 0);
                 bullets.add(bullet);
                 timeSinceShot = 0;
             } else if (46 <= angle && angle <= 136) {
-                FriendlyBullet bullet = new FriendlyBullet(player.getX(), player.getY(), (float) Math.PI / 2);
+                FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) Math.PI / 2);
                 bullets.add(bullet);
                 timeSinceShot=0;
             } else if (136 <= angle && angle <= 225) {
-                FriendlyBullet bullet = new FriendlyBullet(player.getX(), player.getY(), (float) Math.PI);
+                FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) Math.PI);
                 bullets.add(bullet);
                 timeSinceShot=0;
             } else if (226 <= angle && angle <= 315) {
-                FriendlyBullet bullet = new FriendlyBullet(player.getX(), player.getY(), (float) (3 * Math.PI) / 2);
+                FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) (3 * Math.PI) / 2);
                 bullets.add(bullet);
                 timeSinceShot=0;
             }
@@ -229,12 +284,31 @@ class Level extends MasterScreen {
     }
 
     private void getWalls(){
-        sr = new ShapeRenderer();
         walls = new Array<Rectangle>();
         for(MapObject object : map.getLayers().get("Paredes").getObjects()){
             if(object instanceof RectangleMapObject){
                 Rectangle rect = ((RectangleMapObject) object).getRectangle();
                 walls.add(rect);
+            }
+        }
+    }
+
+    private void getTVs(){
+        tvs = new Array<Rectangle>();
+        for(MapObject object : map.getLayers().get("Teles").getObjects()){
+            if(object instanceof RectangleMapObject){
+                Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                tvs.add(rect);
+            }
+        }
+    }
+
+    private void getDoors(){
+        doors = new Array<Rectangle>();
+        for(MapObject object : map.getLayers().get("Teles").getObjects()){
+            if(object instanceof RectangleMapObject){
+                Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                doors.add(rect);
             }
         }
     }
@@ -249,10 +323,18 @@ class Level extends MasterScreen {
         checkRectangle.setPosition(newPosX, newPosY);
 
 
-        boolean collides = collidesWith(walls, checkRectangle);
+        boolean collides = collidesWith(walls, checkRectangle) || collidesWith(tvs,checkRectangle);
         if (!collides) {
             player.moveX(dx);
             player.moveY(dy);
+        }
+    }
+
+    private void updateBullet(){
+        for(FriendlyBullet bullet : bullets){
+            if(collidesWith(walls,bullet.getRectangle())||collidesWith(walls,bullet.getRectangle())){
+                //TODO eliminar bullet
+            };
         }
     }
 
