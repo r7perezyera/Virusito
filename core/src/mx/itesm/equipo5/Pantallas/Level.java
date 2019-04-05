@@ -21,12 +21,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.LinkedList;
+
 import mx.itesm.equipo5.JoyStick;
 import mx.itesm.equipo5.MasterScreen;
+import mx.itesm.equipo5.Objects.FriendlyBullet;
+import mx.itesm.equipo5.Objects.Player;
 import mx.itesm.equipo5.Text;
 import mx.itesm.equipo5.Virusito;
 
 class Level extends MasterScreen {
+
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
@@ -49,6 +54,8 @@ class Level extends MasterScreen {
     private Body cuerpo;    // quien recibe / esta dentro de la simulacion
     private Box2DDebugRenderer debug;
 
+    private Player player; //Personaje
+
 
     //Menu escenas, Indp de la camara de mov
     //private Stage escenaMenu; //Contenedor de Botones
@@ -66,6 +73,8 @@ class Level extends MasterScreen {
         loadMap();
         buildHUD();
         createJoysticks();
+
+        player = new Player(300,300,20);
 
         Gdx.input.setCatchBackKey(false);
     }
@@ -140,17 +149,46 @@ class Level extends MasterScreen {
 
     @Override
     public void render(float delta) {
+
+
+        shoot();
+
+        updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY());
+
+
         eraseScreen();
 
+        batch.setProjectionMatrix(camera.combined);
         // render the game map
         mapRenderer.setView(camera);
         mapRenderer.render();
+
+        batch.begin();
+        player.render(batch);
+        batch.end();
 
         //escenaMenu.draw();
         HUDstage.draw();
 
 
+
     }
+
+    private void shoot() {
+        float changeX = shootingStick.getKnobPercentX();
+        float changeY = shootingStick.getKnobPercentY();
+        //Checks angle of shot
+        Vector2 vector = new Vector2(changeX,changeY);
+        float angle = vector.angle();
+
+
+    }
+
+    private void updateCharacter(float dx, float dy) {
+        player.moveX(dx);
+        player.moveY(dy);
+    }
+
 
     @Override
     public void resize(int width, int height) {

@@ -14,6 +14,7 @@ public abstract class Entity {
     //AQUI FALTA UN protected Pantalla pantalla, tenemos que definir la superclase primero
     protected boolean destroyed = false; //When true, delete entity
     protected float health; //When health<0, destroyed = True
+    protected Texture texture;
 
     public Entity(){
         //The constructor varies depending on the type of entity
@@ -21,11 +22,11 @@ public abstract class Entity {
 
 
     public float getX() {
-        return x;
+        return sprite.getX();
     }
 
     public float getY() {
-        return y;
+        return sprite.getY();
     }
 
     public float getHeight() {
@@ -57,11 +58,13 @@ public abstract class Entity {
     }
 
     public void moveX(float dx){
-        sprite.setX(sprite.getX()+dx);
+        float newPos = sprite.getX()+(dx*speed);
+        sprite.setX(newPos);
     }
 
     public void moveY(float dy){
-        sprite.setY(sprite.getY()+dy);
+        float newPos = sprite.getY()+(dy*speed);
+        sprite.setY(newPos);
     }
 
     public void doDamage(float damage){
