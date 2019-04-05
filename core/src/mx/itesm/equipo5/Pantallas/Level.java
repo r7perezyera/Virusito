@@ -80,7 +80,6 @@ class Level extends MasterScreen {
         manager.finishLoading();
         map = manager.get("Mapa1/1-1.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(map);
-        System.out.println("cargo el mapa");
     }
 
     private void buildHUD() {
