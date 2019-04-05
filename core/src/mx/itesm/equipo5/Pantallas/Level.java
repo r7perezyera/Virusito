@@ -6,9 +6,16 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.MapRenderer;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -18,6 +25,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -31,6 +39,11 @@ import mx.itesm.equipo5.Text;
 import mx.itesm.equipo5.Virusito;
 
 class Level extends MasterScreen {
+
+
+    //Esto es para probar colisiones
+    public Array<Rectangle> walls;
+    private ShapeRenderer sr;
 
     private LinkedList<FriendlyBullet> bullets = new LinkedList<FriendlyBullet>();
     private float timeSinceShot;
@@ -70,6 +83,7 @@ class Level extends MasterScreen {
         loadMap();
         buildHUD();
         createJoysticks();
+        getWalls();
 
         player = new Player(300,300,20);
 
@@ -86,6 +100,7 @@ class Level extends MasterScreen {
         manager.finishLoading();
         map = manager.get("Mapa1/1-1.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(map);
+
     }
 
     private void buildHUD() {
@@ -204,9 +219,39 @@ class Level extends MasterScreen {
 
     }
 
+    private void getWalls(){
+        sr = new ShapeRenderer();
+        walls = new Array<Rectangle>();
+        for(MapObject object : map.getLayers().get("Paredes").getObjects()){
+            if(object instanceof RectangleMapObject){
+                Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                walls.add(rect);
+            }
+        }
+    }
+
     private void updateCharacter(float dx, float dy) {
-        player.moveX(dx);
-        player.moveY(dy);
+        Rectangle checkRectangle;
+        checkRectangle = new Rectangle();
+        checkRectangle.set(player.getRectangle());
+
+        float newPosY = player.getSprite().getY() + (dy * player.getSpeed());
+        float newPosX = player.getSprite().getX() + (dx * player.getSpeed());
+        checkRectangle.setPosition(newPosX, newPosY);
+
+
+        boolean collides = collidesWith(walls, checkRectangle);
+        if (!collides) {
+            player.moveX(dx);
+            player.moveY(dy);
+        }
+    }
+
+    public boolean collidesWith(Array<Rectangle> rectangles,Rectangle checkRectangle){
+        for(Rectangle rectangle : rectangles){
+            if(checkRectangle.overlaps(rectangle)) return true;
+        }
+        return false;
     }
 
 

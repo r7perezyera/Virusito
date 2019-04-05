@@ -38,9 +38,12 @@ public class Player extends Entity {
         //Sprites
         sprite = new Sprite(texture);
         sprite.setPosition(x,y);
+
+        rectangle.set(x,y,texture.getWidth(),texture.getHeight());
     }
 
     public void render(SpriteBatch batch) {
         batch.draw(texture, sprite.getX(), sprite.getY());
     }
+
 }

@@ -3,6 +3,7 @@ package mx.itesm.equipo5.Objects;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 
 public abstract class Entity {
 
@@ -15,6 +16,7 @@ public abstract class Entity {
     protected boolean destroyed = false; //When true, delete entity
     protected float health; //When health<0, destroyed = True
     protected Texture texture;
+    protected Rectangle rectangle = new Rectangle();
 
     public Entity(){
         //The constructor varies depending on the type of entity
@@ -60,12 +62,16 @@ public abstract class Entity {
     public void moveX(float dx){
         float newPos = sprite.getX()+(dx*speed);
         sprite.setX(newPos);
+        rectangle.setPosition(newPos,sprite.getY());
     }
 
     public void moveY(float dy){
         float newPos = sprite.getY()+(dy*speed);
         sprite.setY(newPos);
+        rectangle.setPosition(sprite.getX(),newPos);
+
     }
+
 
     public void doDamage(float damage){
         health -= damage;
@@ -75,6 +81,10 @@ public abstract class Entity {
         destroyed = true;
     }
 
+    public float getSpeed(){
+        return speed;
+    }
+
     public void check(){
         //All of the conditions that would destroy the entity
     }
@@ -82,4 +92,6 @@ public abstract class Entity {
     public boolean collides(){ //TODO, revisa colisión con paredes
         return true;
     }
+
+    public Rectangle getRectangle() {return rectangle;}
 }
