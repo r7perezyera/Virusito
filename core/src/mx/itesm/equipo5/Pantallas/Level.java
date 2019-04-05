@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -62,6 +63,8 @@ class Level extends MasterScreen {
     private Stage HUDstage;
 
     private Text text;
+    private Texture life;
+
 
 
     private Touchpad shootingStick;
@@ -98,7 +101,7 @@ class Level extends MasterScreen {
         getEnemies();
 
 
-        player = new Player(300,300,20);
+        player = new Player(300,300,3);
 
         Gdx.input.setCatchBackKey(false);
     }
@@ -181,8 +184,19 @@ class Level extends MasterScreen {
         mapRenderer.setView(camera);
         mapRenderer.render();
 
+        if (player.getHealth()==3){
+            life = new Texture("HUD/Bateria/Bateria_Llena.png");
+        }else if (player.getHealth()==2){
+            life = new Texture("HUD/Bateria/Bateria_Agotando.png");
+        }else if (player.getHealth()==1){
+            life = new Texture("HUD/Bateria/Bateria_Ultima.png");
+        }else {
+            game.setScreen(new LoseScreen(game));
+        }
+
         batch.begin();
         player.render(batch);
+        batch.draw(life, WIDTH/2,650);
         if (!bullets.isEmpty()){
             for (FriendlyBullet bullet: bullets){
                 bullet.render(batch);
@@ -196,6 +210,7 @@ class Level extends MasterScreen {
                 minion.move(player.getX(), player.getY());
             }
         }
+
         batch.end();
         HUDstage.draw();
 
@@ -262,7 +277,7 @@ class Level extends MasterScreen {
 
     private void getDoors(){
         doors = new Array<Rectangle>();
-        for(MapObject object : map.getLayers().get("Teles").getObjects()){
+        for(MapObject object : map.getLayers().get("Puertas").getObjects()){
             if(object instanceof RectangleMapObject){
                 Rectangle rect = ((RectangleMapObject) object).getRectangle();
                 doors.add(rect);
@@ -296,6 +311,9 @@ class Level extends MasterScreen {
         }
         if (collidesWith(enemyRect, checkRectangle)) {
             player.setHealth(player.getHealth()-1);
+        }
+        if (collidesWith(doors,checkRectangle)){
+            game.setScreen(new WinScreen(game));
         }
     }
 

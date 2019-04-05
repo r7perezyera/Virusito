@@ -86,6 +86,8 @@ public abstract class Entity {
 
     public void destroy(){
         destroyed = true;
+        rectangle.setPosition(2000,2000);
+        speed=0;
     }
 
     public float getSpeed(){

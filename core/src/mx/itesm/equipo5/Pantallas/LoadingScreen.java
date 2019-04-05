@@ -12,8 +12,8 @@ public class LoadingScreen extends MasterScreen {
     //Tiempo
     private float timeCounter;
 
-    public LoadingScreen(Virusito juego) {
-        super(juego);
+    public LoadingScreen(Virusito game) {
+        super(game);
     }
 
     @Override
