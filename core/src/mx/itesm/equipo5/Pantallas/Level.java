@@ -32,8 +32,6 @@ import mx.itesm.equipo5.Virusito;
 
 class Level extends MasterScreen {
 
-    private LinkedList<FriendlyBullet> friendlyBullets = new LinkedList<FriendlyBullet>();
-    private FriendlyBullet bullet;
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;

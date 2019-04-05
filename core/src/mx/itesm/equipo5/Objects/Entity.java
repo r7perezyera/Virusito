@@ -58,11 +58,13 @@ public abstract class Entity {
     }
 
     public void moveX(float dx){
-        sprite.setX(sprite.getX()+(dx*speed));
+        float newPos = sprite.getX()+(dx*speed);
+        sprite.setX(newPos);
     }
 
     public void moveY(float dy){
-        sprite.setY(sprite.getY()+(dy*speed));
+        float newPos = sprite.getY()+(dy*speed);
+        sprite.setY(newPos);
     }
 
     public void doDamage(float damage){
