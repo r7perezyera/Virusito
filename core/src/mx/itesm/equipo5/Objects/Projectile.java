@@ -20,22 +20,22 @@ public abstract class Projectile {
     }
 
     public void update(){
-            moveX(speed);
-            moveY(speed);
+            launchX();
+            launchY();
     }
 
     public void render(SpriteBatch batch) {
-        batch.draw(texture, x, y);
+        batch.draw(texture, sprite.getX(), sprite.getY(),10,10);
     }
 
-    public void moveX(float dx){  //DX is with vector2 and .angle
+    public void launchX(){  //DX is with vector2 and .angle
         float factor = (float) Math.cos(direction);
-        sprite.setX(sprite.getX()+(dx*factor));
+        sprite.setX(sprite.getX()+speed*factor);
     }
 
-    public void moveY(float dy){
+    public void launchY(){
         float factor = (float) Math.sin(direction);
-        sprite.setY(sprite.getY()+(dy*factor));
+        sprite.setY(sprite.getY()+speed*factor);
     }
 
     public void destroy(){
