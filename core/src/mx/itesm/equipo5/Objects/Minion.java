@@ -5,13 +5,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
-public class minion extends Entity {
+public class Minion extends Entity {
 
     private enemyType attack;
     private movementPattern move;
     private difficulty diff;
 
-    public minion(enemyType attack, movementPattern move, difficulty diffc, float x, float y){
+    public Minion(enemyType attack, movementPattern move, difficulty diffc, float x, float y){
         this.attack = attack;
         this.move = move;
         this.diff = diffc;
