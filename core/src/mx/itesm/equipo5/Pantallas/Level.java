@@ -28,7 +28,7 @@ import java.util.LinkedList;
 
 import mx.itesm.equipo5.JoyStick;
 import mx.itesm.equipo5.MasterScreen;
-import mx.itesm.equipo5.Objects.minion;
+import mx.itesm.equipo5.Objects.Minion;
 import mx.itesm.equipo5.Objects.FriendlyBullet;
 import mx.itesm.equipo5.Objects.Player;
 import mx.itesm.equipo5.Objects.difficulty;
@@ -48,7 +48,7 @@ class Level extends MasterScreen {
     private float timeSinceDamage;
 
     private LinkedList<FriendlyBullet> bullets = new LinkedList<FriendlyBullet>();
-    private LinkedList<minion> enemies = new LinkedList<minion>();
+    private LinkedList<Minion> enemies = new LinkedList<Minion>();
     private float timeSinceShot;
     private float timeSinceAttack;
 
@@ -117,12 +117,9 @@ class Level extends MasterScreen {
         manager.finishLoading();
         map = manager.get("Mapa1/1-1.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(map);
-
     }
 
     private void buildHUD() {
-
-
         HUDcamera = new OrthographicCamera(WIDTH, HEIGHT);
         HUDcamera.position.set(WIDTH/2, HEIGHT/2, 0);
         HUDcamera.update();
@@ -130,20 +127,11 @@ class Level extends MasterScreen {
 
         HUDstage = new Stage(HUDview);
 
-
         // ahora la escena es quien atiende los eventos
         Gdx.input.setInputProcessor(HUDstage);
-
-
-        // TODO en caso de tener un pad, agregarlo como actor a HUDstage justo aqui
-
-
     }
 
     private void createJoysticks() {
-
-
-
         Box2D.init();
         mundo = new World(new Vector2(0f,-9.81f), true);
         BodyDef def = new BodyDef();
@@ -156,13 +144,9 @@ class Level extends MasterScreen {
         shootingStick = new JoyStick("HUD/Pad/padBack.png", "HUD/Pad/padKnob.png", cuerpo).getPad();
         shootingStick.setPosition(WIDTH-256,16);
 
-
         // Agregar la escena, finalmente
         HUDstage.addActor(shootingStick);
         HUDstage.addActor(movingStick);
-
-
-
     }
 
 
@@ -178,7 +162,7 @@ class Level extends MasterScreen {
 
 
 
-    updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY());
+        updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY());
 
 
         batch.setProjectionMatrix(camera.combined);
@@ -198,7 +182,7 @@ class Level extends MasterScreen {
 
         batch.begin();
         player.render(batch);
-        batch.draw(life, WIDTH/2,650);
+        batch.draw(life, WIDTH/2-(life.getWidth()/2f),650);
         if (!bullets.isEmpty()){
             for (FriendlyBullet bullet: bullets){
                 bullet.render(batch);
@@ -207,7 +191,7 @@ class Level extends MasterScreen {
             }
         }
         if (!enemies.isEmpty()){
-            for (minion minion : enemies){
+            for (Minion minion : enemies){
                 minion.render(batch);
                 minion.move(player.getX(), player.getY());
             }
@@ -215,18 +199,14 @@ class Level extends MasterScreen {
 
         batch.end();
         HUDstage.draw();
-
-
     }
 
     private void spawn() {
-        minion minion = new minion(enemyType.RAMMER, movementPattern.FOLLOWER, difficulty.EASY, 800, 400);
+        Minion minion = new Minion(enemyType.RAMMER, movementPattern.FOLLOWER, difficulty.EASY, 800, 400);
         enemies.add(minion);
-        minion = new minion(enemyType.RAMMER, movementPattern.FOLLOWER, difficulty.EASY, 800, 300);
+        minion = new Minion(enemyType.RAMMER, movementPattern.FOLLOWER, difficulty.EASY, 800, 300);
         enemies.add(minion);
     }
-
-
 
     private void shoot() {
         float changeX = shootingStick.getKnobPercentX();
@@ -253,8 +233,6 @@ class Level extends MasterScreen {
                 timeSinceShot=0.0f;
             }
         }
-
-
     }
 
     private void getWalls(){
@@ -289,11 +267,11 @@ class Level extends MasterScreen {
 
     private void getEnemies(){
         enemyRect = new Array<Rectangle>();
-        for(minion enemy :enemies){
+        for(Minion enemy :enemies){
                 Rectangle rect = enemy.getRectangle();
                 enemyRect.add(rect);
             }
-        }
+    }
 
 
     private void updateCharacter(float dx, float dy) {
@@ -319,6 +297,7 @@ class Level extends MasterScreen {
         }
         if (collidesWith(doors,checkRectangle)){
             game.setScreen(new WinScreen(game));
+            // TODO set Virusito's coordinates, load new map
         }
     }
 
@@ -334,7 +313,7 @@ class Level extends MasterScreen {
             if(collidesWith(walls,checkRectangle)||collidesWith(doors,checkRectangle)) {
                 bullet.destroy();
             }
-            for (minion enemy:enemies ){
+            for (Minion enemy:enemies ){
                     if (checkRectangle.overlaps(enemy.getRectangle())){
                         bullet.destroy();
                         enemy.destroy();
