@@ -178,7 +178,7 @@ class Level extends MasterScreen {
 
 
 
-    updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY());
+    updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY());  // TODO is this misindented?
 
 
         batch.setProjectionMatrix(camera.combined);
