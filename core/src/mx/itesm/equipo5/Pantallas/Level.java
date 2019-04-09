@@ -198,7 +198,7 @@ class Level extends MasterScreen {
 
         batch.begin();
         player.render(batch);
-        batch.draw(life, WIDTH/2,650);
+        batch.draw(life, WIDTH/2-(life.getWidth()/2f),650);
         if (!bullets.isEmpty()){
             for (FriendlyBullet bullet: bullets){
                 bullet.render(batch);
@@ -224,6 +224,12 @@ class Level extends MasterScreen {
         enemies.add(minion);
         minion = new minion(enemyType.RAMMER, movementPattern.FOLLOWER, difficulty.EASY, 800, 300);
         enemies.add(minion);
+        /*
+        minion minion = new minion(enemyType.RAMMER, movementPattern.FOLLOWER, difficulty.EASY, 800, 400);
+        enemies.add(minion);
+        minion minion2 = new minion(enemyType.RAMMER, movementPattern.FOLLOWER, difficulty.EASY, 800, 300);
+        enemies.add(minion2);
+         */
     }
 
 
