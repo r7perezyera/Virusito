@@ -222,8 +222,8 @@ class Level extends MasterScreen {
     private void spawn() {
         minion minion = new minion(enemyType.RAMMER, movementPattern.FOLLOWER, difficulty.EASY, 800, 400);
         enemies.add(minion);
-        minion = new minion(enemyType.RAMMER, movementPattern.FOLLOWER, difficulty.EASY, 800, 300);
-        enemies.add(minion);
+        minion minion2 = new minion(enemyType.RAMMER, movementPattern.FOLLOWER, difficulty.EASY, 800, 300);
+        enemies.add(minion2);
     }
 
 
