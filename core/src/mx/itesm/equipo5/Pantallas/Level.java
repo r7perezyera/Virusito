@@ -153,6 +153,7 @@ class Level extends MasterScreen {
 
     @Override
     public void render(float delta) {
+        eraseScreen();
 
         timeSinceShot += delta;
         timeSinceAttack+=delta;
@@ -198,6 +199,7 @@ class Level extends MasterScreen {
         }
 
         batch.end();
+        batch.setProjectionMatrix(HUDcamera.combined);
         HUDstage.draw();
     }
 
@@ -330,10 +332,6 @@ class Level extends MasterScreen {
     }
 
 
-    @Override
-    public void resize(int width, int height) {
-
-    }
 
     @Override
     public void pause() {
