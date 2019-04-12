@@ -198,6 +198,7 @@ class Level extends MasterScreen {
         }
 
         batch.end();
+        batch.setProjectionMatrix(HUDcamera.combined);
         HUDstage.draw();
     }
 
