@@ -28,7 +28,7 @@ public class JoyStick {
 
         // Crea el pad
         pad = new Touchpad(5, style);    // puedo mover x pixeles la palanquita y no responde, es hasta despues
-        pad.setBounds(16, 16, 256, 256);
+        pad.setBounds(16, 16, 240, 240);
 
         // Listener del pad
         pad.addListener(new ChangeListener() {
