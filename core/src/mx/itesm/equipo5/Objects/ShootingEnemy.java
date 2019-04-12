@@ -12,7 +12,7 @@ import java.util.List;
 
 import mx.itesm.equipo5.Text;
 
-public class Player extends Entity {
+public class ShootingEnemy extends Entity {
 
     private List<Sprite> sprites = new LinkedList<Sprite>();
 
@@ -24,12 +24,12 @@ public class Player extends Entity {
     private Animation animation;
     private float animationTimer;
 
-    public Player(float x, float y, float health) {
+    public ShootingEnemy(float x, float y, float health) {
 
         this.health = health;
         this.speed = 7;
         //Load texture
-        texture = new Texture("Personajes/Main_Down.png");
+        texture = new Texture("Personajes/Enemigo_1.png");
 
         animation = new Animation(0.15f,texture);
         animation.setPlayMode(Animation.PlayMode.LOOP);
@@ -45,5 +45,7 @@ public class Player extends Entity {
     public void render(SpriteBatch batch) {
         batch.draw(texture, sprite.getX(), sprite.getY());
     }
+
+
 
 }

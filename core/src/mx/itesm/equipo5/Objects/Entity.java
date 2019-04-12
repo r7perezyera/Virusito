@@ -3,6 +3,7 @@ package mx.itesm.equipo5.Objects;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 
 public abstract class Entity {
 
@@ -14,18 +15,27 @@ public abstract class Entity {
     //AQUI FALTA UN protected Pantalla pantalla, tenemos que definir la superclase primero
     protected boolean destroyed = false; //When true, delete entity
     protected float health; //When health<0, destroyed = True
+    protected Texture texture;
+    protected Rectangle rectangle = new Rectangle();
 
     public Entity(){
         //The constructor varies depending on the type of entity
     }
 
+    public float getHealth() {
+        return health;
+    }
+
+    public void setHealth(float health) {
+        this.health = health;
+    }
 
     public float getX() {
-        return x;
+        return sprite.getX();
     }
 
     public float getY() {
-        return y;
+        return sprite.getY();
     }
 
     public float getHeight() {
@@ -57,12 +67,18 @@ public abstract class Entity {
     }
 
     public void moveX(float dx){
-        sprite.setX(sprite.getX()+dx);
+        float newPos = sprite.getX()+(dx*speed);
+        sprite.setX(newPos);
+        rectangle.setPosition(newPos,sprite.getY());
     }
 
     public void moveY(float dy){
-        sprite.setY(sprite.getY()+dy);
+        float newPos = sprite.getY()+(dy*speed);
+        sprite.setY(newPos);
+        rectangle.setPosition(sprite.getX(),newPos);
+
     }
+
 
     public void doDamage(float damage){
         health -= damage;
@@ -70,9 +86,21 @@ public abstract class Entity {
 
     public void destroy(){
         destroyed = true;
+        rectangle.setPosition(2000,2000);
+        speed=0;
+    }
+
+    public float getSpeed(){
+        return speed;
     }
 
     public void check(){
         //All of the conditions that would destroy the entity
     }
+
+    public boolean collides(){ //TODO, revisa colisión con paredes
+        return true;
+    }
+
+    public Rectangle getRectangle() {return rectangle;}
 }
