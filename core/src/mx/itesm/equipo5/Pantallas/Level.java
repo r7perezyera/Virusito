@@ -153,7 +153,7 @@ class Level extends MasterScreen {
 
     @Override
     public void render(float delta) {
-
+        eraseScreen();
         timeSinceShot += delta;
         timeSinceAttack+=delta;
         timeSinceDamage+=delta;
