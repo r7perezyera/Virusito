@@ -26,7 +26,7 @@ public abstract class MasterScreen implements Screen
     // Todas las pantallas tienen una cámara y una view
     protected OrthographicCamera camera;
     protected Viewport view;        // TODO could be renamed to viewport, review w/ team
-    // Todas las pantallas dibujan algo :)
+    // Todas las pantallas dibujan algo
     protected SpriteBatch batch;
 
     public MasterScreen(Virusito game) {
