@@ -14,6 +14,7 @@ public class Virusito extends Game {
     i.e. for all the resources that require the asset manager
      */
     private AssetManager audioManager;  // should be final as well
+    private boolean canPlayMusic = true;
 
     public Virusito() {
         audioManager = new AssetManager();
@@ -31,6 +32,14 @@ public class Virusito extends Game {
     // Para que las otras pantallas usen el audioManager
     public AssetManager getAudioManager() {
         return audioManager;
+    }
+
+    public boolean getCanPlayMusic() {
+        return canPlayMusic;
+    }
+
+    public void setCanPlayMusic(boolean canPlayMusic) {
+        this.canPlayMusic = canPlayMusic;
     }
 
     @Override

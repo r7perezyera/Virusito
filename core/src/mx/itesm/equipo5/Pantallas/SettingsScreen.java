@@ -62,6 +62,7 @@ class SettingsScreen extends MasterScreen {
             }
         });
 
+        // turn music on
         musicOnButton = new Button("Botones/On_Bttn.png", "Botones/Off_Bttn.png").getiButton();
         musicOnButton.setPosition(MasterScreen.WIDTH/2, (MasterScreen.HEIGHT/2)+50);
         settingsStage.addActor(musicOnButton);
@@ -70,11 +71,13 @@ class SettingsScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
+                // Virusito.setCanPlayMusic(true);
                 settingsStage.addActor(musicOffButton);
                 musicOnButton.remove();
             }
         });
 
+        // turn music off
         musicOffButton = new Button("Botones/Off_Bttn.png", "Botones/On_Bttn.png").getiButton();
         musicOffButton.setPosition(MasterScreen.WIDTH/2, (MasterScreen.HEIGHT/2)+50);
         //settingsStage.addActor(musicOffButton);
