@@ -13,10 +13,10 @@ public class Virusito extends Game {
     we could eventually turn it into THE only manager for the whole game,
     i.e. for all the resources that require the asset manager
      */
-    //private final AssetManager audioManager;
+    private AssetManager audioManager;  // should be final as well
 
     public Virusito() {
-        //audioManager = new AssetManager();
+        audioManager = new AssetManager();
     }
 
     @Override
@@ -29,14 +29,14 @@ public class Virusito extends Game {
     }
 
     // Para que las otras pantallas usen el audioManager
-    /*public AssetManager getAudioManager() {
+    public AssetManager getAudioManager() {
         return audioManager;
-    }*/
+    }
 
     @Override
     public void dispose() {
         super.dispose();
-        //audioManager.clear();
+        audioManager.clear();
     }
 
 }
