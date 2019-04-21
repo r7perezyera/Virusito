@@ -2,6 +2,7 @@ package mx.itesm.equipo5;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 
 import mx.itesm.equipo5.Pantallas.LoadingScreen;
 
@@ -15,6 +16,8 @@ public class Virusito extends Game {
      */
     private final AssetManager audioManager;  // should be final as well
     private boolean canPlayMusic;
+
+    private Music music;
 
     public Virusito() {
         audioManager = new AssetManager();
