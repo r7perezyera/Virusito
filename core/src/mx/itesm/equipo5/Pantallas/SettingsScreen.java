@@ -1,6 +1,7 @@
 package mx.itesm.equipo5.Pantallas;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -32,9 +33,12 @@ class SettingsScreen extends MasterScreen {
     Texture musicLabelTexture = new Texture("Botones/Music.png");
     Texture SFXLabelTexture = new Texture("Botones/Vfx.png");
 
+    //private final AssetManager audioManager;
+
 
     public SettingsScreen(Virusito juego) {
         super(juego);
+        //audioManager = Virusito.getAudioManager();
     }
 
     @Override
@@ -71,7 +75,7 @@ class SettingsScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                // Virusito.setCanPlayMusic(true);
+                // audioManager.setCanPlayMusic(true);
                 settingsStage.addActor(musicOffButton);
                 musicOnButton.remove();
             }
