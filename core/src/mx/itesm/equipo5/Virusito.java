@@ -38,7 +38,7 @@ public class Virusito extends Game {
         return audioManager;
     }
 
-    public boolean getCanPlayMusic() {
+    public boolean getCanPlayMusic() {  // isCanPlayMusic   // isMusicEnabled
         return canPlayMusic;
     }
 
