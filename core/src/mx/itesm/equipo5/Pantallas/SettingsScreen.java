@@ -66,7 +66,7 @@ class SettingsScreen extends MasterScreen {
             }
         });
 
-        // turn music on
+        // turn music off
         musicOnButton = new Button("Botones/On_Bttn.png", "Botones/Off_Bttn.png").getiButton();
         musicOnButton.setPosition(MasterScreen.WIDTH/2, (MasterScreen.HEIGHT/2)+50);
         settingsStage.addActor(musicOnButton);
@@ -75,13 +75,15 @@ class SettingsScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                game.setCanPlayMusic(true);
+                System.out.println("turn music off");
+                game.setCanPlayMusic(false);
+                System.out.println(game.getCanPlayMusic());
                 settingsStage.addActor(musicOffButton);
                 musicOnButton.remove();
             }
         });
 
-        // turn music off
+        // turn music on
         musicOffButton = new Button("Botones/Off_Bttn.png", "Botones/On_Bttn.png").getiButton();
         musicOffButton.setPosition(MasterScreen.WIDTH/2, (MasterScreen.HEIGHT/2)+50);
         //settingsStage.addActor(musicOffButton);
@@ -90,7 +92,9 @@ class SettingsScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                game.setCanPlayMusic(false);
+                System.out.println("turn music on");
+                game.setCanPlayMusic(true);
+                System.out.println(game.getCanPlayMusic());
                 settingsStage.addActor(musicOnButton);
                 musicOffButton.remove();
             }

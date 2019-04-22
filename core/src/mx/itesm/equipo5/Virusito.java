@@ -31,10 +31,12 @@ public class Virusito extends Game {
 
         // Pone la pantalla inicial
         setScreen(new LoadingScreen(this));     // original, keep this
-        setCanPlayMusic(false);  // check, might have to remove it: logic
+        setCanPlayMusic(true);
 
         if (canPlayMusic) {
             startMusic();
+        } else {
+            stopMusic();
         }
     }
 
@@ -43,6 +45,10 @@ public class Virusito extends Game {
         music.setLooping(true);
         music.setVolume(1);
         music.play();
+    }
+
+    private void stopMusic() {
+        music.stop();
     }
 
     // Para que las otras pantallas usen el audioManager
