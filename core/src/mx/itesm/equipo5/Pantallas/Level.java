@@ -74,6 +74,11 @@ class Level extends MasterScreen {
     private Array<Rectangle> doors;
     private Array<Rectangle> enemyRect;
 
+    // new stuff, still testing it
+    //private Virusito game;
+    //private final AssetManager audioManager;
+    //private Music music;
+
 
     public Level(Virusito juego) {
         super(juego);
@@ -92,13 +97,25 @@ class Level extends MasterScreen {
         getDoors();
         getEnemies();
 
+        if (game.getCanPlayMusic()) {
+            loadMusic();
+        }
+
 
         player = new Player(300,300,3);
 
         Gdx.input.setCatchBackKey(false);
     }
 
+    private void loadMusic() {
+        //AssetManager audioManager = new AssetManager();
 
+        System.out.println("entered loadMusic()");
+
+        Music music = Gdx.audio.newMusic(Gdx.files.internal("Music/testMusicTrack.mp3"));
+        music.setLooping(true);
+        music.play();
+    }
 
 
     private void loadMap() {

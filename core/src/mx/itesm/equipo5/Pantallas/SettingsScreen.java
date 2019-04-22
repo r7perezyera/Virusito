@@ -66,6 +66,7 @@ class SettingsScreen extends MasterScreen {
             }
         });
 
+        // music and sfx on/off buttons
         // turn music off
         musicOnButton = new Button("Botones/On_Bttn.png", "Botones/Off_Bttn.png").getiButton();
         musicOnButton.setPosition(MasterScreen.WIDTH/2, (MasterScreen.HEIGHT/2)+50);
@@ -100,6 +101,7 @@ class SettingsScreen extends MasterScreen {
             }
         });
 
+        // turn sfx off
         SFXOnButton = new Button("Botones/On_Bttn.png", "Botones/Off_Bttn.png").getiButton();
         SFXOnButton.setPosition(MasterScreen.WIDTH/2, (MasterScreen.HEIGHT/2)-125);
         settingsStage.addActor(SFXOnButton);
@@ -113,6 +115,7 @@ class SettingsScreen extends MasterScreen {
             }
         });
 
+        // turn sfx on
         SFXOffButton = new Button("Botones/Off_Bttn.png", "Botones/On_Bttn.png").getiButton();
         SFXOffButton.setPosition(MasterScreen.WIDTH/2, (MasterScreen.HEIGHT/2)-125);
         //settingsStage.addActor(musicOffButton);
