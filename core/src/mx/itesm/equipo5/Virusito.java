@@ -17,6 +17,7 @@ public class Virusito extends Game {
      */
     private AssetManager audioManager;
     private boolean canPlayMusic;
+    private boolean canPlaySound;
 
     //private Music music;
 
@@ -46,6 +47,14 @@ public class Virusito extends Game {
     }
 
     public void setCanPlayMusic(boolean canPlayMusic) {
+        this.canPlayMusic = canPlayMusic;
+    }
+
+    public boolean getCanPlaySound() {  // isCanPlayMusic   // isMusicEnabled
+        return canPlayMusic;
+    }
+
+    public void setCanPlaySound(boolean canPlayMusic) {
         this.canPlayMusic = canPlayMusic;
     }
 

@@ -123,6 +123,7 @@ class SettingsScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
+                game.setCanPlaySound(false);
                 settingsStage.addActor(SFXOffButton);
                 SFXOnButton.remove();
             }
@@ -137,10 +138,17 @@ class SettingsScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
+                game.setCanPlaySound(true);
                 settingsStage.addActor(SFXOnButton);
                 SFXOffButton.remove();
             }
         });
+
+        if (game.getCanPlaySound()) {
+            settingsStage.addActor(SFXOnButton);
+        } else {
+            settingsStage.addActor(SFXOffButton);
+        }
     }
 
     @Override
