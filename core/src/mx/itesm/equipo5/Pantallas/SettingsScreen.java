@@ -68,12 +68,12 @@ class SettingsScreen extends MasterScreen {
 
 
 
-        
+
         // music and sfx on/off buttons
         // turn music off
         musicOnButton = new Button("Botones/On_Bttn.png", "Botones/Off_Bttn.png").getiButton();
         musicOnButton.setPosition(MasterScreen.WIDTH/2, (MasterScreen.HEIGHT/2)+50);
-        settingsStage.addActor(musicOnButton);
+        //settingsStage.addActor(musicOnButton);
         musicOnButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -104,10 +104,20 @@ class SettingsScreen extends MasterScreen {
             }
         });
 
+        if (game.getCanPlayMusic()) {
+            settingsStage.addActor(musicOnButton);
+        } else {
+            settingsStage.addActor(musicOffButton);
+        }
+
+
+
+
+
         // turn sfx off
         SFXOnButton = new Button("Botones/On_Bttn.png", "Botones/Off_Bttn.png").getiButton();
         SFXOnButton.setPosition(MasterScreen.WIDTH/2, (MasterScreen.HEIGHT/2)-125);
-        settingsStage.addActor(SFXOnButton);
+        //settingsStage.addActor(SFXOnButton);
         SFXOnButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
