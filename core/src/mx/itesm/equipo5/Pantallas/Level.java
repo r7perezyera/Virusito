@@ -24,9 +24,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
 import java.util.LinkedList;
-
 import mx.itesm.equipo5.JoyStick;
 import mx.itesm.equipo5.MasterScreen;
 import mx.itesm.equipo5.Objects.Minion;
@@ -35,8 +33,6 @@ import mx.itesm.equipo5.Objects.Player;
 import mx.itesm.equipo5.Objects.difficulty;
 import mx.itesm.equipo5.Objects.enemyType;
 import mx.itesm.equipo5.Objects.movementPattern;
-
-import mx.itesm.equipo5.Text;
 import mx.itesm.equipo5.Virusito;
 
 class Level extends MasterScreen {
@@ -63,15 +59,10 @@ class Level extends MasterScreen {
     private OrthographicCamera HUDcamera;
     private Viewport HUDview;
     private Stage HUDstage;
-
-    private Text text;
     private Texture life;
-
-
 
     private Touchpad shootingStick;
     private Touchpad movingStick;
-
 
     // BOX2D FISICA
     // vamos a agregar una simulacion de fisica
