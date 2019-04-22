@@ -15,7 +15,7 @@ public class Virusito extends Game {
     we could eventually turn it into THE only manager for the whole game,
     i.e. for all the resources that require the asset manager
      */
-    private final AssetManager audioManager;  // should be final as well
+    private AssetManager audioManager;
     private boolean canPlayMusic;
 
     //private Music music;
