@@ -18,7 +18,7 @@ public class Virusito extends Game {
     private final AssetManager audioManager;  // should be final as well
     private boolean canPlayMusic;
 
-    private Music music;
+    //private Music music;
 
     public Virusito() {
         audioManager = new AssetManager();
@@ -32,24 +32,9 @@ public class Virusito extends Game {
         // Pone la pantalla inicial
         setScreen(new LoadingScreen(this));     // original, keep this
         setCanPlayMusic(true);
-
-        if (canPlayMusic) {
-            startMusic();
-        } else {
-            stopMusic();
-        }
     }
 
-    private void startMusic() {
-        music = Gdx.audio.newMusic(Gdx.files.internal("Music/testMusicTrack.mp3"));
-        music.setLooping(true);
-        music.setVolume(1);
-        music.play();
-    }
 
-    private void stopMusic() {
-        music.stop();
-    }
 
     // Para que las otras pantallas usen el audioManager
     public AssetManager getAudioManager() {

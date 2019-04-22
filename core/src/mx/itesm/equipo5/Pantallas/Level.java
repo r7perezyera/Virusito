@@ -3,6 +3,7 @@ package mx.itesm.equipo5.Pantallas;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -82,6 +83,8 @@ class Level extends MasterScreen {
     private Array<Rectangle> doors;
     private Array<Rectangle> enemyRect;
 
+    private boolean canPlayMusic = game.getCanPlayMusic();
+    private Music music;
 
 
     public Level(Virusito juego) {
@@ -155,6 +158,13 @@ class Level extends MasterScreen {
     public void render(float delta) {
         eraseScreen();
 
+        if (canPlayMusic) {
+            startMusic(); // y ya haces todo lo de cargar y reproducir aqui,
+            //seria lo mas eficiente
+        } else {
+            stopMusic();
+        }
+
         timeSinceShot += delta;
         timeSinceAttack+=delta;
         timeSinceDamage+=delta;
@@ -201,6 +211,17 @@ class Level extends MasterScreen {
         batch.end();
         batch.setProjectionMatrix(HUDcamera.combined);
         HUDstage.draw();
+    }
+
+    private void startMusic() {
+        music = Gdx.audio.newMusic(Gdx.files.internal("Music/testMusicTrack.mp3"));
+        music.setLooping(true);
+        music.setVolume(1);
+        music.play();
+    }
+
+    private void stopMusic() {
+        music.stop();
     }
 
     private void spawn() {
