@@ -1,6 +1,7 @@
 package mx.itesm.equipo5;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 
@@ -30,7 +31,18 @@ public class Virusito extends Game {
 
         // Pone la pantalla inicial
         setScreen(new LoadingScreen(this));     // original, keep this
-        setCanPlayMusic(true);
+        setCanPlayMusic(false);  // check, might have to remove it: logic
+
+        if (canPlayMusic) {
+            startMusic();
+        }
+    }
+
+    private void startMusic() {
+        music = Gdx.audio.newMusic(Gdx.files.internal("Music/testMusicTrack.mp3"));
+        music.setLooping(true);
+        music.setVolume(1);
+        music.play();
     }
 
     // Para que las otras pantallas usen el audioManager
