@@ -75,7 +75,7 @@ class SettingsScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                // audioManager.setCanPlayMusic(true);
+                audioManager.setCanPlayMusic(true);
                 settingsStage.addActor(musicOffButton);
                 musicOnButton.remove();
             }
