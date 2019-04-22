@@ -66,6 +66,9 @@ class SettingsScreen extends MasterScreen {
             }
         });
 
+
+
+        
         // music and sfx on/off buttons
         // turn music off
         musicOnButton = new Button("Botones/On_Bttn.png", "Botones/Off_Bttn.png").getiButton();
