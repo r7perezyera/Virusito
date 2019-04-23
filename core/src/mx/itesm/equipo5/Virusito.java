@@ -51,11 +51,11 @@ public class Virusito extends Game {
     }
 
     public boolean getCanPlaySound() {  // isCanPlayMusic   // isMusicEnabled
-        return canPlayMusic;
+        return canPlaySound;
     }
 
-    public void setCanPlaySound(boolean canPlayMusic) {
-        this.canPlayMusic = canPlayMusic;
+    public void setCanPlaySound(boolean canPlaySound) {
+        this.canPlaySound = canPlaySound;
     }
 
     @Override
