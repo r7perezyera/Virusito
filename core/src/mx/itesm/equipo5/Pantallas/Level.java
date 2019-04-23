@@ -37,7 +37,6 @@ import mx.itesm.equipo5.Virusito;
 
 class Level extends MasterScreen {
 
-
     //Esto es para probar colisiones
     private Array<Rectangle> walls;
     private Array<Rectangle> tvs;
@@ -74,10 +73,6 @@ class Level extends MasterScreen {
     private Array<Rectangle> doors;
     private Array<Rectangle> enemyRect;
 
-    // new stuff, still testing it
-    //private Virusito game;
-    //private final AssetManager audioManager;
-    //private Music music;
 
 
     public Level(Virusito juego) {
@@ -101,15 +96,12 @@ class Level extends MasterScreen {
             loadMusic();
         }
 
-
         player = new Player(300,300,3);
 
         Gdx.input.setCatchBackKey(false);
     }
 
     private void loadMusic() {
-        //AssetManager audioManager = new AssetManager();
-
         System.out.println("entered loadMusic()");
 
         Music music = Gdx.audio.newMusic(Gdx.files.internal("Music/testMusicTrack.mp3"));
@@ -158,7 +150,6 @@ class Level extends MasterScreen {
     }
 
 
-
     @Override
     public void render(float delta) {
         eraseScreen();
@@ -167,12 +158,8 @@ class Level extends MasterScreen {
         timeSinceAttack+=delta;
         timeSinceDamage+=delta;
         shoot();
-        updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY());
-
-
 
         updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY());
-
 
         batch.setProjectionMatrix(camera.combined);
         // render the game map
