@@ -310,10 +310,10 @@ class Level extends MasterScreen {
             if(collidesWith(walls,checkRectangle)||collidesWith(doors,checkRectangle)) {
                 bullet.destroy();
             }
-            for (Minion enemy:enemies ){
-                    if (checkRectangle.overlaps(enemy.getRectangle())){
+            for (int i = enemies.size(); i > 0; i--){
+                    if (checkRectangle.overlaps(enemies.get(i).getRectangle())){
                         bullet.destroy();
-                        enemy.destroy();
+                        enemies.remove(i);
                     }
             }
         }
