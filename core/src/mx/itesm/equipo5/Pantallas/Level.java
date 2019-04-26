@@ -155,8 +155,8 @@ class Level extends MasterScreen {
         eraseScreen();
 
         timeSinceShot += delta;
-        timeSinceAttack+=delta;
-        timeSinceDamage+=delta;
+        timeSinceAttack += delta;
+        timeSinceDamage += delta;
         shoot();
 
         updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY());
