@@ -310,7 +310,7 @@ class Level extends MasterScreen {
             if(collidesWith(walls,checkRectangle)||collidesWith(doors,checkRectangle)) {
                 bullet.destroy();
             }
-            for (int i = enemies.size(); i > 0; i--){
+            for (int i = enemies.size()-1; i > 0; i--){
                     if (checkRectangle.overlaps(enemies.get(i).getRectangle())){
                         bullet.destroy();
                         enemies.remove(i);
