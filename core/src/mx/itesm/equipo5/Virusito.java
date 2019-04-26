@@ -33,6 +33,7 @@ public class Virusito extends Game {
         // Pone la pantalla inicial
         setScreen(new LoadingScreen(this));     // original, keep this
         setCanPlayMusic(true);
+        setCanPlaySound(true);
     }
 
 
