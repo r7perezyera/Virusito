@@ -72,7 +72,7 @@ class Level extends MasterScreen {
     private Player player; //Personaje
     private Array<Rectangle> doors;
     private Array<Rectangle> enemyRect;
-
+    private Music music;
 
 
     public Level(Virusito juego) {
@@ -104,7 +104,7 @@ class Level extends MasterScreen {
     private void loadMusic() {
         System.out.println("entered loadMusic()");
 
-        Music music = Gdx.audio.newMusic(Gdx.files.internal("Music/testMusicTrack.mp3"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("Music/testMusicTrack.mp3"));
         music.setLooping(true);
         music.play();
     }
@@ -174,6 +174,9 @@ class Level extends MasterScreen {
             life = new Texture("HUD/Bateria/Bateria_Ultima.png");
         }else {
             game.setScreen(new LoseScreen(game));
+            if (game.getCanPlayMusic()) {
+                music.stop();
+            }
         }
 
         batch.begin();
@@ -294,6 +297,10 @@ class Level extends MasterScreen {
         }
         if (collidesWith(doors,checkRectangle)){
             game.setScreen(new WinScreen(game));
+            if (game.getCanPlayMusic()) {
+                music.stop();
+            }
+
             // TODO set Virusito's coordinates, load new map
         }
     }
