@@ -38,7 +38,7 @@ public class Virusito extends Game {
 
         // create prefs
         Preferences prefs = Gdx.app.getPreferences("userPrefs");
-        // stuff that will be set on prefs
+        prefs.putBoolean("soundON", true);
         prefs.flush();
     }
 
