@@ -1,6 +1,7 @@
 package mx.itesm.equipo5.Pantallas;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
@@ -73,6 +74,13 @@ class Level extends MasterScreen {
     private Array<Rectangle> doors;
     private Array<Rectangle> enemyRect;
     private Music music;
+
+    // Users preferences
+    private Preferences lvlPrefs = Gdx.app.getPreferences("userPrefs");
+    boolean isSoundOn = lvlPrefs.getBoolean("soundOn");
+
+//    private Preferences levelPreferences = Gdx.app.getPreferences("usersPreferences");
+//    boolean musicaActivada = levelPreferences.getBoolean("soundOn");
 
 
     public Level(Virusito juego) {
