@@ -110,11 +110,7 @@ class SettingsScreen extends MasterScreen {
             settingsStage.addActor(musicOffButton);
         }
 
-
-
-
-
-        // turn sfx off
+        /*// turn sfx off
         SFXOnButton = new Button("Botones/On_Bttn.png", "Botones/Off_Bttn.png").getiButton();
         SFXOnButton.setPosition(MasterScreen.WIDTH/2, (MasterScreen.HEIGHT/2)-125);
         //settingsStage.addActor(SFXOnButton);
@@ -148,7 +144,7 @@ class SettingsScreen extends MasterScreen {
             settingsStage.addActor(SFXOnButton);
         } else {
             settingsStage.addActor(SFXOffButton);
-        }
+        }*/
     }
 
     @Override
