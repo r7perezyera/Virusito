@@ -28,13 +28,10 @@ class SettingsScreen extends MasterScreen {
     private ImageButton homeButton;
     private ImageButton musicOnButton;
     private ImageButton musicOffButton;
-    /*private ImageButton SFXOnButton;
-    private ImageButton SFXOffButton;*/
 
     Texture musicLabelTexture = new Texture("Botones/Music.png");
     Texture SFXLabelTexture = new Texture("Botones/Vfx.png");
 
-    //private final AssetManager audioManager;
     private Preferences lvlPrefs = Gdx.app.getPreferences("userPrefs");
 
 
@@ -79,10 +76,8 @@ class SettingsScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-
-
-
-
+                lvlPrefs.putBoolean("soundOn", false);
+                lvlPrefs.flush();
                 settingsStage.addActor(musicOffButton);
                 musicOnButton.remove();
             }
@@ -96,7 +91,8 @@ class SettingsScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                // aqui aqui aqui
+                lvlPrefs.putBoolean("soundOn", true);
+                lvlPrefs.flush();
                 settingsStage.addActor(musicOnButton);
                 musicOffButton.remove();
             }
@@ -108,41 +104,6 @@ class SettingsScreen extends MasterScreen {
             settingsStage.addActor(musicOffButton);
         }
 
-        /*// turn sfx off
-        SFXOnButton = new Button("Botones/On_Bttn.png", "Botones/Off_Bttn.png").getiButton();
-        SFXOnButton.setPosition(MasterScreen.WIDTH/2, (MasterScreen.HEIGHT/2)-125);
-        //settingsStage.addActor(SFXOnButton);
-        SFXOnButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                // Responder al evento del boton
-                game.setCanPlaySound(false);
-                settingsStage.addActor(SFXOffButton);
-                SFXOnButton.remove();
-            }
-        });
-
-        // turn sfx on
-        SFXOffButton = new Button("Botones/Off_Bttn.png", "Botones/On_Bttn.png").getiButton();
-        SFXOffButton.setPosition(MasterScreen.WIDTH/2, (MasterScreen.HEIGHT/2)-125);
-        //settingsStage.addActor(musicOffButton);
-        SFXOffButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                // Responder al evento del boton
-                game.setCanPlaySound(true);
-                settingsStage.addActor(SFXOnButton);
-                SFXOffButton.remove();
-            }
-        });
-
-        if (game.getCanPlaySound()) {
-            settingsStage.addActor(SFXOnButton);
-        } else {
-            settingsStage.addActor(SFXOffButton);
-        }*/
     }
 
     @Override
