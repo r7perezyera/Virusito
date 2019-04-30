@@ -2,6 +2,7 @@ package mx.itesm.equipo5;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 
@@ -34,6 +35,11 @@ public class Virusito extends Game {
         setScreen(new LoadingScreen(this));     // original, keep this
         setCanPlayMusic(true);
         setCanPlaySound(true);
+
+        // create prefs
+        Preferences prefs = Gdx.app.getPreferences("userPrefs");
+        // stuff that will be set on prefs
+        prefs.flush();
     }
 
 
