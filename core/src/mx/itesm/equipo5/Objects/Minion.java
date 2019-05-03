@@ -3,6 +3,7 @@ package mx.itesm.equipo5.Objects;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 public class Minion extends Entity {
@@ -36,14 +37,29 @@ public class Minion extends Entity {
         }
     }
     public void move(float x, float y){
-        if (attack==enemyType.RAMMER){
+        if (move==movementPattern.FOLLOWER){
             Vector2 vector = new Vector2(x-sprite.getX(),y-sprite.getY());
             float angle = vector.angle();
             float dx = (float) (speed*Math.cos(angle));
             float dy = (float) (speed*Math.sin(angle));
             moveX(dx);
             moveY(dy);
+        }else if (move==movementPattern.AVOIDER){
+            Vector2 vector = new Vector2(x-sprite.getX(),y-sprite.getY());
+            float angle = MathUtils.degreesToRadians*(180+vector.angle());
+            float dx = (float) (speed*Math.cos(angle));
+            float dy = (float) (speed*Math.sin(angle));
+            moveX(dx);
+            moveY(dy);
+        }else if(move==movementPattern.ZIGZAG){ //TODO
+            Vector2 vector = new Vector2(x-sprite.getX(),y-sprite.getY());
+            float angle = MathUtils.degreesToRadians*(180+vector.angle());
+            float dx = (float) (speed*Math.cos(angle));
+            float dy = (float) (speed*Math.sin(angle));
+            moveX(dx);
+            moveY(dy);
         }
+
     }
 
 }
