@@ -47,6 +47,7 @@ class Level extends MasterScreen {
     private LinkedList<FriendlyBullet> bullets = new LinkedList<FriendlyBullet>();
     private LinkedList<Minion> enemies = new LinkedList<Minion>();
     private float timeSinceShot;
+    private float friendlyShotCooldown = 0.5f;
     private float timeSinceAttack;
 
     private float enemyShotCooldown;
@@ -218,22 +219,26 @@ class Level extends MasterScreen {
         float angle = vector.angle();
         System.out.println(timeSinceShot);
 
-        if(timeSinceShot<=1f) {
+        if(timeSinceShot<=friendlyShotCooldown) {
             if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
                 FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, 0);
                 bullets.add(bullet);
+                timeSinceShot=friendlyShotCooldown+ 0.1f;
             } else if (46 <= angle && angle <= 136) {
                 FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) Math.PI / 2);
                 bullets.add(bullet);
+                timeSinceShot=friendlyShotCooldown+ 0.1f;
             } else if (136 <= angle && angle <= 225) {
                 FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) Math.PI);
                 bullets.add(bullet);
+                timeSinceShot=friendlyShotCooldown+ 0.1f;
             } else if (226 <= angle && angle <= 315) {
                 FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) (3 * Math.PI) / 2);
                 bullets.add(bullet);
+                timeSinceShot=friendlyShotCooldown+ 0.1f;
             }
 
-        }else {
+        }else if (timeSinceShot >= friendlyShotCooldown*2) {
             timeSinceShot=0.0f;
         }
     }
