@@ -30,6 +30,7 @@ import mx.itesm.equipo5.MasterScreen;
 import mx.itesm.equipo5.Objects.Minion;
 import mx.itesm.equipo5.Objects.FriendlyBullet;
 import mx.itesm.equipo5.Objects.Player;
+import mx.itesm.equipo5.Objects.Projectile;
 import mx.itesm.equipo5.Objects.difficulty;
 import mx.itesm.equipo5.Objects.enemyType;
 import mx.itesm.equipo5.Objects.movementPattern;
@@ -183,7 +184,8 @@ class Level extends MasterScreen {
         player.render(batch);
         batch.draw(life, WIDTH/2-(life.getWidth()/2f),650);
         if (!bullets.isEmpty()){
-            for (FriendlyBullet bullet: bullets){
+            for (int i =bullets.size()-1;i>=0;i--){
+                FriendlyBullet bullet = bullets.get(i);
                 bullet.render(batch);
                 bullet.update();
                 updateBullet();
@@ -214,6 +216,7 @@ class Level extends MasterScreen {
         //Checks angle of shot
         Vector2 vector = new Vector2(changeX,changeY);
         float angle = vector.angle();
+        System.out.println(timeSinceShot);
 
         if(timeSinceShot<=1f) {
             if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
@@ -229,9 +232,9 @@ class Level extends MasterScreen {
                 FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) (3 * Math.PI) / 2);
                 bullets.add(bullet);
             }
-            else {
-                timeSinceShot=0.0f;
-            }
+
+        }else {
+            timeSinceShot=0.0f;
         }
     }
 
@@ -306,8 +309,8 @@ class Level extends MasterScreen {
     }
 
     private void updateBullet(){
-        for(FriendlyBullet bullet : bullets){
-
+        for(int i =bullets.size()-1;i>=0;i--){
+            FriendlyBullet bullet = bullets.get(i);
             Rectangle checkRectangle;
             checkRectangle = new Rectangle();
             checkRectangle.set(bullet.getRectangle());
@@ -316,12 +319,14 @@ class Level extends MasterScreen {
             checkRectangle.setPosition(newPosX, newPosY);
             if(collidesWith(walls,checkRectangle)||collidesWith(doors,checkRectangle)) {
                 bullet.destroy();
+                bullets.remove(i);
             }
-            for (int i = enemies.size()-1; i >= 0; i--){
-                    if (checkRectangle.overlaps(enemies.get(i).getRectangle())){
+            for (int j = enemies.size()-1; j >= 0; j--){
+                    if (checkRectangle.overlaps(enemies.get(j).getRectangle())){
                         bullet.destroy();
-                        enemies.remove(i);
-                        enemyRect.removeIndex(i);
+                        bullets.remove(i);
+                        enemies.remove(j);
+                        enemyRect.removeIndex(j);
                     }
             }
         }
