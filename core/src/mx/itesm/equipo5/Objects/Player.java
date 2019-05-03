@@ -11,8 +11,6 @@ import com.badlogic.gdx.utils.Array;
 import java.util.LinkedList;
 import java.util.List;
 
-import mx.itesm.equipo5.Text;
-
 public class Player extends Entity {
 
     private List<Sprite> sprites = new LinkedList<Sprite>();
@@ -22,7 +20,9 @@ public class Player extends Entity {
     private int spriteIndex;
     private float dx, dy; //This will be percentage of joystick
 
-    private Animation animation;
+    private Animation animationFront;
+    private Animation animationLeft;
+    private Animation animationRight;
     private float animationTimer;
 
 
@@ -31,7 +31,7 @@ public class Player extends Entity {
         height = 57;
         this.health = health;
         this.speed = 7;
-        //Load texture
+        //Load texture front
         texture = new Texture("Animaciones/Principal_Animacion.png");
 
         TextureRegion region = new TextureRegion(texture);
@@ -39,9 +39,31 @@ public class Player extends Entity {
 
         Array<TextureRegion> textureRegionArray = new Array(texturasPersonajes[0]);
 
-        animation = new Animation(0.15f,textureRegionArray);
-        animation.setPlayMode(Animation.PlayMode.LOOP);
+        animationFront = new Animation(0.15f,textureRegionArray);
+        animationFront.setPlayMode(Animation.PlayMode.LOOP);
         animationTimer = 0;
+
+        //Load texture right
+        texture = new Texture("Animaciones/Principal_Anim_D.png");
+
+        region = new TextureRegion(texture);
+        texturasPersonajes = region.split(width,height);
+
+        textureRegionArray = new Array(texturasPersonajes[0]);
+
+        animationRight = new Animation(0.15f,textureRegionArray);
+        animationRight.setPlayMode(Animation.PlayMode.LOOP);
+
+        //Load texture right
+        texture = new Texture("Animaciones/Principal_Anim_I.png");
+
+        region = new TextureRegion(texture);
+        texturasPersonajes = region.split(width,height);
+
+        textureRegionArray = new Array(texturasPersonajes[0]);
+
+        animationLeft = new Animation(0.15f,textureRegionArray);
+        animationLeft.setPlayMode(Animation.PlayMode.LOOP);
 
         //Sprites
         sprite = new Sprite(texturasPersonajes[0][0]);
@@ -54,7 +76,7 @@ public class Player extends Entity {
 
     public void render(SpriteBatch batch) {
         animationTimer += Gdx.graphics.getDeltaTime();
-        TextureRegion region = (TextureRegion) animation.getKeyFrame(animationTimer);
+        TextureRegion region = (TextureRegion) animationFront.getKeyFrame(animationTimer);
         batch.draw(region, sprite.getX(), sprite.getY());
     }
 
