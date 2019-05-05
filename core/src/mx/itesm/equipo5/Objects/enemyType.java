@@ -3,7 +3,7 @@ package mx.itesm.equipo5.Objects;
 public enum enemyType {
     FLOATER,
     CRAWLER,
-    TEETHBOSS,
+    TEETH,
     FLOATBOSS,
     CRAWLBOSS,
     TEEHTBOSS
