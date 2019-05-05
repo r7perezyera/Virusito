@@ -1,9 +1,12 @@
 package mx.itesm.equipo5.Objects;
 
 public enum enemyType {
-    RAMMER,
-    SHOOTER,
-    RUNNER,
-    ZIGZAG
+    FLOATER,
+    CRAWLER,
+    TEETH,
+    FLOATBOSS,
+    CRAWLBOSS,
+    TEEHTBOSS
+
 
 }

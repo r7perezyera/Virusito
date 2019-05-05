@@ -34,6 +34,7 @@ import mx.itesm.equipo5.Objects.Player;
 import mx.itesm.equipo5.Objects.difficulty;
 import mx.itesm.equipo5.Objects.enemyType;
 import mx.itesm.equipo5.Objects.movementPattern;
+import mx.itesm.equipo5.Objects.viewingDirection;
 import mx.itesm.equipo5.Virusito;
 
 class Level extends MasterScreen {
@@ -47,6 +48,7 @@ class Level extends MasterScreen {
     private LinkedList<FriendlyBullet> bullets = new LinkedList<FriendlyBullet>();
     private LinkedList<Minion> enemies = new LinkedList<Minion>();
     private float timeSinceShot;
+    private float friendlyShotCooldown = 0.5f;
     private float timeSinceAttack;
 
     private float enemyShotCooldown;
@@ -187,7 +189,8 @@ class Level extends MasterScreen {
         player.render(batch);
         batch.draw(life, WIDTH/2-(life.getWidth()/2f),650);
         if (!bullets.isEmpty()){
-            for (FriendlyBullet bullet: bullets){
+            for (int i =bullets.size()-1;i>=0;i--){
+                FriendlyBullet bullet = bullets.get(i);
                 bullet.render(batch);
                 bullet.update();
                 updateBullet();
@@ -206,9 +209,17 @@ class Level extends MasterScreen {
     }
 
     private void spawn() {
-        Minion minion = new Minion(enemyType.RAMMER, movementPattern.FOLLOWER, difficulty.EASY, 800, 400);
+        Minion minion = new Minion(enemyType.FLOATER, movementPattern.FOLLOWER, difficulty.EASY, 800, 400);
         enemies.add(minion);
-        minion = new Minion(enemyType.RAMMER, movementPattern.ZIGZAG, difficulty.EASY, 800, 300);
+        minion = new Minion(enemyType.CRAWLER, movementPattern.AVOIDER, difficulty.EASY, 850, 100);
+        enemies.add(minion);
+        minion = new Minion(enemyType.CRAWLBOSS, movementPattern.ZIGZAG, difficulty.EASY, 800, 100);
+        enemies.add(minion);
+        minion = new Minion(enemyType.TEETH, movementPattern.ZIGZAG, difficulty.EASY, 850, 200);
+        enemies.add(minion);
+        minion = new Minion(enemyType.TEEHTBOSS, movementPattern.ZIGZAG, difficulty.EASY, 800, 200);
+        enemies.add(minion);
+        minion = new Minion(enemyType.FLOATBOSS, movementPattern.ZIGZAG, difficulty.EASY, 850, 300);
         enemies.add(minion);
     }
 
@@ -219,23 +230,27 @@ class Level extends MasterScreen {
         Vector2 vector = new Vector2(changeX,changeY);
         float angle = vector.angle();
 
-        if(timeSinceShot<=1f) {
+        if(timeSinceShot<=friendlyShotCooldown) {
             if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
                 FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, 0);
                 bullets.add(bullet);
+                timeSinceShot=friendlyShotCooldown+ 0.1f;
             } else if (46 <= angle && angle <= 136) {
                 FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) Math.PI / 2);
                 bullets.add(bullet);
+                timeSinceShot=friendlyShotCooldown+ 0.1f;
             } else if (136 <= angle && angle <= 225) {
                 FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) Math.PI);
                 bullets.add(bullet);
+                timeSinceShot=friendlyShotCooldown+ 0.1f;
             } else if (226 <= angle && angle <= 315) {
                 FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) (3 * Math.PI) / 2);
                 bullets.add(bullet);
+                timeSinceShot=friendlyShotCooldown+ 0.1f;
             }
-            else {
-                timeSinceShot=0.0f;
-            }
+
+        }else if (timeSinceShot >= friendlyShotCooldown*2) {
+            timeSinceShot=0.0f;
         }
     }
 
@@ -283,6 +298,22 @@ class Level extends MasterScreen {
         checkRectangle = new Rectangle();
         checkRectangle.set(player.getRectangle());
 
+        //animation
+        float changeX = movingStick.getKnobPercentX();
+        float changeY = movingStick.getKnobPercentY();
+        Vector2 vector = new Vector2(changeX,changeY);
+        float angle = vector.angle();
+
+        if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
+            player.setDir(viewingDirection.RIGHT);
+        } else if (46 <= angle && angle <= 136) {
+            player.setDir(viewingDirection.FRONT);
+        } else if (136 <= angle && angle <= 225) {
+            player.setDir(viewingDirection.LEFT);
+        } else if (226 <= angle && angle <= 315) {
+            player.setDir(viewingDirection.FRONT);
+        }
+
         float newPosY = player.getSprite().getY() + (dy * player.getSpeed());
         float newPosX = player.getSprite().getX() + (dx * player.getSpeed());
         checkRectangle.setPosition(newPosX, newPosY);
@@ -310,8 +341,8 @@ class Level extends MasterScreen {
     }
 
     private void updateBullet(){
-        for(FriendlyBullet bullet : bullets){
-
+        for(int i =bullets.size()-1;i>=0;i--){
+            FriendlyBullet bullet = bullets.get(i);
             Rectangle checkRectangle;
             checkRectangle = new Rectangle();
             checkRectangle.set(bullet.getRectangle());
@@ -320,12 +351,14 @@ class Level extends MasterScreen {
             checkRectangle.setPosition(newPosX, newPosY);
             if(collidesWith(walls,checkRectangle)||collidesWith(doors,checkRectangle)) {
                 bullet.destroy();
+                bullets.remove(i);
             }
-            for (int i = enemies.size()-1; i >= 0; i--){
-                    if (checkRectangle.overlaps(enemies.get(i).getRectangle())){
+            for (int j = enemies.size()-1; j >= 0; j--){
+                    if (checkRectangle.overlaps(enemies.get(j).getRectangle())){
                         bullet.destroy();
-                        enemies.remove(i);
-                        enemyRect.removeIndex(i);
+                        bullets.remove(i);
+                        enemies.remove(j);
+                        enemyRect.removeIndex(j);
                     }
             }
         }

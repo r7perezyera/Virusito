@@ -9,7 +9,7 @@ public abstract class Entity {
 
 
     protected float x, y, speed; //Position and speed
-    protected float height, width; //Sprite/object dimensions
+    protected int height, width; //Sprite/object dimensions
     protected Sprite sprite;
     protected float direction; //defines where Sprite will face
     //AQUI FALTA UN protected Pantalla pantalla, tenemos que definir la superclase primero
