@@ -30,10 +30,10 @@ import mx.itesm.equipo5.MasterScreen;
 import mx.itesm.equipo5.Objects.Minion;
 import mx.itesm.equipo5.Objects.FriendlyBullet;
 import mx.itesm.equipo5.Objects.Player;
-import mx.itesm.equipo5.Objects.Projectile;
 import mx.itesm.equipo5.Objects.difficulty;
 import mx.itesm.equipo5.Objects.enemyType;
 import mx.itesm.equipo5.Objects.movementPattern;
+import mx.itesm.equipo5.Objects.viewingDirection;
 import mx.itesm.equipo5.Virusito;
 
 class Level extends MasterScreen {
@@ -205,9 +205,9 @@ class Level extends MasterScreen {
     }
 
     private void spawn() {
-        Minion minion = new Minion(enemyType.RAMMER, movementPattern.FOLLOWER, difficulty.EASY, 800, 400);
+        Minion minion = new Minion(enemyType.FLOATER, movementPattern.FOLLOWER, difficulty.EASY, 800, 400);
         enemies.add(minion);
-        minion = new Minion(enemyType.RAMMER, movementPattern.FOLLOWER, difficulty.EASY, 800, 300);
+        minion = new Minion(enemyType.FLOATER, movementPattern.FOLLOWER, difficulty.EASY, 800, 300);
         enemies.add(minion);
     }
 
@@ -217,7 +217,6 @@ class Level extends MasterScreen {
         //Checks angle of shot
         Vector2 vector = new Vector2(changeX,changeY);
         float angle = vector.angle();
-        System.out.println(timeSinceShot);
 
         if(timeSinceShot<=friendlyShotCooldown) {
             if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
@@ -286,6 +285,22 @@ class Level extends MasterScreen {
         Rectangle checkRectangle;
         checkRectangle = new Rectangle();
         checkRectangle.set(player.getRectangle());
+
+        //animation
+        float changeX = movingStick.getKnobPercentX();
+        float changeY = movingStick.getKnobPercentY();
+        Vector2 vector = new Vector2(changeX,changeY);
+        float angle = vector.angle();
+
+        if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
+            player.setDir(viewingDirection.RIGHT);
+        } else if (46 <= angle && angle <= 136) {
+            player.setDir(viewingDirection.FRONT);
+        } else if (136 <= angle && angle <= 225) {
+            player.setDir(viewingDirection.LEFT);
+        } else if (226 <= angle && angle <= 315) {
+            player.setDir(viewingDirection.FRONT);
+        }
 
         float newPosY = player.getSprite().getY() + (dy * player.getSpeed());
         float newPosX = player.getSprite().getX() + (dx * player.getSpeed());

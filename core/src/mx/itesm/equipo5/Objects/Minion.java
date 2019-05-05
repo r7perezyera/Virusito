@@ -15,7 +15,7 @@ public class Minion extends Entity {
         this.attack = attack;
         this.move = move;
         this.diff = diffc;
-        if (attack == enemyType.RAMMER){
+        if (attack == enemyType.FLOATER){
             texture = new Texture("Personajes/Enemigo_1.png");
         }
         if (diff == diff.EASY){
@@ -36,7 +36,7 @@ public class Minion extends Entity {
         }
     }
     public void move(float x, float y){
-        if (attack==enemyType.RAMMER){
+        if (attack==enemyType.FLOATER){
             Vector2 vector = new Vector2(x-sprite.getX(),y-sprite.getY());
             float angle = vector.angle();
             float dx = (float) (speed*Math.cos(angle));

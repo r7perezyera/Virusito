@@ -24,6 +24,7 @@ public class Player extends Entity {
     private Animation animationLeft;
     private Animation animationRight;
     private float animationTimer;
+    private viewingDirection dir =  viewingDirection.FRONT;
 
 
     public Player(float x, float y, float health) {
@@ -76,8 +77,22 @@ public class Player extends Entity {
 
     public void render(SpriteBatch batch) {
         animationTimer += Gdx.graphics.getDeltaTime();
-        TextureRegion region = (TextureRegion) animationFront.getKeyFrame(animationTimer);
-        batch.draw(region, sprite.getX(), sprite.getY());
+        if (dir== viewingDirection.FRONT) {
+            TextureRegion region = (TextureRegion) animationFront.getKeyFrame(animationTimer);
+            batch.draw(region, sprite.getX(), sprite.getY());
+        }
+        else if (dir== viewingDirection.LEFT){
+            TextureRegion region = (TextureRegion) animationLeft.getKeyFrame(animationTimer);
+            batch.draw(region, sprite.getX(), sprite.getY());
+        }
+        else if (dir== viewingDirection.RIGHT){
+            TextureRegion region = (TextureRegion) animationRight.getKeyFrame(animationTimer);
+            batch.draw(region, sprite.getX(), sprite.getY());
+        }
+
     }
 
+    public void setDir(viewingDirection view){
+        this.dir = view;
+    }
 }
