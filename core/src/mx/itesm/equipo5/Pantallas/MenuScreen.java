@@ -1,6 +1,7 @@
 package mx.itesm.equipo5.Pantallas;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -22,6 +23,10 @@ public class MenuScreen extends MasterScreen {
 
     //Menu escenas, Indp de la camera de mov
     private Stage menuStage; //Contenedor de Botones
+
+    // Users preferences
+    private Preferences lvlPrefs = Gdx.app.getPreferences("userPrefs");
+    boolean isSoundOn = lvlPrefs.getBoolean("soundOn");
 
     public MenuScreen(Virusito juego) {
         super(juego);

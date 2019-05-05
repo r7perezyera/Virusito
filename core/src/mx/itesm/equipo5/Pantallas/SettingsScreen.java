@@ -98,7 +98,7 @@ class SettingsScreen extends MasterScreen {
             }
         });
 
-        if (game.getCanPlayMusic()) {
+        if (lvlPrefs.getBoolean("soundOn")) {
             settingsStage.addActor(musicOnButton);
         } else {
             settingsStage.addActor(musicOffButton);

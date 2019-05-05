@@ -79,8 +79,6 @@ class Level extends MasterScreen {
     private Preferences lvlPrefs = Gdx.app.getPreferences("userPrefs");
     boolean isSoundOn = lvlPrefs.getBoolean("soundOn");
 
-//    private Preferences levelPreferences = Gdx.app.getPreferences("usersPreferences");
-//    boolean musicaActivada = levelPreferences.getBoolean("soundOn");
 
 
     public Level(Virusito juego) {
@@ -100,7 +98,7 @@ class Level extends MasterScreen {
         getDoors();
         getEnemies();
 
-        if (game.getCanPlayMusic()) {
+        if (isSoundOn) {
             loadMusic();
         }
 
@@ -180,7 +178,7 @@ class Level extends MasterScreen {
             life = new Texture("HUD/Bateria/Bateria_Ultima.png");
         }else {
             game.setScreen(new LoseScreen(game));
-            if (game.getCanPlayMusic()) {
+            if (isSoundOn) {
                 music.stop();
             }
         }
@@ -303,7 +301,7 @@ class Level extends MasterScreen {
         }
         if (collidesWith(doors,checkRectangle)){
             game.setScreen(new WinScreen(game));
-            if (game.getCanPlayMusic()) {
+            if (isSoundOn) {
                 music.stop();
             }
 
