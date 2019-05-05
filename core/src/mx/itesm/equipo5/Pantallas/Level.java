@@ -110,9 +110,7 @@ class Level extends MasterScreen {
     }
 
     private void loadMusic() {
-        System.out.println("entered loadMusic()");
-
-        music = Gdx.audio.newMusic(Gdx.files.internal("Music/testMusicTrack.mp3"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("Music/DifferentHeaven-Nekozilla.mp3"));
         music.setLooping(true);
         music.play();
     }
