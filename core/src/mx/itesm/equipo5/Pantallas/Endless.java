@@ -43,7 +43,7 @@ import mx.itesm.equipo5.Virusito;
 class Endless extends MasterScreen {
 
     //Esto es para probar colisiones
-    private Array<Rectangle> walls;
+    private LinkedList<Rectangle> walls;
     private float timeSinceDamage;
 
     private LinkedList<FriendlyBullet> bullets = new LinkedList<FriendlyBullet>();
@@ -72,7 +72,7 @@ class Endless extends MasterScreen {
 
     private Player player; //Personaje
 
-    private Array<Rectangle> enemyRect;
+    private LinkedList<Rectangle> enemyRect;
     private Music music;
 
     // Users preferences
@@ -209,6 +209,8 @@ class Endless extends MasterScreen {
             }
         }else {
             spawn();
+            getEnemies();
+
         }
 
 
@@ -218,6 +220,7 @@ class Endless extends MasterScreen {
     }
 
     private void spawn() {
+        enemies = new LinkedList<Minion>();
         int numEnemies = 0;
         round++;
         if (diff == difficulty.EASY){
@@ -232,6 +235,7 @@ class Endless extends MasterScreen {
             numEnemies = 7;
             //spawnBoss();
         }
+
         int xbegin = 800;
         int ybegin = 500;
         for (int i = 0; i<numEnemies; i++){
@@ -276,7 +280,7 @@ class Endless extends MasterScreen {
     }
 
     private void getWalls(){
-        walls = new Array<Rectangle>();
+        walls = new LinkedList<Rectangle>();
         for(MapObject object : map.getLayers().get("Paredes").getObjects()){
             if(object instanceof RectangleMapObject){
                 Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -286,8 +290,8 @@ class Endless extends MasterScreen {
     }
 
     private void getEnemies(){
-        enemyRect = new Array<Rectangle>();
-        for(Minion enemy :enemies){
+        enemyRect = new LinkedList<Rectangle>();
+        for(Minion enemy : enemies){
                 Rectangle rect = enemy.getRectangle();
                 enemyRect.add(rect);
             }
@@ -336,6 +340,7 @@ class Endless extends MasterScreen {
 
 
     private void updateBullet(){
+
         for(int i =bullets.size()-1;i>=0;i--){
             FriendlyBullet bullet = bullets.get(i);
             Rectangle checkRectangle;
@@ -349,18 +354,21 @@ class Endless extends MasterScreen {
                 bullet.destroy();
                 bullets.remove(i);
             }
+
             for (int j = enemies.size()-1; j >= 0; j--){
                     if (checkRectangle.overlaps(enemies.get(j).getRectangle())){
                         bullet.destroy();
                         bullets.remove(i);
+                        enemies.get(j).destroy();
                         enemies.remove(j);
-                        enemyRect.removeIndex(j);
+                        enemyRect.remove(j);
+
                     }
             }
         }
     }
 
-    public boolean collidesWith(Array<Rectangle> rectangles, Rectangle checkRectangle){
+    public boolean collidesWith(LinkedList<Rectangle> rectangles, Rectangle checkRectangle){
         for(Rectangle rectangle : rectangles){
             if(checkRectangle.overlaps(rectangle)) return true;
         }
