@@ -82,6 +82,9 @@ public abstract class Entity {
 
     public void doDamage(float damage){
         health -= damage;
+        if (health<=0){
+            destroy();
+        }
     }
 
     public void destroy(){

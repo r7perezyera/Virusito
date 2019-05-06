@@ -81,6 +81,7 @@ class Endless extends MasterScreen {
 
     //rounds
     private difficulty diff = difficulty.EASY;
+    private enemyType type;
     private int round = 0;
 
 
@@ -222,18 +223,24 @@ class Endless extends MasterScreen {
     private void spawn() {
         enemies = new LinkedList<Minion>();
         int numEnemies = 0;
+
         round++;
         if (diff == difficulty.EASY){
             numEnemies = 5;
+            type = enemyType.FLOATER;
         }else if (diff == difficulty.MEDIUM){
             numEnemies = 8;
+            type = enemyType.TEETH;
         }else if (diff == difficulty.HARD){
             numEnemies = 10;
+            type = enemyType.CRAWLER;
         }
 
-        if (round%10 == 0){
+        if (round%3 == 0){
             numEnemies = 7;
-            //spawnBoss();
+            diff.next();
+            Minion minion = new Minion(type.next(), movementPattern.FOLLOWER, diff, 500, 500);
+            enemies.add(minion);
         }
 
         int xbegin = 800;
@@ -241,7 +248,7 @@ class Endless extends MasterScreen {
         for (int i = 0; i<numEnemies; i++){
             xbegin += 50;
             ybegin += 50;
-            Minion minion = new Minion(enemyType.FLOATER, movementPattern.FOLLOWER, diff, xbegin, ybegin);
+            Minion minion = new Minion(type, movementPattern.ZIGZAG, diff, xbegin, ybegin);
             enemies.add(minion);
         }
 
@@ -359,9 +366,11 @@ class Endless extends MasterScreen {
                     if (checkRectangle.overlaps(enemies.get(j).getRectangle())){
                         bullet.destroy();
                         bullets.remove(i);
-                        enemies.get(j).destroy();
-                        enemies.remove(j);
-                        enemyRect.remove(j);
+                        enemies.get(j).doDamage(1);
+                        if (enemies.get(j).isDestroyed()) {
+                            enemies.remove(j);
+                            enemyRect.remove(j);
+                        }
 
                     }
             }
