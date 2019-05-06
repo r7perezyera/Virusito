@@ -51,5 +51,6 @@ public class LoadingScreen extends MasterScreen {
     @Override
     public void dispose() {
         logo.dispose();
+        batch.dispose();
     }
 }

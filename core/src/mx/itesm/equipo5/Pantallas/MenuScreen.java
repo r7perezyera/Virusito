@@ -131,5 +131,6 @@ public class MenuScreen extends MasterScreen {
     public void dispose() {
     background.dispose();
     menuStage.dispose();
+    batch.dispose();
     }
 }

@@ -39,6 +39,7 @@ import mx.itesm.equipo5.Objects.movementPattern;
 import mx.itesm.equipo5.Objects.viewingDirection;
 import mx.itesm.equipo5.Text;
 import mx.itesm.equipo5.Virusito;
+import sun.security.util.Length;
 
 class Endless extends MasterScreen {
 
@@ -83,6 +84,7 @@ class Endless extends MasterScreen {
     private difficulty diff = difficulty.EASY;
     private enemyType type;
     private int round = 0;
+    private Texture item;
 
 
 
@@ -100,7 +102,7 @@ class Endless extends MasterScreen {
         getWalls();
         spawn();
         getEnemies();
-
+        item = new Texture("Items/Battery.png");
         if (isSoundOn) {
             loadMusic();
         }
@@ -188,11 +190,12 @@ class Endless extends MasterScreen {
         batch.begin();
         player.render(batch);
         batch.draw(life, WIDTH/2-(life.getWidth()/2f),650);
+        batch.draw(item, WIDTH/2-(item.getWidth()/2f), HEIGHT/2-(item.getWidth()/2f));
 
         // construir Text
-        text = new Text();
-        text.displayText(batch, "Round: " +round, MasterScreen.WIDTH/6, 5*(MasterScreen.HEIGHT/6)+100);
-        text.displayText(batch, "Enemies: " +enemies.size(), MasterScreen.WIDTH*5/6, 5*(MasterScreen.HEIGHT/6)+100);
+        //text = new Text();
+        //text.displayText(batch, "Round: " +round, MasterScreen.WIDTH/6, 5*(MasterScreen.HEIGHT/6)+100);
+        //text.displayText(batch, "Enemies: " +enemies.size(), MasterScreen.WIDTH*5/6, 5*(MasterScreen.HEIGHT/6)+100);
 
 
         if (!bullets.isEmpty()){
