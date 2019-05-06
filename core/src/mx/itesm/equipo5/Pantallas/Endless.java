@@ -91,13 +91,14 @@ class Endless extends MasterScreen {
     public Endless(Virusito juego) {
         super(juego);
         world = new World(new Vector2(0,0),true);
+        b2dr = new Box2DDebugRenderer();
+
 
     }
 
     //Update world
     public void updateWorld(float dt){
         world.step(dt,6,2);
-        b2dr = new Box2DDebugRenderer();
 
     }
 
