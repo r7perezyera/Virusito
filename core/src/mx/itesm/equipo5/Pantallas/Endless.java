@@ -100,6 +100,7 @@ class Endless extends MasterScreen {
         getWalls();
         spawn();
         getEnemies();
+        loadText();
 
         if (isSoundOn) {
             loadMusic();
@@ -108,6 +109,11 @@ class Endless extends MasterScreen {
         player = new Player(300,300,3);
 
         Gdx.input.setCatchBackKey(false);
+    }
+
+    private void loadText() {
+        // construir Text
+        text = new Text();
     }
 
     private void loadMusic() {
@@ -189,8 +195,6 @@ class Endless extends MasterScreen {
         player.render(batch);
         batch.draw(life, WIDTH/2-(life.getWidth()/2f),650);
 
-        // construir Text
-        text = new Text();
         text.displayText(batch, "Round: " +round, MasterScreen.WIDTH/6, 5*(MasterScreen.HEIGHT/6)+100);
         text.displayText(batch, "Enemies: " +enemies.size(), MasterScreen.WIDTH*5/6, 5*(MasterScreen.HEIGHT/6)+100);
 
