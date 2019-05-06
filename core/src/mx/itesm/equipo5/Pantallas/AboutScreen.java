@@ -64,15 +64,15 @@ class AboutScreen extends MasterScreen {
         batch.begin();
         batch.draw(background, 0, 0);
 
-        text.displayText(batch, "ABOUT US", MasterScreen.WIDTH/2, 5*(MasterScreen.HEIGHT/6)+100);
+        text.displayButtonText(batch, "ABOUT US", MasterScreen.WIDTH/2, 5*(MasterScreen.HEIGHT/6)+100);
 
         // screen left-hand side
-        text.displayText(batch, "Rudy\nLead Programmer", MasterScreen.WIDTH/4, 5*(MasterScreen.HEIGHT/6));
-        text.displayText(batch, "Joaquin\nLead Programmer", MasterScreen.WIDTH/4, 3*(MasterScreen.HEIGHT/6));
+        text.displayHUDText(batch, "Rudolf Fanchini\nISC\nLead Programmer\nA01374448@itesm.mx", MasterScreen.WIDTH/4, 4*(MasterScreen.HEIGHT/6));
+        text.displayHUDText(batch, "Joaquin Rios\nISC\nLead Programmer\nA01375441@itesm.mx", MasterScreen.WIDTH/4, 2*(MasterScreen.HEIGHT/6)-50);
 
         // screen right-hand side
-        text.displayText(batch, "Dany\nGame Art", MasterScreen.WIDTH/2+100, 5*(MasterScreen.HEIGHT/6));
-        text.displayText(batch, "Roberto\nProgrammer", (MasterScreen.WIDTH/2)+150, 3*(MasterScreen.HEIGHT/6));
+        text.displayHUDText(batch, "Daniela Belmonte\nLAD\nGame Art\nA01372992@itesm.mx", MasterScreen.WIDTH/2+140, 4*(MasterScreen.HEIGHT/6));
+        text.displayHUDText(batch, "Roberto Tellez\nISC\nProgrammer\nA01374866@itesm.mx", (MasterScreen.WIDTH/2)+140, 2*(MasterScreen.HEIGHT/6)-50);
 
         batch.end();
 

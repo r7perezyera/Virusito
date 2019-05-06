@@ -17,8 +17,8 @@ public class Virusito extends Game {
     i.e. for all the resources that require the asset manager
      */
     private AssetManager audioManager;
-    private boolean canPlayMusic;
-    private boolean canPlaySound;
+    /*private boolean canPlayMusic;
+    private boolean canPlaySound;*/
 
     //private Music music;
 
@@ -33,12 +33,25 @@ public class Virusito extends Game {
 
         // Pone la pantalla inicial
         setScreen(new LoadingScreen(this));     // original, keep this
-        setCanPlayMusic(true);
-        setCanPlaySound(true);
+        /*setCanPlayMusic(true);
+        setCanPlaySound(true);*/
 
         // create prefs
         Preferences prefs = Gdx.app.getPreferences("userPrefs");
+
         prefs.putBoolean("soundON", true);
+
+        if (!prefs.getBoolean("level1Passed")) {
+            prefs.putBoolean("level1Passed", false);
+        }
+        if (!prefs.getBoolean("level2Passed")) {
+            prefs.putBoolean("level2Passed", false);
+        }
+        if (!prefs.getBoolean("level3Passed")) {
+            prefs.putBoolean("level3Passed", false);
+            prefs.putBoolean("endlessUnlocked", false);
+        }
+
         prefs.flush();
     }
 
@@ -49,7 +62,7 @@ public class Virusito extends Game {
         return audioManager;
     }
 
-    public boolean getCanPlayMusic() {  // isCanPlayMusic   // isMusicEnabled
+    /*public boolean getCanPlayMusic() {  // isCanPlayMusic   // isMusicEnabled
         return canPlayMusic;
     }
 
@@ -63,7 +76,7 @@ public class Virusito extends Game {
 
     public void setCanPlaySound(boolean canPlaySound) {
         this.canPlaySound = canPlaySound;
-    }
+    }*/
 
     @Override
     public void dispose() {
