@@ -27,6 +27,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.LinkedList;
+import java.util.Vector;
 
 import mx.itesm.equipo5.JoyStick;
 import mx.itesm.equipo5.MasterScreen;
@@ -64,11 +65,10 @@ class Endless extends MasterScreen {
     private Touchpad shootingStick;
     private Touchpad movingStick;
 
-    // BOX2D FISICA
     // vamos a agregar una simulacion de fisica
-    private World mundo;    // simulacion
-    private Body cuerpo;    // quien recibe / esta dentro de la simulacion
-    private Box2DDebugRenderer debug;
+    private World world;    // simulacion
+    private Body body;    // quien recibe / esta dentro de la simulacion
+    private Box2DDebugRenderer b2dr;
 
     private Player player; //Personaje
 
@@ -86,8 +86,19 @@ class Endless extends MasterScreen {
 
 
 
+    //Box2D
+
     public Endless(Virusito juego) {
         super(juego);
+        world = new World(new Vector2(0,0),true);
+
+    }
+
+    //Update world
+    public void updateWorld(float dt){
+        world.step(dt,6,2);
+        b2dr = new Box2DDebugRenderer();
+
     }
 
     @Override
@@ -140,15 +151,14 @@ class Endless extends MasterScreen {
 
     private void createJoysticks() {
         Box2D.init();
-        mundo = new World(new Vector2(0f,-9.81f), true);
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.DynamicBody;
         def.position.set(0, 0);
-        cuerpo = mundo.createBody(def);
+        body = world.createBody(def);
 
-        movingStick = new JoyStick("HUD/Pad/padBack.png", "HUD/Pad/padKnob.png", cuerpo).getPad();
+        movingStick = new JoyStick("HUD/Pad/padBack.png", "HUD/Pad/padKnob.png", body).getPad();
         movingStick.setPosition(16,16);
-        shootingStick = new JoyStick("HUD/Pad/padBack.png", "HUD/Pad/padKnob.png", cuerpo).getPad();
+        shootingStick = new JoyStick("HUD/Pad/padBack.png", "HUD/Pad/padKnob.png", body).getPad();
         shootingStick.setPosition(WIDTH-256,16);
 
         // Agregar la escena, finalmente
@@ -159,6 +169,9 @@ class Endless extends MasterScreen {
 
     @Override
     public void render(float delta) {
+        //Box2D
+        b2dr.render(world,camera.combined);
+
         eraseScreen();
 
         timeSinceShot += delta;
