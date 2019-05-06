@@ -7,7 +7,6 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -22,7 +21,6 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -40,6 +38,7 @@ import mx.itesm.equipo5.Objects.movementPattern;
 import mx.itesm.equipo5.Objects.viewingDirection;
 import mx.itesm.equipo5.Text;
 import mx.itesm.equipo5.Virusito;
+import sun.security.util.Length;
 
 class Endless extends MasterScreen {
 
@@ -83,6 +82,7 @@ class Endless extends MasterScreen {
     private difficulty diff = difficulty.EASY;
     private enemyType type;
     private int round = 0;
+    private Texture item;
 
 
 
@@ -120,6 +120,10 @@ class Endless extends MasterScreen {
         spawn();
         getEnemies();
 
+        item = new Texture("Items/Battery.png");
+
+        loadText();
+
         if (isSoundOn) {
             loadMusic();
         }
@@ -127,6 +131,11 @@ class Endless extends MasterScreen {
         player = new Player(300,300,3);
 
         Gdx.input.setCatchBackKey(false);
+    }
+
+    private void loadText() {
+        // construir Text
+        text = new Text();
     }
 
     private void loadMusic() {
@@ -209,11 +218,10 @@ class Endless extends MasterScreen {
         batch.begin();
         player.render(batch);
         batch.draw(life, WIDTH/2-(life.getWidth()/2f),650);
+        batch.draw(item, WIDTH/2-(item.getWidth()/2f), HEIGHT/2-(item.getWidth()/2f));
 
-        // construir Text
-        text = new Text();
-        text.displayText(batch, "Round: " +round, MasterScreen.WIDTH/6, 5*(MasterScreen.HEIGHT/6)+100);
-        text.displayText(batch, "Enemies: " +enemies.size(), MasterScreen.WIDTH*5/6, 5*(MasterScreen.HEIGHT/6)+100);
+        text.displayHUDText(batch, "Round: " +round, MasterScreen.WIDTH/6, 5*(MasterScreen.HEIGHT/6)+100);
+        text.displayHUDText(batch, "Enemies: " +enemies.size(), MasterScreen.WIDTH*5/6, 5*(MasterScreen.HEIGHT/6)+100);
 
 
         if (!bullets.isEmpty()){
