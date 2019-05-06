@@ -18,6 +18,8 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
@@ -99,6 +101,13 @@ class Endless extends MasterScreen {
 
         Body body = world.createBody(bdef);
         //static never move, dynamic are affected, kinematic not affected by world forces
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(25,25);
+
+        FixtureDef fdef = new FixtureDef();
+        fdef.shape = shape;
+        body.createFixture(fdef);
 
 
     }
@@ -187,9 +196,11 @@ class Endless extends MasterScreen {
     @Override
     public void render(float delta) {
         //Box2D
-        b2dr.render(world,camera.combined);
 
         eraseScreen();
+
+
+        b2dr.render(world,camera.combined);
 
         timeSinceShot += delta;
         timeSinceDamage += delta;
