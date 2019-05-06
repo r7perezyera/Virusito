@@ -80,6 +80,7 @@ class Level extends MasterScreen {
     // Users preferences
     private Preferences lvlPrefs = Gdx.app.getPreferences("userPrefs");
     boolean isSoundOn = lvlPrefs.getBoolean("soundOn");
+    boolean lvlPassed = lvlPrefs.getBoolean("level1Passed");
 
 
 
@@ -332,6 +333,7 @@ class Level extends MasterScreen {
         }
         if (collidesWith(doors,checkRectangle)){
             game.setScreen(new WinScreen(game));
+            lvlPrefs.putBoolean("level1Passed", true);
             if (isSoundOn) {
                 music.stop();
             }
