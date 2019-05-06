@@ -33,14 +33,9 @@ class AboutScreen extends MasterScreen {
         background = new Texture("Pantallas/PantallaAcercaDe.jpg");
 
         createButtons();
-        loadText();
 
         Gdx.input.setInputProcessor(aboutStage);
         Gdx.input.setCatchBackKey(false);
-    }
-
-    private void loadText() {
-        text = new Text();
     }
 
     private void createButtons() {
@@ -64,6 +59,8 @@ class AboutScreen extends MasterScreen {
         batch.begin();
         batch.draw(background, 0, 0);
 
+        // construir Text
+        text = new Text();
         text.displayText(batch, "ABOUT US", MasterScreen.WIDTH/2, 5*(MasterScreen.HEIGHT/6)+100);
 
         // screen left-hand side
