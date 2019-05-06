@@ -201,8 +201,8 @@ class Endless extends MasterScreen {
         batch.draw(life, WIDTH/2-(life.getWidth()/2f),650);
         batch.draw(item, WIDTH/2-(item.getWidth()/2f), HEIGHT/2-(item.getWidth()/2f));
 
-        text.displayText(batch, "Round: " +round, MasterScreen.WIDTH/6, 5*(MasterScreen.HEIGHT/6)+100);
-        text.displayText(batch, "Enemies: " +enemies.size(), MasterScreen.WIDTH*5/6, 5*(MasterScreen.HEIGHT/6)+100);
+        text.displayHUDText(batch, "Round: " +round, MasterScreen.WIDTH/6, 5*(MasterScreen.HEIGHT/6)+100);
+        text.displayHUDText(batch, "Enemies: " +enemies.size(), MasterScreen.WIDTH*5/6, 5*(MasterScreen.HEIGHT/6)+100);
 
 
         if (!bullets.isEmpty()){
