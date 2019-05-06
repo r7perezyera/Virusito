@@ -93,6 +93,11 @@ class Endless extends MasterScreen {
         world = new World(new Vector2(0,0),true);
         b2dr = new Box2DDebugRenderer();
 
+        BodyDef bdef = new BodyDef();
+        bdef.position.set(640,360);
+        bdef.type = BodyDef.BodyType.StaticBody;
+        //static never move, dynamic are affected, kinematic not affected by world forces
+
 
     }
 
