@@ -2,11 +2,16 @@ package mx.itesm.equipo5.Objects;
 
 public enum enemyType {
     FLOATER,
-    CRAWLER,
-    TEETH,
     FLOATBOSS,
+    CRAWLER,
     CRAWLBOSS,
-    TEEHTBOSS
+    TEETH,
+    TEEHTBOSS;
+    private static enemyType[] vals = values();
+    public enemyType next()
+    {
+        return vals[(this.ordinal()+1) % vals.length];
+    }
 
 
 }
