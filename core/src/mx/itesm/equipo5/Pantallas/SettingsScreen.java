@@ -25,6 +25,8 @@ class SettingsScreen extends MasterScreen {
 
     private Stage settingsStage;
 
+    private Text text;
+
     private ImageButton homeButton;
     private ImageButton musicOnButton;
     private ImageButton musicOffButton;
@@ -46,9 +48,14 @@ class SettingsScreen extends MasterScreen {
         background = new Texture("Pantallas/PantallaAjustes.jpg");
 
         createButtons();
+        loadText();
 
         Gdx.input.setInputProcessor(settingsStage);
         Gdx.input.setCatchBackKey(false);
+    }
+
+    private void loadText() {
+        text = new Text();
     }
 
     private void createButtons() {
@@ -113,7 +120,6 @@ class SettingsScreen extends MasterScreen {
         batch.begin();
         batch.draw(background, 0, 0);
 
-        Text text = new Text();
         text.displayText(batch, "SETTINGS", MasterScreen.WIDTH/2, 5*(MasterScreen.HEIGHT/6)+100);
 
         batch.draw(musicLabelTexture, (MasterScreen.WIDTH/2)-180, (MasterScreen.HEIGHT/2)+70);
