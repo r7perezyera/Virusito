@@ -96,6 +96,8 @@ class Endless extends MasterScreen {
         BodyDef bdef = new BodyDef();
         bdef.position.set(640,360);
         bdef.type = BodyDef.BodyType.StaticBody;
+
+        Body body = world.createBody(bdef);
         //static never move, dynamic are affected, kinematic not affected by world forces
 
 
