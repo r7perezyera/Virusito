@@ -68,7 +68,7 @@ class Endless extends MasterScreen {
     private Touchpad shootingStick;
     private Touchpad movingStick;
 
-    // vamos a agregar una simulacion de fisica
+    // Box2D variables
     private World world;    // simulacion
     private Body body;    // quien recibe / esta dentro de la simulacion
     private Box2DDebugRenderer b2dr;
@@ -94,31 +94,17 @@ class Endless extends MasterScreen {
 
     public Endless(Virusito juego) {
         super(juego);
+
         world = new World(new Vector2(0,0),true);
         b2dr = new Box2DDebugRenderer();
 
         BodyDef bdef = new BodyDef();
-        bdef.position.set(640,360);
-        bdef.type = BodyDef.BodyType.StaticBody;
-
-        Body body = world.createBody(bdef);
-        //static never move, dynamic are affected, kinematic not affected by world forces
-
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(25,25);
-
         FixtureDef fdef = new FixtureDef();
-        fdef.shape = shape;
-        body.createFixture(fdef);
-
+        Body body;
 
     }
 
-    //Update world
-    public void updateWorld(float dt){
-        world.step(dt,6,2);
-
-    }
 
     @Override
     public void show() {
@@ -197,12 +183,8 @@ class Endless extends MasterScreen {
 
     @Override
     public void render(float delta) {
-        //Box2D
 
         eraseScreen();
-
-
-        b2dr.render(world,camera.combined);
 
         timeSinceShot += delta;
         timeSinceDamage += delta;
@@ -261,6 +243,8 @@ class Endless extends MasterScreen {
         batch.setProjectionMatrix(HUDcamera.combined);
         HUDstage.draw();
     }
+
+
 
     private void spawn() {
         enemies = new LinkedList<Minion>();
