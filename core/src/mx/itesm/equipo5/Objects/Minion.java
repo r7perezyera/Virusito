@@ -62,6 +62,14 @@ public class Minion extends Entity {
 
 
         if (this.diff == difficulty.EASY){
+            health=5;
+            speed =1;
+        }
+        if (this.diff == difficulty.MEDIUM){
+            health=8;
+            speed =1;
+        }
+        if (this.diff == difficulty.HARD){
             health=10;
             speed =1;
         }
@@ -139,5 +147,6 @@ public class Minion extends Entity {
         }
 
     }
+
 
 }

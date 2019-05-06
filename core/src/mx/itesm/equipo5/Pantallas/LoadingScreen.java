@@ -18,7 +18,7 @@ public class LoadingScreen extends MasterScreen {
 
     @Override
     public void show() {
-        logo = new Texture("Logo/TecMonterrey.png");
+        logo = new Texture("Pantallas/PantallaLoading.png");
     }
 
     @Override
@@ -31,7 +31,7 @@ public class LoadingScreen extends MasterScreen {
 
         //prueba tiempo
         timeCounter +=delta;
-        if (timeCounter >=1){
+        if (timeCounter >=3){
             //Conto 1 s
             game.setScreen(new MenuScreen(game));
         }
