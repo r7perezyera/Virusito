@@ -132,12 +132,14 @@ class Endless extends MasterScreen {
 
         assetManager = new AssetManager();
 
+
         loadTextures();
         loadMap();
         setPhysics();
         buildHUD();
         createJoysticks();
         getWalls();
+        player = new Player(300,300,3,this.world);
         spawn();
         getEnemies();
 
@@ -152,7 +154,7 @@ class Endless extends MasterScreen {
             loadSFX();
         }
 
-        player = new Player(300,300,3,this.world);
+
 
         Gdx.input.setCatchBackKey(true);
     }
@@ -381,15 +383,33 @@ class Endless extends MasterScreen {
             diff = diff.next();
             System.out.println(diff);
             Minion minion = new Minion(type.next(), movementPattern.ZIGZAG, diff, 500, 500,world);
+            minion.setBoss();
             enemies.add(minion);
         }
 
-        int xbegin = 200;
-        int ybegin = 200;
+        float xbegin = player.getPosition().x;
+        float ybegin = player.getPosition().y;
         for (int i = 0; i<numEnemies; i++){
-            xbegin += 50;
-            ybegin += 50;
-            Minion minion = new Minion(type, movementPattern.ZIGZAG, diff, xbegin, ybegin,world);
+            Random random = new Random();
+            int turn =random.nextInt(2);
+            if (turn==0) turn =-1;
+            int distX = turn*random.nextInt(100);
+            distX += turn*150 +xbegin;
+            int distY = turn*random.nextInt(100);
+            distY += turn*150 +ybegin;
+
+            if (distX<=0 ){
+                distX = (int)xbegin+300;
+            }else if(distX>=WIDTH){
+                distX = (int) (WIDTH-300);
+            }
+            if (distY<=0){
+                distY = (int) ybegin+300;
+            }else if(distX>=HEIGHT){
+                distX = (int) (HEIGHT-300);
+            }
+
+            Minion minion = new Minion(type, movementPattern.ZIGZAG, diff, distX, distY,world);
             enemies.add(minion);
         }
 

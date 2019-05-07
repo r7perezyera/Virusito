@@ -66,7 +66,7 @@ public class Minion extends Entity {
 
 
         if (this.diff == difficulty.EASY){
-            health=1;
+            health=3;
             speed =1;
         }
         if (this.diff == difficulty.MEDIUM){
@@ -82,6 +82,10 @@ public class Minion extends Entity {
         this.world = world;
         defineMinion(x,y);
 
+    }
+
+    public void setBoss(){
+        health +=3;
     }
 
     private void defineMinion(float x, float y) {
