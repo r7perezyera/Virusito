@@ -40,6 +40,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.LinkedList;
+import java.util.Random;
 import java.util.Vector;
 
 import mx.itesm.equipo5.B2DWorldCreator;
@@ -47,6 +48,7 @@ import mx.itesm.equipo5.Button;
 import mx.itesm.equipo5.JoyStick;
 import mx.itesm.equipo5.MasterScreen;
 import mx.itesm.equipo5.Objects.FriendlyBullet;
+import mx.itesm.equipo5.Objects.Item;
 import mx.itesm.equipo5.Objects.Minion;
 import mx.itesm.equipo5.Objects.Player;
 import mx.itesm.equipo5.Objects.difficulty;
@@ -66,6 +68,7 @@ class Endless extends MasterScreen {
     private float timeSinceDamage;
 
     private LinkedList<FriendlyBullet> bullets = new LinkedList<FriendlyBullet>();
+    private LinkedList<Item> pilas = new LinkedList<Item>();
     private LinkedList<Minion> enemies = new LinkedList<Minion>();
     private float timeSinceShot;
     private float friendlyShotCooldown = 0.5f;
@@ -106,7 +109,6 @@ class Endless extends MasterScreen {
     private difficulty diff = difficulty.EASY;
     private enemyType type;
     private int round = 0;
-    private Texture item;
 
     private GameState gameState;
 
@@ -139,7 +141,7 @@ class Endless extends MasterScreen {
         spawn();
         getEnemies();
 
-        item = new Texture("Items/Battery.png");
+
 
         loadText();
         gameState = GameState.PLAYING;
@@ -282,7 +284,6 @@ class Endless extends MasterScreen {
         batch.begin();
         player.render(batch);
         batch.draw(life, WIDTH/2-(life.getWidth()/2f),650);
-        batch.draw(item, WIDTH/2-(item.getWidth()/2f), HEIGHT/2-(item.getWidth()/2f));
 
         text.displayHUDText(batch, "Round: " +round, MasterScreen.WIDTH/6, 5*(MasterScreen.HEIGHT/6)+100);
         text.displayHUDText(batch, "Enemies: " +enemies.size(), MasterScreen.WIDTH*5/6, 5*(MasterScreen.HEIGHT/6)+100);
@@ -315,6 +316,11 @@ class Endless extends MasterScreen {
             spawn();
             getEnemies();
 
+        }
+        if(!pilas.isEmpty()){
+            for (Item pila : pilas){
+                pila.render(batch);
+            }
         }
 
 
@@ -368,7 +374,7 @@ class Endless extends MasterScreen {
             numEnemies = 7;
             diff = diff.next();
             System.out.println(diff);
-            Minion minion = new Minion(type.next(), movementPattern.FOLLOWER, diff, 500, 500,world);
+            Minion minion = new Minion(type.next(), movementPattern.ZIGZAG, diff, 500, 500,world);
             enemies.add(minion);
         }
 
@@ -377,7 +383,7 @@ class Endless extends MasterScreen {
         for (int i = 0; i<numEnemies; i++){
             xbegin += 50;
             ybegin += 50;
-            Minion minion = new Minion(type, movementPattern.ZIGZAG, diff, xbegin, ybegin,world);
+            Minion minion = new Minion(type, movementPattern.FOLLOWER, diff, xbegin, ybegin,world);
             enemies.add(minion);
         }
 
@@ -536,6 +542,11 @@ class Endless extends MasterScreen {
                         if (enemies.get(j).isDestroyed()) {
                             if (isSoundOn) {
                                 minionDeathSound.play();
+                            }
+                            Random random = new Random();
+                            if (random.nextInt(10) == 4){
+                                Item pila = new Item(enemies.get(i).getPosition());
+                                pilas.add(pila);
                             }
                             enemies.remove(j);
                             enemyRect.remove(j);
