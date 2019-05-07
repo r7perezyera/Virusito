@@ -616,7 +616,7 @@ class Endless extends MasterScreen {
             //Texture restartButton;
 
             Pixmap pixmap = new Pixmap((int) (WIDTH * 0.7f), (int) (HEIGHT * 0.8f), Pixmap.Format.RGBA8888);
-            pixmap.setColor(0.3f, 0.75f, 0.3f, 0.5f);
+            pixmap.setColor(1f, 1f, 1f, 0.75f);
             pixmap.fillRectangle(0, 0, pixmap.getWidth(), pixmap.getHeight());
             Texture texturaRectangulo = new Texture(pixmap);
             pixmap.dispose();
