@@ -119,7 +119,7 @@ class Endless extends MasterScreen {
             loadMusic();
         }
 
-        player = new Player(300,300,3);
+        player = new Player(300,300,3,world);
 
         Gdx.input.setCatchBackKey(false);
     }
