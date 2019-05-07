@@ -29,9 +29,11 @@ class SettingsScreen extends MasterScreen {
     private ImageButton homeButton;
     private ImageButton musicOnButton;
     private ImageButton musicOffButton;
+    private ImageButton storyResetButton;
 
     Texture musicLabelTexture = new Texture("Botones/Music.png");
     Texture SFXLabelTexture = new Texture("Botones/Vfx.png");
+    Texture storyResetTexture = new Texture("Botones/Replay_Bttn.png");
 
     private Preferences lvlPrefs = Gdx.app.getPreferences("userPrefs");
 
@@ -105,6 +107,22 @@ class SettingsScreen extends MasterScreen {
             settingsStage.addActor(musicOffButton);
         }
 
+
+
+        storyResetButton = new Button("Botones/Replay_Bttn.png").getiButton();
+        storyResetButton.setPosition((MasterScreen.WIDTH/2)+25, (MasterScreen.HEIGHT/2)-150);
+        settingsStage.addActor(storyResetButton);
+        storyResetButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                // Responder al evento del boton
+                System.out.println("level1Passed pref set to false !!");
+                lvlPrefs.putBoolean("level1Passed", false);
+                lvlPrefs.flush();
+            }
+        });
+
     }
 
     @Override
@@ -116,6 +134,7 @@ class SettingsScreen extends MasterScreen {
 
         Text text = new Text();
         text.displayText(batch, "SETTINGS", MasterScreen.WIDTH/2, 5*(MasterScreen.HEIGHT/6)+100);
+        text.displayButtonText(batch, "Reset story?", (MasterScreen.WIDTH/2)+50, (MasterScreen.HEIGHT/2)-30);
 
         batch.draw(musicLabelTexture, (MasterScreen.WIDTH/2)-180, (MasterScreen.HEIGHT/2)+70);
         batch.draw(SFXLabelTexture, (MasterScreen.WIDTH/2)-20, (MasterScreen.HEIGHT/2)+30);

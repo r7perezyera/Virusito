@@ -38,6 +38,7 @@ public class Virusito extends Game {
         Preferences prefs = Gdx.app.getPreferences("userPrefs");
 
         prefs.putBoolean("soundON", true);
+        prefs.putBoolean("level1Passed", false);
 
         if (!prefs.getBoolean("level1Passed")) {
             prefs.putBoolean("level1Passed", false);
