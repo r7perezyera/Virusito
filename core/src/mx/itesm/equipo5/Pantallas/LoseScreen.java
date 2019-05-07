@@ -1,6 +1,7 @@
 package mx.itesm.equipo5.Pantallas;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -30,7 +31,7 @@ class LoseScreen extends MasterScreen {
         createButtons();
         background = new Texture("Pantallas/gameover.jpg");
         Gdx.input.setInputProcessor(menuStage);
-        Gdx.input.setCatchBackKey(false);
+        Gdx.input.setCatchBackKey(true);
     }
 
     private void createButtons() {
@@ -59,6 +60,10 @@ class LoseScreen extends MasterScreen {
         batch.end();
 
         menuStage.draw();
+
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+            game.setScreen(new MenuScreen(game));
+        }
     }
 
     @Override
