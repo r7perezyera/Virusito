@@ -2,17 +2,16 @@ package mx.itesm.equipo5.Pantallas;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 
 import mx.itesm.equipo5.MasterScreen;
 import mx.itesm.equipo5.Text;
 import mx.itesm.equipo5.Virusito;
 
-public class SpashScreen extends MasterScreen {
+public class SplashScreen extends MasterScreen {
 
     private Texture background;
+    private Texture logo;
 
     private Stage aboutStage;
 
@@ -20,13 +19,15 @@ public class SpashScreen extends MasterScreen {
 
     private float timeCounter;
 
-    public SpashScreen(Virusito game) {
+    public SplashScreen(Virusito game) {
         super(game);
     }
 
     @Override
     public void show() {
         background = new Texture("Pantallas/PantallaLoading.png");
+        logo = new Texture("Pantallas/splash_amborgesa.png");
+
 
     }
 
@@ -36,7 +37,7 @@ public class SpashScreen extends MasterScreen {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-
+        batch.draw(logo, WIDTH/2-logo.getWidth()/2f, HEIGHT/2-logo.getHeight()/2f);
         batch.end();
 
         //prueba tiempo
@@ -60,6 +61,7 @@ public class SpashScreen extends MasterScreen {
 
     @Override
     public void dispose() {
+        logo.dispose();
         batch.dispose();
     }
 }
