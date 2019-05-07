@@ -35,6 +35,8 @@ class AboutScreen extends MasterScreen {
 
         createButtons();
 
+        text = new Text();
+
         Gdx.input.setInputProcessor(aboutStage);
         Gdx.input.setCatchBackKey(true);
     }
@@ -60,7 +62,7 @@ class AboutScreen extends MasterScreen {
         batch.begin();
         batch.draw(background, 0, 0);
 
-        text.displayButtonText(batch, "ABOUT US", MasterScreen.WIDTH/2, 5*(MasterScreen.HEIGHT/6)+100);
+        text.displayText(batch, "ABOUT US", MasterScreen.WIDTH/2, 5*(MasterScreen.HEIGHT/6)+100);
 
         // screen left-hand side
         text.displayHUDText(batch, "Rudolf Fanchini\nISC\nLead Programmer\nA01374448@itesm.mx", MasterScreen.WIDTH/4, 4*(MasterScreen.HEIGHT/6));

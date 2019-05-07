@@ -2,12 +2,16 @@ package mx.itesm.equipo5.Pantallas;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -22,15 +26,22 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.LinkedList;
 import java.util.Vector;
 
+import mx.itesm.equipo5.Button;
 import mx.itesm.equipo5.JoyStick;
 import mx.itesm.equipo5.MasterScreen;
 import mx.itesm.equipo5.Objects.FriendlyBullet;
@@ -45,6 +56,8 @@ import mx.itesm.equipo5.Virusito;
 import sun.security.util.Length;
 
 class Endless extends MasterScreen {
+
+    private AssetManager assetManager;
 
     //Esto es para probar colisiones
     private LinkedList<Rectangle> walls;
@@ -77,6 +90,11 @@ class Endless extends MasterScreen {
 
     private LinkedList<Rectangle> enemyRect;
     private Music music;
+    private Sound shootingSound;
+    private Sound playerDeathSound;
+    private Sound minionDeathSound;
+    private Sound bossDeathSound;
+
 
     // Users preferences
     private Preferences lvlPrefs = Gdx.app.getPreferences("userPrefs");
@@ -89,6 +107,10 @@ class Endless extends MasterScreen {
     private Texture item;
 
     private GameState gameState;
+
+    private ImageButton pauseButton;
+
+    private PauseScene pauseScene;
 
 
 
@@ -105,6 +127,9 @@ class Endless extends MasterScreen {
     public void show() {
     // Agregar la escena, finalmente
 
+        assetManager = new AssetManager();
+
+        loadTextures();
         loadMap();
         setPhysics();
         buildHUD();
@@ -118,13 +143,20 @@ class Endless extends MasterScreen {
         loadText();
         gameState = GameState.PLAYING;
 
+
         if (isSoundOn) {
             loadMusic();
+            loadSFX();
         }
 
         player = new Player(300,300,3,this.world);
 
         Gdx.input.setCatchBackKey(false);
+    }
+
+    private void loadTextures() {
+        assetManager.load("Botones/Play_Bttn.png", Texture.class);
+        assetManager.load("Botones/Home_Bttn.png", Texture.class);
     }
 
     private void setPhysics() {
@@ -163,13 +195,20 @@ class Endless extends MasterScreen {
         music.play();
     }
 
+    private void loadSFX(){
+        shootingSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Shoot.wav"));
+        playerDeathSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/PlayerDeath.wav"));
+        minionDeathSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/DeathMinion.wav"));
+        bossDeathSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/DeathBoss.wav"));
+    }
+
 
     private void loadMap() {
-        AssetManager manager = new AssetManager();
-        manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
-        manager.load("Mapa1/endless.tmx", TiledMap.class);
-        manager.finishLoading();
-        map = manager.get("Mapa1/endless.tmx");
+        //AssetManager manager = new AssetManager();
+        assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+        assetManager.load("Mapa1/endless.tmx", TiledMap.class);
+        assetManager.finishLoading();
+        map = assetManager.get("Mapa1/endless.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(map);
     }
 
@@ -180,6 +219,26 @@ class Endless extends MasterScreen {
         HUDview = new StretchViewport(WIDTH, HEIGHT, HUDcamera);
 
         HUDstage = new Stage(HUDview);
+
+
+        Texture textPauseButton = new Texture("Botones/Pause_Bttn.png");
+        TextureRegionDrawable trdPauseButton = new TextureRegionDrawable(new TextureRegion(textPauseButton));
+        ImageButton pauseButton = new Button("Botones/Pause_Bttn.png").getiButton();
+        pauseButton.setPosition(MasterScreen.WIDTH - 1.5f*pauseButton.getWidth(), MasterScreen.HEIGHT - 2*pauseButton.getHeight());
+        HUDstage.addActor(pauseButton);
+        pauseButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                gameState = GameState.PAUSED;
+                pauseScene = new PauseScene(HUDview, batch);
+                Gdx.input.setInputProcessor(pauseScene);
+
+            }
+        });
+
+
+
+
 
         // ahora la escena es quien atiende los eventos
         Gdx.input.setInputProcessor(HUDstage);
@@ -231,6 +290,7 @@ class Endless extends MasterScreen {
         }else {
             game.setScreen(new LoseScreen(game));
             if (isSoundOn) {
+                playerDeathSound.play();
                 music.stop();
             }
         }
@@ -270,8 +330,20 @@ class Endless extends MasterScreen {
 
 
         batch.end();
+
+        if (gameState == GameState.PAUSED) {
+            pauseScene.draw();
+        }
+
+
         batch.setProjectionMatrix(HUDcamera.combined);
         HUDstage.draw();
+
+        if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
+            gameState = GameState.PAUSED;
+            pauseScene = new PauseScene(HUDview, batch);
+            Gdx.input.setInputProcessor(pauseScene);
+        }
 
         //Box2D
         b2dr.render(world,camera.combined);
@@ -327,18 +399,30 @@ class Endless extends MasterScreen {
                 FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, 0);
                 bullets.add(bullet);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
+                if(isSoundOn){
+                    shootingSound.play();
+                }
             } else if (46 <= angle && angle <= 136) {
                 FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) Math.PI / 2);
                 bullets.add(bullet);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
+                if(isSoundOn){
+                    shootingSound.play();
+                }
             } else if (136 <= angle && angle <= 225) {
                 FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) Math.PI);
                 bullets.add(bullet);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
+                if(isSoundOn){
+                    shootingSound.play();
+                }
             } else if (226 <= angle && angle <= 315) {
                 FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) (3 * Math.PI) / 2);
                 bullets.add(bullet);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
+                if(isSoundOn){
+                    shootingSound.play();
+                }
             }
 
         }else if (timeSinceShot >= friendlyShotCooldown*2) {
@@ -431,6 +515,9 @@ class Endless extends MasterScreen {
                         bullet.destroy();
                         enemies.get(j).doDamage(1);
                         if (enemies.get(j).isDestroyed()) {
+                            if (isSoundOn) {
+                                minionDeathSound.play();
+                            }
                             enemies.remove(j);
                             enemyRect.remove(j);
                         }
@@ -469,4 +556,85 @@ class Endless extends MasterScreen {
         HUDstage.dispose();
         mapRenderer.dispose();
     }
+
+    private class PauseScene extends Stage {
+
+        public PauseScene(Viewport view, SpriteBatch batch) {
+            super(view, batch);
+            // Creación de texturas
+            Texture texturaBtnSalir;
+            Texture texturaBtnContinuar;
+            //Texture restartButton;
+
+            Pixmap pixmap = new Pixmap((int) (WIDTH * 0.7f), (int) (HEIGHT * 0.8f), Pixmap.Format.RGBA8888);
+            pixmap.setColor(0f, 0, 0, 0f);
+            pixmap.fillRectangle(0, 0, pixmap.getWidth(), pixmap.getHeight());
+            Texture texturaRectangulo = new Texture(pixmap);
+            pixmap.dispose();
+            Image rectImg = new Image(texturaRectangulo);
+            rectImg.setPosition(0.15f * WIDTH, 0.1f * HEIGHT);
+            this.addActor(rectImg);
+
+            texturaBtnSalir = assetManager.get("Botones/Home_Bttn.png");
+            TextureRegionDrawable trdSalir = new TextureRegionDrawable(new TextureRegion(texturaBtnSalir));
+            ImageButton btnSalir = new ImageButton(trdSalir);
+            btnSalir.setPosition(WIDTH / 2 - btnSalir.getWidth() / 2, HEIGHT / 2);
+            //HUDstage.addActor(btnSalir);
+            btnSalir.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    // Regresa al menú
+                    if (isSoundOn) {
+                        music.dispose();
+                    }
+                    game.setScreen(new MenuScreen(game));
+
+                }
+            });
+            this.addActor(btnSalir);
+
+            texturaBtnContinuar = assetManager.get("Botones/Play_Bttn.png");
+            TextureRegionDrawable trdContinuar = new TextureRegionDrawable(
+                    new TextureRegion(texturaBtnContinuar));
+            ImageButton btnContinuar = new ImageButton(trdContinuar);
+            btnContinuar.setPosition(WIDTH / 2 - btnContinuar.getWidth() / 2 - 150, HEIGHT / 4);
+            //HUDstage.addActor(btnContinuar);
+            btnContinuar.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    // return to the game
+                    loadMap();
+                    Gdx.input.setInputProcessor(HUDstage);
+                    gameState = GameState.PLAYING;
+                }
+            });
+            this.addActor(btnContinuar);
+
+
+            /*restartButton = assetManager.get("Botones/BotonReinicioN.png");
+
+            TextureRegionDrawable trdRestart = new TextureRegionDrawable(new TextureRegion(restartButton));
+
+            ImageButton restartBtn = new ImageButton(trdRestart);
+
+            restartBtn.setPosition(WIDTH/2 - restartBtn.getWidth()/2 + 150, HEIGHT/4);
+
+            restartBtn.addListener(new ClickListener() {
+
+                @Override
+
+                public void clicked(InputEvent event, float x, float y) {
+                    if(isSoundOn) {
+                        music.stop();
+                    }
+                    game.setScreen(new Endless(game));
+
+                }
+
+            });
+
+            this.addActor(restartBtn);*/
+        }
+    }
+
 }

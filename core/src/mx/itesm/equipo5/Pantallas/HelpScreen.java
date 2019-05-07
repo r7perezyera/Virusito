@@ -35,6 +35,8 @@ class HelpScreen extends MasterScreen {
 
         createButtons();
 
+        text = new Text();
+
         Gdx.input.setInputProcessor(helpStage);
         Gdx.input.setCatchBackKey(true);
     }
@@ -60,8 +62,7 @@ class HelpScreen extends MasterScreen {
         batch.begin();
         batch.draw(background, 0, 0);
 
-        // construir Text
-        text = new Text();
+
         text.displayText(batch, "HOW TO PLAY", MasterScreen.WIDTH/2, 5*(MasterScreen.HEIGHT/6)+100);
 
         text.displayText(batch, "Use the joystick on the left\nto move around the map",
