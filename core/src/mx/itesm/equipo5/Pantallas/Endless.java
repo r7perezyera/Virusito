@@ -2,15 +2,11 @@ package mx.itesm.equipo5.Pantallas;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -23,20 +19,13 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.LinkedList;
 
-import mx.itesm.equipo5.Button;
 import mx.itesm.equipo5.JoyStick;
 import mx.itesm.equipo5.MasterScreen;
 import mx.itesm.equipo5.Objects.FriendlyBullet;
@@ -51,8 +40,6 @@ import mx.itesm.equipo5.Virusito;
 import sun.security.util.Length;
 
 class Endless extends MasterScreen {
-
-    private AssetManager assetManager;
 
     //Esto es para probar colisiones
     private LinkedList<Rectangle> walls;
@@ -98,10 +85,6 @@ class Endless extends MasterScreen {
     private Texture item;
 
     private GameState gameState;
-
-    private ImageButton pauseButton;
-
-    private PauseScene pauseScene;
 
 
 
@@ -162,30 +145,6 @@ class Endless extends MasterScreen {
         HUDview = new StretchViewport(WIDTH, HEIGHT, HUDcamera);
 
         HUDstage = new Stage(HUDview);
-
-
-
-        Texture pauseButton = new Texture("Botones/Pause_Bttn.png");
-        TextureRegionDrawable trdPauseButton = new TextureRegionDrawable(new TextureRegion(pauseButton));
-        ImageButton imgPauseButton = new Button("Botones/Pause_Bttn.png").getiButton();
-        imgPauseButton.setPosition(MasterScreen.WIDTH - imgPauseButton.getWidth(), MasterScreen.HEIGHT - imgPauseButton.getHeight());
-        imgPauseButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                // response
-                //clairo.disableControls=true;
-                gameState = GameState.PAUSED;
-
-                // check if it works fine before sticking it to the whole block
-                // turn pause scene on
-                pauseScene = new PauseScene(HUDview, batch);
-                Gdx.input.setInputProcessor(pauseScene);
-
-            }
-        });
-
-
-
 
         // ahora la escena es quien atiende los eventos
         Gdx.input.setInputProcessor(HUDstage);
@@ -270,12 +229,6 @@ class Endless extends MasterScreen {
         batch.end();
         batch.setProjectionMatrix(HUDcamera.combined);
         HUDstage.draw();
-
-        if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
-            gameState = GameState.PAUSED;
-            pauseScene = new PauseScene(HUDview, batch);
-            Gdx.input.setInputProcessor(pauseScene);
-        }
     }
 
     private void spawn() {
@@ -463,84 +416,5 @@ class Endless extends MasterScreen {
     public void dispose() {
         HUDstage.dispose();
         mapRenderer.dispose();
-    }
-
-    private class PauseScene extends Stage {
-
-        public PauseScene(Viewport view, SpriteBatch batch) {
-            super(view, batch);
-            // Creación de texturas
-            Texture texturaBtnSalir;
-            Texture texturaBtnContinuar;
-            Texture restartButton;
-
-            Pixmap pixmap = new Pixmap((int) (WIDTH * 0.7f), (int) (HEIGHT * 0.8f), Pixmap.Format.RGBA8888);
-            pixmap.setColor(0f, 0, 0, 0f);
-            pixmap.fillRectangle(0, 0, pixmap.getWidth(), pixmap.getHeight());
-            Texture texturaRectangulo = new Texture(pixmap);
-            pixmap.dispose();
-            Image rectImg = new Image(texturaRectangulo);
-            rectImg.setPosition(0.15f * WIDTH, 0.1f * HEIGHT);
-            this.addActor(rectImg);
-
-            texturaBtnSalir = assetManager.get("Botones/Home_Bttn.png");
-            TextureRegionDrawable trdSalir = new TextureRegionDrawable(
-                    new TextureRegion(texturaBtnSalir));
-            ImageButton btnSalir = new ImageButton(trdSalir);
-            btnSalir.setPosition(WIDTH / 2 - btnSalir.getWidth() / 2, HEIGHT / 2);
-            btnSalir.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    // Regresa al menú
-                    if (isSoundOn) {
-                        music.dispose();
-                    }
-                    game.setScreen(new MenuScreen(game));
-
-                }
-            });
-            this.addActor(btnSalir);
-
-            texturaBtnContinuar = assetManager.get("Botones/Play_Bttn.png");
-            TextureRegionDrawable trdContinuar = new TextureRegionDrawable(
-                    new TextureRegion(texturaBtnContinuar));
-            ImageButton btnContinuar = new ImageButton(trdContinuar);
-            btnContinuar.setPosition(WIDTH / 2 - btnContinuar.getWidth() / 2 - 150, HEIGHT / 4);
-            btnContinuar.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    // return to the game
-                    loadMap();
-                    Gdx.input.setInputProcessor(HUDstage);
-                    gameState = GameState.PLAYING;
-                }
-            });
-            this.addActor(btnContinuar);
-
-
-            /*restartButton = assetManager.get("Botones/BotonReinicioN.png");
-
-            TextureRegionDrawable trdRestart = new TextureRegionDrawable(new TextureRegion(restartButton));
-
-            ImageButton restartBtn = new ImageButton(trdRestart);
-
-            restartBtn.setPosition(WIDTH/2 - restartBtn.getWidth()/2 + 150, HEIGHT/4);
-
-            restartBtn.addListener(new ClickListener() {
-
-                @Override
-
-                public void clicked(InputEvent event, float x, float y) {
-                    if(isSoundOn) {
-                        music.stop();
-                    }
-                    game.setScreen(new Endless(game));
-
-                }
-
-            });
-
-            this.addActor(restartBtn);*/
-        }
     }
 }
