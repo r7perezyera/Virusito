@@ -103,12 +103,14 @@ class Endless extends MasterScreen {
 
     // Users preferences
     private Preferences lvlPrefs = Gdx.app.getPreferences("userPrefs");
-    boolean isSoundOn = lvlPrefs.getBoolean("soundOn");
+    private boolean isSoundOn = lvlPrefs.getBoolean("soundOn");
+    private int highestRound = lvlPrefs.getInteger("endlessBestRound");
 
     //rounds
     private difficulty diff = difficulty.EASY;
     private enemyType type;
     private int round = 0;
+
 
     private GameState gameState;
 
@@ -280,6 +282,7 @@ class Endless extends MasterScreen {
                 playerDeathSound.play();
                 music.stop();
             }
+            lvlPrefs.putInteger("endlessBestRound",round);
         }
 
 
