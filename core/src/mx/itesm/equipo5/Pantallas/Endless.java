@@ -95,29 +95,6 @@ class Endless extends MasterScreen {
     public Endless(Virusito juego) {
         super(juego);
 
-        world = new World(new Vector2(0,0),true);
-        b2dr = new Box2DDebugRenderer();
-
-        BodyDef bdef = new BodyDef();
-        PolygonShape shape = new PolygonShape();
-        FixtureDef fdef = new FixtureDef();
-        Body body;
-
-        /*
-        for (MapObject object : map.getLayers().get("Paredes").getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set(rect.getX()+rect.getWidth()/2,rect.getY()+rect.getHeight()/2);
-
-            body = world.createBody(bdef);
-
-            shape.setAsBox(rect.getWidth()/2,rect.getHeight()/2);
-            fdef.shape = shape;
-
-            body.createFixture(fdef);
-        }
-        */
 
     }
 
@@ -127,6 +104,7 @@ class Endless extends MasterScreen {
     // Agregar la escena, finalmente
 
         loadMap();
+        setPhysics();
         buildHUD();
         createJoysticks();
         getWalls();
@@ -144,6 +122,31 @@ class Endless extends MasterScreen {
         player = new Player(300,300,3);
 
         Gdx.input.setCatchBackKey(false);
+    }
+
+    private void setPhysics() {
+        world = new World(new Vector2(0,0),true);
+        b2dr = new Box2DDebugRenderer();
+
+        BodyDef bdef = new BodyDef();
+        PolygonShape shape = new PolygonShape();
+        FixtureDef fdef = new FixtureDef();
+        Body body;
+
+
+        for (MapObject object : map.getLayers().get("Paredes").getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            bdef.type = BodyDef.BodyType.StaticBody;
+            bdef.position.set(rect.getX()+rect.getWidth()/2,rect.getY()+rect.getHeight()/2);
+
+            body = world.createBody(bdef);
+
+            shape.setAsBox(rect.getWidth()/2,rect.getHeight()/2);
+            fdef.shape = shape;
+
+            body.createFixture(fdef);
+        }
     }
 
     private void loadText() {
@@ -206,6 +209,7 @@ class Endless extends MasterScreen {
         timeSinceDamage += delta;
         shoot();
 
+
         updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY());
 
         batch.setProjectionMatrix(camera.combined);
@@ -258,6 +262,9 @@ class Endless extends MasterScreen {
         batch.end();
         batch.setProjectionMatrix(HUDcamera.combined);
         HUDstage.draw();
+
+        //Box2D
+        b2dr.render(world,camera.combined);
     }
 
 

@@ -36,7 +36,7 @@ public class Player extends Entity {
     private viewingDirection dir =  viewingDirection.FRONT;
 
 
-    public Player(float x, float y, float health) {
+    public Player(float x, float y, float health,World world) {
 
         width = 50;
         height = 57;
@@ -81,6 +81,10 @@ public class Player extends Entity {
         sprite.setPosition(x,y);
 
         rectangle.set(x,y,width,height);
+
+        //Box2D
+        this.world = world;
+        definePlayer();
 
 
     }
