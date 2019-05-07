@@ -121,7 +121,6 @@ class Endless extends MasterScreen {
     public Endless(Virusito juego) {
         super(juego);
 
-
     }
 
 
@@ -153,7 +152,7 @@ class Endless extends MasterScreen {
 
         player = new Player(300,300,3,this.world);
 
-        Gdx.input.setCatchBackKey(false);
+        Gdx.input.setCatchBackKey(true);
     }
 
     private void loadTextures() {
@@ -170,7 +169,6 @@ class Endless extends MasterScreen {
     }
 
     private void loadText() {
-        // construir Text
         text = new Text();
     }
 
@@ -186,7 +184,6 @@ class Endless extends MasterScreen {
         minionDeathSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/DeathMinion.wav"));
         bossDeathSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/DeathBoss.wav"));
     }
-
 
     private void loadMap() {
         //AssetManager manager = new AssetManager();
@@ -259,12 +256,13 @@ class Endless extends MasterScreen {
         timeSinceDamage += delta;
         shoot();
 
-        updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY());
+        updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY(), true);
 
         batch.setProjectionMatrix(camera.combined);
         // render the game map
         mapRenderer.setView(camera);
         mapRenderer.render();
+
 
         if (player.getHealth()==3){
             life = new Texture("HUD/Bateria/Bateria_Llena.png");
@@ -280,6 +278,7 @@ class Endless extends MasterScreen {
             }
         }
 
+
         batch.begin();
         player.render(batch);
         batch.draw(life, WIDTH/2-(life.getWidth()/2f),650);
@@ -290,7 +289,7 @@ class Endless extends MasterScreen {
 
 
         if (!bullets.isEmpty()){
-            updateBullet();
+            updateBullet(true);
             for (int i =bullets.size()-1;i>=0;i--){
                 if (bullets.get(i).isDestroyed()){
                     bullets.remove(i);
@@ -305,7 +304,10 @@ class Endless extends MasterScreen {
         if (!enemies.isEmpty()){
             for (Minion minion : enemies){
                 minion.render(batch);
-                minion.move(player.getPosition().x,player.getPosition().y);
+                if (!(gameState == GameState.PAUSED)) {
+                    // code moved
+                    minion.move(player.getPosition().x,player.getPosition().y);
+                }
             }
         }else {
             spawn();
@@ -318,12 +320,20 @@ class Endless extends MasterScreen {
 
         if (gameState == GameState.PAUSED) {
             pauseScene.draw();
+            updateCharacter(0,0,false);
+            updateBullet(false);
+        }
+
+        if (gameState == GameState.PLAYING) {
+            updateCharacter(0,0,true);
+            updateBullet(true);
         }
 
 
         batch.setProjectionMatrix(HUDcamera.combined);
         HUDstage.draw();
 
+        // pausa si presionamos Android Back
         if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
             gameState = GameState.PAUSED;
             pauseScene = new PauseScene(HUDview, batch);
@@ -433,36 +443,43 @@ class Endless extends MasterScreen {
             }
     }
 
-    private void updateCharacter(float dx, float dy) {
+    private void updateCharacter(float dx, float dy, boolean update) {
         Rectangle checkRectangle;
         checkRectangle = new Rectangle();
         checkRectangle.set(player.getRectangle());
 
-        //animation
-        float changeX = movingStick.getKnobPercentX();
-        float changeY = movingStick.getKnobPercentY();
-        Vector2 vector = new Vector2(changeX,changeY);
-        float angle = vector.angle();
+
+        if (update) {
+            // code to move
+            //animation
+            float changeX = movingStick.getKnobPercentX();
+            float changeY = movingStick.getKnobPercentY();
+            Vector2 vector = new Vector2(changeX,changeY);
+            float angle = vector.angle();
 
 
-        //Box2D movement
-        player.b2body.setLinearVelocity(changeX*10000,changeY*10000);
-        player.setX(player.b2body.getPosition().x-player.getWidth()/2);//Medio ineficiente, pone sprite donde esta body
-        player.setY(player.b2body.getPosition().y-player.getHeight()/2);
+            //Box2D movement
+            player.b2body.setLinearVelocity(changeX*10000,changeY*10000);
+            player.setX(player.b2body.getPosition().x-player.getWidth()/2);//Medio ineficiente, pone sprite donde esta body
+            player.setY(player.b2body.getPosition().y-player.getHeight()/2);
 
-        if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
-            player.setDir(viewingDirection.RIGHT);
-        } else if (46 <= angle && angle <= 136) {
-            player.setDir(viewingDirection.FRONT);
-        } else if (136 <= angle && angle <= 225) {
-            player.setDir(viewingDirection.LEFT);
-        } else if (226 <= angle && angle <= 315) {
-            player.setDir(viewingDirection.FRONT);
+            if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
+                player.setDir(viewingDirection.RIGHT);
+            } else if (46 <= angle && angle <= 136) {
+                player.setDir(viewingDirection.FRONT);
+            } else if (136 <= angle && angle <= 225) {
+                player.setDir(viewingDirection.LEFT);
+            } else if (226 <= angle && angle <= 315) {
+                player.setDir(viewingDirection.FRONT);
+            }
+
+            float newPosY = player.getSprite().getY() + (dy * player.getSpeed());
+            float newPosX = player.getSprite().getX() + (dx * player.getSpeed());
+            checkRectangle.setPosition(newPosX, newPosY);
+            // end of moved code
         }
 
-        float newPosY = player.getSprite().getY() + (dy * player.getSpeed());
-        float newPosX = player.getSprite().getX() + (dx * player.getSpeed());
-        checkRectangle.setPosition(newPosX, newPosY);
+
 
         /* MOVIMIENTO SIN BOX2D
         boolean collides = collidesWith(walls, checkRectangle);
@@ -482,23 +499,24 @@ class Endless extends MasterScreen {
     }
 
 
-    private void updateBullet(){
+    private void updateBullet(boolean update){
 
-        for(int i =bullets.size()-1;i>=0;i--){
-            FriendlyBullet bullet = bullets.get(i);
-            Rectangle checkRectangle;
-            checkRectangle = new Rectangle();
-            checkRectangle.set(bullet.getRectangle());
-            float newPosY = bullet.getSprite().getY() + bullet.getSpeed();
-            float newPosX = bullet.getSprite().getX() + bullet.getSpeed();
-            checkRectangle.setPosition(newPosX, newPosY);
+        if (update) {
+            for(int i =bullets.size()-1;i>=0;i--){
+                FriendlyBullet bullet = bullets.get(i);
+                Rectangle checkRectangle;
+                checkRectangle = new Rectangle();
+                checkRectangle.set(bullet.getRectangle());
+                float newPosY = bullet.getSprite().getY() + bullet.getSpeed();
+                float newPosX = bullet.getSprite().getX() + bullet.getSpeed();
+                checkRectangle.setPosition(newPosX, newPosY);
 
-            if(collidesWith(walls,checkRectangle)) {
-                bullet.destroy();
-                bullets.remove(i);
-            }
+                if(collidesWith(walls,checkRectangle)) {
+                    bullet.destroy();
+                    bullets.remove(i);
+                }
 
-            for (int j = enemies.size()-1; j >= 0; j--){
+                for (int j = enemies.size()-1; j >= 0; j--){
                     if (checkRectangle.overlaps(enemies.get(j).getRectangle())) {
                         bullet.destroy();
                         enemies.get(j).doDamage(1);
@@ -511,8 +529,10 @@ class Endless extends MasterScreen {
                         }
 
                     }
+                }
             }
         }
+
     }
 
     public boolean collidesWith(LinkedList<Rectangle> rectangles, Rectangle checkRectangle){
