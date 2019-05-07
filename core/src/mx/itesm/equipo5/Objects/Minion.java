@@ -138,8 +138,7 @@ public class Minion extends Entity {
     public void destroy(){
         world.destroyBody(b2body);
     }
-    public void move(float x, float y,boolean update){
-        if(update) {
+    public void move(float x, float y){
             Vector2 position = b2body.getPosition();
             if (move == movementPattern.FOLLOWER) {
                 Vector2 vector = new Vector2(x - position.x - width / 2, y - position.y - height / 2);
@@ -172,10 +171,12 @@ public class Minion extends Entity {
                     zigzagTimer += .05;
                 } else zigzagTimer = 0;
             }
-        }else{
-          b2body.setLinearVelocity(0,0);
-        };
 
+
+    }
+
+    public void setVelocity(float dx, float dy){
+        b2body.setLinearVelocity(dx * 80, dy * 80);
     }
 
 

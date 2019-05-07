@@ -308,7 +308,7 @@ class Endless extends MasterScreen {
                     // code moved
                     minion.move(player.getPosition().x,player.getPosition().y);
                 }else{
-                    minion.move(player.getPosition().x,player.getPosition().y,false);
+                    minion.setVelocity(0,0);
                 }
             }
         }else {
