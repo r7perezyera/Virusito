@@ -375,6 +375,10 @@ class Endless extends MasterScreen {
         Vector2 vector = new Vector2(changeX,changeY);
         float angle = vector.angle();
 
+
+        //Box2D movement
+        player.b2body.setLinearVelocity(changeX,changeY);
+
         if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
             player.setDir(viewingDirection.RIGHT);
         } else if (46 <= angle && angle <= 136) {

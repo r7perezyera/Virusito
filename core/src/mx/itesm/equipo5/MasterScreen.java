@@ -20,6 +20,7 @@ public abstract class MasterScreen implements Screen
     // Atributos disponibles en todas las clases del proyecto
     public static final float WIDTH = 1280;
     public static final float HEIGHT = 720;
+    public static final int PPM = 100;
     public final Virusito game;
 
     // Atributos disponibles solo en las subclases

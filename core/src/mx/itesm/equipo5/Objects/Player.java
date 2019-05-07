@@ -97,7 +97,7 @@ public class Player extends Entity {
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(5);
+        shape.setRadius(50);
 
         fdef.shape = shape;
         b2body.createFixture(fdef);
