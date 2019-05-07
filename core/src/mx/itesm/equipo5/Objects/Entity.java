@@ -80,13 +80,13 @@ public abstract class Entity{
     public void moveX(float dx){
         float newPos = sprite.getX()+(dx*speed);
         sprite.setX(newPos);
-        rectangle.setPosition(newPos,sprite.getY());
+        rectangle.setPosition(newPos-1,sprite.getY()-1);
     }
 
     public void moveY(float dy){
         float newPos = sprite.getY()+(dy*speed);
         sprite.setY(newPos);
-        rectangle.setPosition(sprite.getX(),newPos);
+        rectangle.setPosition(sprite.getX()-1,newPos-1);
 
     }
 

@@ -145,13 +145,13 @@ public class Minion extends Entity {
             float angle = vector.angle();
             float dx = (float) (speed*Math.cos(angle));
             float dy = (float) (speed*Math.sin(angle));
-            //move(dx,dy);
+            b2body.setLinearVelocity(dx*80,dy*80);
         }else if (move==movementPattern.AVOIDER){
             Vector2 vector = new Vector2(x-100-position.x - width/2, y-100-position.y-height/2);
             float angle = vector.angle();
             float dx = (float) (speed*Math.cos(angle));
             float dy = (float) (speed*Math.sin(angle));
-            //move(dx,dy);
+            b2body.setLinearVelocity(dx*80,dy*80);
         }else if(move==movementPattern.ZIGZAG){ //TODO
             if(zigzagTimer==0) {
                 zigzagVector = new Vector2(x-position.x - width/2, y-position.y-height/2);
@@ -161,12 +161,12 @@ public class Minion extends Entity {
                     float angle = MathUtils.degreesToRadians * (30+zigzagVector.angle());
                     float dx = (float) (speed * Math.cos(angle));
                     float dy = (float) (speed * Math.sin(angle));
-                    //move(dx,dy);
+                    b2body.setLinearVelocity(dx*80,dy*80);
                 }else{
                     float angle = MathUtils.degreesToRadians * (-30+zigzagVector.angle());
                     float dx = (float) (speed * Math.cos(angle));
                     float dy = (float) (speed * Math.sin(angle));
-                    //move(dx,dy);
+                    b2body.setLinearVelocity(dx*80,dy*80);
                 }
                 zigzagTimer += .05;
             }else zigzagTimer = 0;
