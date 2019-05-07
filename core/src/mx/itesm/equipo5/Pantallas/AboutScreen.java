@@ -34,9 +34,14 @@ class AboutScreen extends MasterScreen {
         background = new Texture("Pantallas/PantallaAcercaDe.jpg");
 
         createButtons();
+        loadText();
 
         Gdx.input.setInputProcessor(aboutStage);
         Gdx.input.setCatchBackKey(true);
+    }
+
+    private void loadText() {
+        text = new Text();
     }
 
     private void createButtons() {

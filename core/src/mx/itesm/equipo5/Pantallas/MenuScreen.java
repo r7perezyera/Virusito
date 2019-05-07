@@ -2,7 +2,6 @@ package mx.itesm.equipo5.Pantallas;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -28,7 +27,6 @@ public class MenuScreen extends MasterScreen {
     // Users preferences
     private Preferences lvlPrefs = Gdx.app.getPreferences("userPrefs");
     boolean isSoundOn = lvlPrefs.getBoolean("soundOn");
-    private Sound playSound;
 
     public MenuScreen(Virusito juego) {
         super(juego);
@@ -37,16 +35,12 @@ public class MenuScreen extends MasterScreen {
     @Override
     public void show() {
         menuStage = new Stage(view);
-        loadSFX();
+
         background = new Texture("Pantallas/PantallaMenu.jpg");
         createButtons();
         //Pasamoe el control de input a la escenea
         Gdx.input.setInputProcessor(menuStage);
         Gdx.input.setCatchBackKey(false);
-    }
-
-    private void loadSFX() {
-        playSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/PlayButton.wav"));
     }
 
     private void createButtons() {
@@ -59,7 +53,6 @@ public class MenuScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                playSound.play();
                 game.setScreen(new Endless(game));
             }
         });

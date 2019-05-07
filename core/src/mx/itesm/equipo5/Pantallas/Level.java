@@ -68,8 +68,8 @@ class Level extends MasterScreen {
 
     // BOX2D FISICA
     // vamos a agregar una simulacion de fisica
-    private World world;    // simulacion
-    private Body body;    // quien recibe / esta dentro de la simulacion
+    private World mundo;    // simulacion
+    private Body cuerpo;    // quien recibe / esta dentro de la simulacion
     private Box2DDebugRenderer debug;
 
     private Player player; //Personaje
@@ -105,7 +105,7 @@ class Level extends MasterScreen {
             loadMusic();
         }
 
-        player = new Player(300,300,3,world);
+        player = new Player(300,300,3);
 
         Gdx.input.setCatchBackKey(false);
     }
@@ -140,15 +140,15 @@ class Level extends MasterScreen {
 
     private void createJoysticks() {
         Box2D.init();
-        world = new World(new Vector2(0f,-9.81f), true);
+        mundo = new World(new Vector2(0f,-9.81f), true);
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.DynamicBody;
         def.position.set(0, 0);
-        body = world.createBody(def);
+        cuerpo = mundo.createBody(def);
 
-        movingStick = new JoyStick("HUD/Pad/padBack.png", "HUD/Pad/padKnob.png", body).getPad();
+        movingStick = new JoyStick("HUD/Pad/padBack.png", "HUD/Pad/padKnob.png", cuerpo).getPad();
         movingStick.setPosition(16,16);
-        shootingStick = new JoyStick("HUD/Pad/padBack.png", "HUD/Pad/padKnob.png", body).getPad();
+        shootingStick = new JoyStick("HUD/Pad/padBack.png", "HUD/Pad/padKnob.png", cuerpo).getPad();
         shootingStick.setPosition(WIDTH-256,16);
 
         // Agregar la escena, finalmente

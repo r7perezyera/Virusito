@@ -7,20 +7,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Player extends Entity {
-
-    //Box2D
-    public World world;
-    public Body b2body;
 
     private List<Sprite> sprites = new LinkedList<Sprite>();
 
@@ -36,8 +27,7 @@ public class Player extends Entity {
     private viewingDirection dir =  viewingDirection.FRONT;
 
 
-    public Player(float x, float y, float health,World world) {
-
+    public Player(float x, float y, float health) {
         width = 50;
         height = 57;
         this.health = health;
@@ -82,25 +72,7 @@ public class Player extends Entity {
 
         rectangle.set(x,y,width,height);
 
-        //Box2D
-        this.world = world;
-        definePlayer();
 
-
-    }
-
-    private void definePlayer() {
-        BodyDef bdef = new BodyDef();
-        bdef.position.set(640,360);
-        bdef.type = BodyDef.BodyType.DynamicBody;
-        b2body = world.createBody(bdef);
-
-        FixtureDef fdef = new FixtureDef();
-        CircleShape shape = new CircleShape();
-        shape.setRadius(5);
-
-        fdef.shape = shape;
-        b2body.createFixture(fdef);
     }
 
     public void render(SpriteBatch batch) {
