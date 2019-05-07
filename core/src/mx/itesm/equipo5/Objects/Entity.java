@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 
-public abstract class Entity {
+public abstract class Entity extends Sprite{
 
 
     protected float x, y, speed; //Position and speed

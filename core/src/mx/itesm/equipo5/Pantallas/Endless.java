@@ -7,6 +7,7 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -18,13 +19,17 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.LinkedList;
+import java.util.Vector;
 
 import mx.itesm.equipo5.JoyStick;
 import mx.itesm.equipo5.MasterScreen;
@@ -63,11 +68,10 @@ class Endless extends MasterScreen {
     private Touchpad shootingStick;
     private Touchpad movingStick;
 
-    // BOX2D FISICA
-    // vamos a agregar una simulacion de fisica
-    private World mundo;    // simulacion
-    private Body cuerpo;    // quien recibe / esta dentro de la simulacion
-    private Box2DDebugRenderer debug;
+    // Box2D variables
+    private World world;    // simulacion
+    private Body body;    // quien recibe / esta dentro de la simulacion
+    private Box2DDebugRenderer b2dr;
 
     private Player player; //Personaje
 
@@ -88,15 +92,21 @@ class Endless extends MasterScreen {
 
 
 
+    //Box2D
+
     public Endless(Virusito juego) {
         super(juego);
+
+
     }
+
 
     @Override
     public void show() {
     // Agregar la escena, finalmente
 
         loadMap();
+        setPhysics();
         buildHUD();
         createJoysticks();
         getWalls();
@@ -112,9 +122,34 @@ class Endless extends MasterScreen {
             loadMusic();
         }
 
-        player = new Player(300,300,3);
+        player = new Player(300,300,3,this.world);
 
         Gdx.input.setCatchBackKey(false);
+    }
+
+    private void setPhysics() {
+        world = new World(new Vector2(0,0),true);
+        b2dr = new Box2DDebugRenderer();
+
+        BodyDef bdef = new BodyDef();
+        PolygonShape shape = new PolygonShape();
+        FixtureDef fdef = new FixtureDef();
+        Body body;
+
+
+        for (MapObject object : map.getLayers().get("Paredes").getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            bdef.type = BodyDef.BodyType.StaticBody;
+            bdef.position.set(rect.getX()+rect.getWidth()/2,rect.getY()+rect.getHeight()/2);
+
+            body = world.createBody(bdef);
+
+            shape.setAsBox(rect.getWidth()/2,rect.getHeight()/2);
+            fdef.shape = shape;
+
+            body.createFixture(fdef);
+        }
     }
 
     private void loadText() {
@@ -152,15 +187,14 @@ class Endless extends MasterScreen {
 
     private void createJoysticks() {
         Box2D.init();
-        mundo = new World(new Vector2(0f,-9.81f), true);
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.DynamicBody;
         def.position.set(0, 0);
-        cuerpo = mundo.createBody(def);
+        body = world.createBody(def);
 
-        movingStick = new JoyStick("HUD/Pad/padBack.png", "HUD/Pad/padKnob.png", cuerpo).getPad();
+        movingStick = new JoyStick("HUD/Pad/padBack.png", "HUD/Pad/padKnob.png", body).getPad();
         movingStick.setPosition(16,16);
-        shootingStick = new JoyStick("HUD/Pad/padBack.png", "HUD/Pad/padKnob.png", cuerpo).getPad();
+        shootingStick = new JoyStick("HUD/Pad/padBack.png", "HUD/Pad/padKnob.png", body).getPad();
         shootingStick.setPosition(WIDTH-256,16);
 
         // Agregar la escena, finalmente
@@ -171,7 +205,11 @@ class Endless extends MasterScreen {
 
     @Override
     public void render(float delta) {
+
         eraseScreen();
+
+        //Update World
+        world.step(1/60f,6,2);
 
         timeSinceShot += delta;
         timeSinceDamage += delta;
@@ -234,7 +272,12 @@ class Endless extends MasterScreen {
         batch.end();
         batch.setProjectionMatrix(HUDcamera.combined);
         HUDstage.draw();
+
+        //Box2D
+        b2dr.render(world,camera.combined);
     }
+
+
 
     private void spawn() {
         enemies = new LinkedList<Minion>();
