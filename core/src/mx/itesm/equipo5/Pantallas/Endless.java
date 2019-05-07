@@ -277,12 +277,13 @@ class Endless extends MasterScreen {
         }else if (player.getHealth()==1){
             life = new Texture("HUD/Bateria/Bateria_Ultima.png");
         }else {
-            game.setScreen(new LoseScreen(game));
             if (isSoundOn) {
                 playerDeathSound.play();
                 music.stop();
             }
             lvlPrefs.putInteger("endlessBestRound",round);
+            System.out.println("se guarda "+ round +  " como hiscore");
+            game.setScreen(new LoseScreen(game));
         }
 
 
