@@ -127,6 +127,9 @@ class Endless extends MasterScreen {
     public void show() {
     // Agregar la escena, finalmente
 
+        assetManager = new AssetManager();
+
+        loadTextures();
         loadMap();
         setPhysics();
         buildHUD();
@@ -140,6 +143,7 @@ class Endless extends MasterScreen {
         loadText();
         gameState = GameState.PLAYING;
 
+
         if (isSoundOn) {
             loadMusic();
             loadSFX();
@@ -148,6 +152,11 @@ class Endless extends MasterScreen {
         player = new Player(300,300,3,this.world);
 
         Gdx.input.setCatchBackKey(false);
+    }
+
+    private void loadTextures() {
+        assetManager.load("Botones/Play_Bttn.png", Texture.class);
+        assetManager.load("Botones/Home_Bttn.png", Texture.class);
     }
 
     private void setPhysics() {
@@ -195,11 +204,11 @@ class Endless extends MasterScreen {
 
 
     private void loadMap() {
-        AssetManager manager = new AssetManager();
-        manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
-        manager.load("Mapa1/endless.tmx", TiledMap.class);
-        manager.finishLoading();
-        map = manager.get("Mapa1/endless.tmx");
+        //AssetManager manager = new AssetManager();
+        assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+        assetManager.load("Mapa1/endless.tmx", TiledMap.class);
+        assetManager.finishLoading();
+        map = assetManager.get("Mapa1/endless.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(map);
     }
 
@@ -220,12 +229,7 @@ class Endless extends MasterScreen {
         pauseButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // response
-                //clairo.disableControls=true;
                 gameState = GameState.PAUSED;
-
-                // check if it works fine before sticking it to the whole block
-                // turn pause scene on
                 pauseScene = new PauseScene(HUDview, batch);
                 Gdx.input.setInputProcessor(pauseScene);
 
@@ -326,6 +330,12 @@ class Endless extends MasterScreen {
 
 
         batch.end();
+
+        if (gameState == GameState.PAUSED) {
+            pauseScene.draw();
+        }
+
+
         batch.setProjectionMatrix(HUDcamera.combined);
         HUDstage.draw();
 
