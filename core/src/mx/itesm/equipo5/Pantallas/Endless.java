@@ -282,6 +282,7 @@ class Endless extends MasterScreen {
                 music.stop();
             }
             lvlPrefs.putInteger("endlessBestRound",round);
+            lvlPrefs.flush();
             System.out.println("se guarda "+ round +  " como hiscore");
             game.setScreen(new LoseScreen(game));
         }
