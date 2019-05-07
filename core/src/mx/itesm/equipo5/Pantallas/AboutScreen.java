@@ -1,6 +1,7 @@
 package mx.itesm.equipo5.Pantallas;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -36,7 +37,7 @@ class AboutScreen extends MasterScreen {
         loadText();
 
         Gdx.input.setInputProcessor(aboutStage);
-        Gdx.input.setCatchBackKey(false);
+        Gdx.input.setCatchBackKey(true);
     }
 
     private void loadText() {
@@ -78,9 +79,11 @@ class AboutScreen extends MasterScreen {
 
         aboutStage.draw();
 
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+            game.setScreen(new MenuScreen(game));
+        }
+
     }
-
-
 
     @Override
     public void pause() {
@@ -94,13 +97,13 @@ class AboutScreen extends MasterScreen {
 
     @Override
     public void hide() {
-        background.dispose();
-        aboutStage.dispose();
-
+        // moved lines from hide to dispose
     }
 
     @Override
     public void dispose() {
-
+        batch.dispose();
+        background.dispose();
+        aboutStage.dispose();
     }
 }

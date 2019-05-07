@@ -84,6 +84,8 @@ class Endless extends MasterScreen {
     private int round = 0;
     private Texture item;
 
+    private GameState gameState;
+
 
 
     public Endless(Virusito juego) {
@@ -104,6 +106,7 @@ class Endless extends MasterScreen {
         item = new Texture("Items/Battery.png");
 
         loadText();
+        gameState = GameState.PLAYING;
 
         if (isSoundOn) {
             loadMusic();
