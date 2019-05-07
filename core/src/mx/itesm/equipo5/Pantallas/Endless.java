@@ -1,5 +1,6 @@
 package mx.itesm.equipo5.Pantallas;
 
+import static mx.itesm.equipo5.MasterScreen.PPM;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Input;
@@ -173,11 +174,11 @@ class Endless extends MasterScreen {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set(rect.getX()+rect.getWidth()/2,rect.getY()+rect.getHeight()/2);
+            bdef.position.set((rect.getX()+rect.getWidth()/2)/PPM,(rect.getY()+rect.getHeight()/2)/PPM);
 
             body = world.createBody(bdef);
 
-            shape.setAsBox(rect.getWidth()/2,rect.getHeight()/2);
+            shape.setAsBox((rect.getWidth()/2)/PPM,(rect.getHeight()/2)/PPM);
             fdef.shape = shape;
 
             body.createFixture(fdef);
@@ -209,14 +210,14 @@ class Endless extends MasterScreen {
         assetManager.load("Mapa1/endless.tmx", TiledMap.class);
         assetManager.finishLoading();
         map = assetManager.get("Mapa1/endless.tmx");
-        mapRenderer = new OrthogonalTiledMapRenderer(map);
+        mapRenderer = new OrthogonalTiledMapRenderer(map,1/PPM);
     }
 
     private void buildHUD() {
-        HUDcamera = new OrthographicCamera(WIDTH, HEIGHT);
-        HUDcamera.position.set(WIDTH/2, HEIGHT/2, 0);
+        HUDcamera = new OrthographicCamera(WIDTH/PPM, HEIGHT/PPM);
+        HUDcamera.position.set((WIDTH/2)/PPM, (HEIGHT/2)/PPM, 0);
         HUDcamera.update();
-        HUDview = new StretchViewport(WIDTH, HEIGHT, HUDcamera);
+        HUDview = new StretchViewport(WIDTH/PPM, HEIGHT/PPM, HUDcamera);
 
         HUDstage = new Stage(HUDview);
 
@@ -252,9 +253,9 @@ class Endless extends MasterScreen {
         body = world.createBody(def);
 
         movingStick = new JoyStick("HUD/Pad/padBack.png", "HUD/Pad/padKnob.png", body).getPad();
-        movingStick.setPosition(16,16);
+        movingStick.setPosition(16/PPM,16/PPM);
         shootingStick = new JoyStick("HUD/Pad/padBack.png", "HUD/Pad/padKnob.png", body).getPad();
-        shootingStick.setPosition(WIDTH-256,16);
+        shootingStick.setPosition((WIDTH-256)/PPM,16/PPM);
 
         // Agregar la escena, finalmente
         HUDstage.addActor(shootingStick);
@@ -461,7 +462,7 @@ class Endless extends MasterScreen {
 
 
         //Box2D movement
-        player.b2body.setLinearVelocity(changeX,changeY);
+        player.b2body.setLinearVelocity(changeX*10000,changeY*10000);
 
         if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
             player.setDir(viewingDirection.RIGHT);
