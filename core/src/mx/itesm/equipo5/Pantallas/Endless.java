@@ -353,6 +353,11 @@ class Endless extends MasterScreen {
         batch.setProjectionMatrix(HUDcamera.combined);
         HUDstage.draw();
 
+        if (round == 10){
+            game.setScreen(new WinScreen(game));
+        }
+
+
         // pausa si presionamos Android Back
         if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
             gameState = GameState.PAUSED;
