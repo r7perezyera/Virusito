@@ -66,7 +66,7 @@ public class Minion extends Entity {
 
 
         if (this.diff == difficulty.EASY){
-            health=5;
+            health=1;
             speed =1;
         }
         if (this.diff == difficulty.MEDIUM){
@@ -174,7 +174,7 @@ public class Minion extends Entity {
             }
         }else{
           b2body.setLinearVelocity(0,0);
-        };
+        }
 
     }
 
