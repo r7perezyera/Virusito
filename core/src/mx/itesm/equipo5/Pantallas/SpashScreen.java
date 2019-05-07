@@ -1,6 +1,8 @@
 package mx.itesm.equipo5.Pantallas;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 
@@ -24,12 +26,18 @@ public class SpashScreen extends MasterScreen {
 
     @Override
     public void show() {
-        background = new Texture("Pantallas/PantallaLoading.png");
+        background = new Texture("Pantallas/splash_amborgesa.png");
 
     }
 
     @Override
     public void render(float delta) {
+
+        eraseScreen(1,1,1);
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+
+        batch.end();
 
 
 
@@ -37,9 +45,9 @@ public class SpashScreen extends MasterScreen {
 
         //prueba tiempo
         timeCounter +=delta;
-        if (timeCounter >=4){
+        if (timeCounter >=2){
             //Conto 1 s
-            game.setScreen(new MenuScreen(game));
+            game.setScreen(new LoadingScreen(game));
         }
 
     }
