@@ -359,7 +359,7 @@ class Endless extends MasterScreen {
         }
 
         //Box2D
-        b2dr.render(world,camera.combined);
+        //b2dr.render(world,camera.combined);
     }
 
 
