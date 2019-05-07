@@ -8,20 +8,27 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+
+import mx.itesm.equipo5.MasterScreen;
 
 public class Minion extends Entity {
 
     private enemyType type;
     private movementPattern move;
     private difficulty diff;
+    private boolean boss;
 
     private float zigzagTimer = 0;
     private Vector2 zigzagVector;
     private Animation animation;
     private float animationTimer;
 
-    public Minion(enemyType type, movementPattern move, difficulty diffc, float x, float y){
+    public Minion(enemyType type, movementPattern move, difficulty diffc, float x, float y, World world){
         this.type = type;
         this.move = move;
         this.diff = diffc;
@@ -62,7 +69,7 @@ public class Minion extends Entity {
 
 
         if (this.diff == difficulty.EASY){
-            health=5;
+            health=3;
             speed =1;
         }
         if (this.diff == difficulty.MEDIUM){
@@ -74,6 +81,35 @@ public class Minion extends Entity {
             speed =1;
         }
 
+        //Box2D
+        this.world = world;
+        defineMinion(x,y);
+        boss = false;
+
+    }
+
+    public void setBoss(){
+        health +=3;
+        boss = true;
+    }
+
+    public boolean isBoss(){
+        return boss;
+    }
+
+    private void defineMinion(float x, float y) {
+        BodyDef bdef = new BodyDef();
+        bdef.position.set(x,y);
+        bdef.type = BodyDef.BodyType.DynamicBody;
+        b2body = world.createBody(bdef);
+
+        FixtureDef fdef = new FixtureDef();
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(sprite.getWidth()/2,sprite.getHeight()/2);
+
+        fdef.shape = shape;
+        fdef.restitution = 0.1f;
+        b2body.createFixture(fdef);
     }
 
     private void setAnimation(String dirAnim, float x, float y){
@@ -95,57 +131,70 @@ public class Minion extends Entity {
     }
 
     public void render(SpriteBatch batch){
+        //Box2D
+        Vector2 position = b2body.getPosition();
+
         if (!destroyed) {
+            if (position.x -width/2 <=0 || position.y-width/2<=0){
+                isDestroyed();
+            }else if(position.x -width/2 >= MasterScreen.WIDTH || position.y-width/2 >= MasterScreen.WIDTH){
+                isDestroyed();
+            }
             if (type == enemyType.FLOATBOSS || type == enemyType.FLOATER) {
-                batch.draw(texture, sprite.getX(), sprite.getY());
-                rectangle.set(sprite.getX(), sprite.getY(), width, height);
+                batch.draw(texture, position.x - width/2, position.y-height/2);
+                rectangle.set(position.x - width/2, position.y-height/2, width, height);
             }else {
                 animationTimer += Gdx.graphics.getDeltaTime();
                 TextureRegion region = (TextureRegion) animation.getKeyFrame(animationTimer);
-                batch.draw(region, sprite.getX(), sprite.getY());
-                rectangle.set(sprite.getX(), sprite.getY(), width, height);
+                batch.draw(region, position.x - width/2, position.y-height/2);
+                rectangle.set(position.x - width/2, position.y-height/2, width, height);
             }
         }
 
     }
 
+    public void destroy(){
+        world.destroyBody(b2body);
+    }
     public void move(float x, float y){
-        if (move==movementPattern.FOLLOWER){
-            Vector2 vector = new Vector2(x-sprite.getX(),y-sprite.getY());
-            float angle = vector.angle();
-            float dx = (float) (speed*Math.cos(angle));
-            float dy = (float) (speed*Math.sin(angle));
-            moveX(dx);
-            moveY(dy);
-        }else if (move==movementPattern.AVOIDER){
-            Vector2 vector = new Vector2(x-100-sprite.getX(),y-100-sprite.getY());
-            float angle = vector.angle();
-            float dx = (float) (speed*Math.cos(angle));
-            float dy = (float) (speed*Math.sin(angle));
-            moveX(dx);
-            moveY(dy);
-        }else if(move==movementPattern.ZIGZAG){ //TODO
-            if(zigzagTimer==0) {
-                zigzagVector = new Vector2(x - sprite.getX(), y - sprite.getY());
-            }
-            if(zigzagTimer<4) {
-                if(zigzagTimer<2) {
-                    float angle = MathUtils.degreesToRadians * (30+zigzagVector.angle());
-                    float dx = (float) (speed * Math.cos(angle));
-                    float dy = (float) (speed * Math.sin(angle));
-                    moveX(dx);
-                    moveY(dy);
-                }else{
-                    float angle = MathUtils.degreesToRadians * (-30+zigzagVector.angle());
-                    float dx = (float) (speed * Math.cos(angle));
-                    float dy = (float) (speed * Math.sin(angle));
-                    moveX(dx);
-                    moveY(dy);
+            Vector2 position = b2body.getPosition();
+            if (move == movementPattern.FOLLOWER) {
+                Vector2 vector = new Vector2(x - position.x - width / 2, y - position.y - height / 2);
+                float angle = vector.angle();
+                float dx = (float) (speed * Math.cos(angle));
+                float dy = (float) (speed * Math.sin(angle));
+                b2body.setLinearVelocity(dx * 80, dy * 80);
+            } else if (move == movementPattern.AVOIDER) {
+                Vector2 vector = new Vector2(x - 100 - position.x - width / 2, y - 100 - position.y - height / 2);
+                float angle = vector.angle();
+                float dx = (float) (speed * Math.cos(angle));
+                float dy = (float) (speed * Math.sin(angle));
+                b2body.setLinearVelocity(dx * 80, dy * 80);
+            } else if (move == movementPattern.ZIGZAG) { //TODO
+                if (zigzagTimer == 0) {
+                    zigzagVector = new Vector2(x - position.x - width / 2, y - position.y - height / 2);
                 }
-                zigzagTimer += .05;
-            }else zigzagTimer = 0;
-        }
+                if (zigzagTimer < 4) {
+                    if (zigzagTimer < 2) {
+                        float angle = MathUtils.degreesToRadians * (30 + zigzagVector.angle());
+                        float dx = (float) (speed * Math.cos(angle));
+                        float dy = (float) (speed * Math.sin(angle));
+                        b2body.setLinearVelocity(dx * 80, dy * 80);
+                    } else {
+                        float angle = MathUtils.degreesToRadians * (-30 + zigzagVector.angle());
+                        float dx = (float) (speed * Math.cos(angle));
+                        float dy = (float) (speed * Math.sin(angle));
+                        b2body.setLinearVelocity(dx * 80, dy * 80);
+                    }
+                    zigzagTimer += .05;
+                } else zigzagTimer = 0;
+            }
 
+
+    }
+
+    public void setVelocity(float dx, float dy){
+        b2body.setLinearVelocity(dx * 80, dy * 80);
     }
 
 

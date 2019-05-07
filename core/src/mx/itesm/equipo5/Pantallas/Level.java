@@ -68,8 +68,8 @@ class Level extends MasterScreen {
 
     // BOX2D FISICA
     // vamos a agregar una simulacion de fisica
-    private World mundo;    // simulacion
-    private Body cuerpo;    // quien recibe / esta dentro de la simulacion
+    private World world;    // simulacion
+    private Body body;    // quien recibe / esta dentro de la simulacion
     private Box2DDebugRenderer debug;
 
     private Player player; //Personaje
@@ -80,6 +80,7 @@ class Level extends MasterScreen {
     // Users preferences
     private Preferences lvlPrefs = Gdx.app.getPreferences("userPrefs");
     boolean isSoundOn = lvlPrefs.getBoolean("soundOn");
+    boolean lvlPassed = lvlPrefs.getBoolean("level1Passed");
 
 
 
@@ -104,7 +105,7 @@ class Level extends MasterScreen {
             loadMusic();
         }
 
-        player = new Player(300,300,3);
+        player = new Player(300,300,3,world);
 
         Gdx.input.setCatchBackKey(false);
     }
@@ -139,15 +140,15 @@ class Level extends MasterScreen {
 
     private void createJoysticks() {
         Box2D.init();
-        mundo = new World(new Vector2(0f,-9.81f), true);
+        world = new World(new Vector2(0f,-9.81f), true);
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.DynamicBody;
         def.position.set(0, 0);
-        cuerpo = mundo.createBody(def);
+        body = world.createBody(def);
 
-        movingStick = new JoyStick("HUD/Pad/padBack.png", "HUD/Pad/padKnob.png", cuerpo).getPad();
+        movingStick = new JoyStick("HUD/Pad/padBack.png", "HUD/Pad/padKnob.png", body).getPad();
         movingStick.setPosition(16,16);
-        shootingStick = new JoyStick("HUD/Pad/padBack.png", "HUD/Pad/padKnob.png", cuerpo).getPad();
+        shootingStick = new JoyStick("HUD/Pad/padBack.png", "HUD/Pad/padKnob.png", body).getPad();
         shootingStick.setPosition(WIDTH-256,16);
 
         // Agregar la escena, finalmente
@@ -209,17 +210,17 @@ class Level extends MasterScreen {
     }
 
     private void spawn() {
-        Minion minion = new Minion(enemyType.FLOATER, movementPattern.FOLLOWER, difficulty.EASY, 800, 400);
+        Minion minion = new Minion(enemyType.FLOATER, movementPattern.FOLLOWER, difficulty.EASY, 800, 400,world);
         enemies.add(minion);
-        minion = new Minion(enemyType.CRAWLER, movementPattern.AVOIDER, difficulty.EASY, 850, 100);
+        minion = new Minion(enemyType.CRAWLER, movementPattern.AVOIDER, difficulty.EASY, 850, 100,world);
         enemies.add(minion);
-        minion = new Minion(enemyType.CRAWLBOSS, movementPattern.ZIGZAG, difficulty.EASY, 800, 100);
+        minion = new Minion(enemyType.CRAWLBOSS, movementPattern.ZIGZAG, difficulty.EASY, 800, 100,world);
         enemies.add(minion);
-        minion = new Minion(enemyType.TEETH, movementPattern.ZIGZAG, difficulty.EASY, 850, 200);
+        minion = new Minion(enemyType.TEETH, movementPattern.ZIGZAG, difficulty.EASY, 850, 200,world);
         enemies.add(minion);
-        minion = new Minion(enemyType.TEEHTBOSS, movementPattern.ZIGZAG, difficulty.EASY, 800, 200);
+        minion = new Minion(enemyType.TEEHTBOSS, movementPattern.ZIGZAG, difficulty.EASY, 800, 200,world);
         enemies.add(minion);
-        minion = new Minion(enemyType.FLOATBOSS, movementPattern.ZIGZAG, difficulty.EASY, 850, 300);
+        minion = new Minion(enemyType.FLOATBOSS, movementPattern.ZIGZAG, difficulty.EASY, 850, 300,world);
         enemies.add(minion);
     }
 
@@ -332,6 +333,7 @@ class Level extends MasterScreen {
         }
         if (collidesWith(doors,checkRectangle)){
             game.setScreen(new WinScreen(game));
+            lvlPrefs.putBoolean("level1Passed", true);
             if (isSoundOn) {
                 music.stop();
             }

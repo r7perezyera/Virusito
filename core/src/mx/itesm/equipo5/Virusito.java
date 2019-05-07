@@ -3,10 +3,8 @@ package mx.itesm.equipo5;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Music;
 
-import mx.itesm.equipo5.Pantallas.LoadingScreen;
+import mx.itesm.equipo5.Pantallas.SplashScreen;
 
 public class Virusito extends Game {
 
@@ -16,14 +14,14 @@ public class Virusito extends Game {
     we could eventually turn it into THE only manager for the whole game,
     i.e. for all the resources that require the asset manager
      */
-    private AssetManager audioManager;
-    private boolean canPlayMusic;
-    private boolean canPlaySound;
+    //private AssetManager audioManager;
+    /*private boolean canPlayMusic;
+    private boolean canPlaySound;*/
 
     //private Music music;
 
     public Virusito() {
-        audioManager = new AssetManager();
+
     }
 
     @Override
@@ -32,24 +30,39 @@ public class Virusito extends Game {
         //assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
 
         // Pone la pantalla inicial
-        setScreen(new LoadingScreen(this));     // original, keep this
-        setCanPlayMusic(true);
-        setCanPlaySound(true);
+        setScreen(new SplashScreen(this));     // original, keep this
+        /*setCanPlayMusic(true);
+        setCanPlaySound(true);*/
 
         // create prefs
         Preferences prefs = Gdx.app.getPreferences("userPrefs");
+
         prefs.putBoolean("soundON", true);
+        prefs.putBoolean("level1Passed", false);
+        //prefs.putInteger("endlessBestRound",0);
+
+        if (!prefs.getBoolean("level1Passed")) {
+            prefs.putBoolean("level1Passed", false);
+        }
+        if (!prefs.getBoolean("level2Passed")) {
+            prefs.putBoolean("level2Passed", false);
+        }
+        if (!prefs.getBoolean("level3Passed")) {
+            prefs.putBoolean("level3Passed", false);
+            prefs.putBoolean("endlessUnlocked", false);
+        }
+
         prefs.flush();
     }
 
 
 
-    // Para que las otras pantallas usen el audioManager
+    /*// Para que las otras pantallas usen el audioManager
     public AssetManager getAudioManager() {
         return audioManager;
-    }
+    }*/
 
-    public boolean getCanPlayMusic() {  // isCanPlayMusic   // isMusicEnabled
+    /*public boolean getCanPlayMusic() {  // isCanPlayMusic   // isMusicEnabled
         return canPlayMusic;
     }
 
@@ -63,12 +76,11 @@ public class Virusito extends Game {
 
     public void setCanPlaySound(boolean canPlaySound) {
         this.canPlaySound = canPlaySound;
-    }
+    }*/
 
     @Override
     public void dispose() {
         super.dispose();
-        audioManager.clear();
     }
 
 }

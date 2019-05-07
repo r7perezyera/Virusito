@@ -2,6 +2,8 @@ package mx.itesm.equipo5.Pantallas;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -27,6 +29,9 @@ public class MenuScreen extends MasterScreen {
     // Users preferences
     private Preferences lvlPrefs = Gdx.app.getPreferences("userPrefs");
     boolean isSoundOn = lvlPrefs.getBoolean("soundOn");
+    private Sound playSound;
+
+    private Music music;
 
     public MenuScreen(Virusito juego) {
         super(juego);
@@ -41,6 +46,23 @@ public class MenuScreen extends MasterScreen {
         //Pasamoe el control de input a la escenea
         Gdx.input.setInputProcessor(menuStage);
         Gdx.input.setCatchBackKey(false);
+
+            loadMusic();
+            loadSFX();
+        if (isSoundOn) {
+            music.play();
+        }else{
+            music.stop();
+        }
+    }
+
+    private void loadSFX() {
+        playSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/PlayButton.wav"));
+    }
+    private void loadMusic() {
+        music = Gdx.audio.newMusic(Gdx.files.internal("Music/Tobu&Itro-Sunburst.mp3"));
+        music.setLooping(true);
+        music.play();
     }
 
     private void createButtons() {
@@ -53,6 +75,10 @@ public class MenuScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
+                if(isSoundOn) {
+                    music.stop();
+                    playSound.play();
+                }
                 game.setScreen(new Endless(game));
             }
         });
@@ -66,6 +92,9 @@ public class MenuScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
+                if(isSoundOn) {
+                    music.stop();
+                }
                 game.setScreen(new HelpScreen(game));
             }
         });
@@ -78,7 +107,10 @@ public class MenuScreen extends MasterScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                // Responder al evento del boton
+                // Responder al evento del
+                    if(isSoundOn) {
+                        music.stop();
+                    }
                 game.setScreen(new SettingsScreen(game));
             }
         });
@@ -92,6 +124,9 @@ public class MenuScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
+                if(isSoundOn) {
+                    music.stop();
+                }
                 game.setScreen(new AboutScreen(game));
             }
         });
@@ -103,7 +138,11 @@ public class MenuScreen extends MasterScreen {
 
     @Override
     public void render(float delta) {
-
+    if(!isSoundOn && music.isPlaying()){
+        music.stop();
+    }else if (isSoundOn && !music.isPlaying()){
+        music.play();
+    }
         eraseScreen();
         batch.begin();
 
@@ -131,5 +170,6 @@ public class MenuScreen extends MasterScreen {
     public void dispose() {
     background.dispose();
     menuStage.dispose();
+    batch.dispose();
     }
 }

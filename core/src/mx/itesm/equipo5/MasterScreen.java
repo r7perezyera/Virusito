@@ -20,6 +20,7 @@ public abstract class MasterScreen implements Screen
     // Atributos disponibles en todas las clases del proyecto
     public static final float WIDTH = 1280;
     public static final float HEIGHT = 720;
+    public static final float PPM = 1;
     public final Virusito game;
 
     // Atributos disponibles solo en las subclases
@@ -32,12 +33,12 @@ public abstract class MasterScreen implements Screen
     public MasterScreen(Virusito game) {
         this.game = game;
         // Crea la cámara con las dimensiones del mundo
-        camera = new OrthographicCamera(WIDTH, HEIGHT);
+        camera = new OrthographicCamera(WIDTH/PPM, HEIGHT/PPM);
         // En el centro de la pantalla
-        camera.position.set(WIDTH / 2, HEIGHT / 2, 0);
+        camera.position.set((WIDTH / 2)/PPM, (HEIGHT / 2)/PPM, 0);
         camera.update();
         // La view que escala los elementos gráficos
-        view = new StretchViewport(WIDTH, HEIGHT, camera);
+        view = new StretchViewport(WIDTH/PPM, HEIGHT/PPM, camera);
         // El objeto que administra los trazos gráficos
         batch = new SpriteBatch();
     }
