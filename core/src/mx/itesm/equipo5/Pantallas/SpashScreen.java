@@ -26,22 +26,18 @@ public class SpashScreen extends MasterScreen {
 
     @Override
     public void show() {
-        background = new Texture("Pantallas/splash_amborgesa.png");
+        background = new Texture("Pantallas/PantallaLoading.png");
 
     }
 
     @Override
     public void render(float delta) {
-
-        eraseScreen(1,1,1);
+        eraseScreen(0,0,0);
         batch.setProjectionMatrix(camera.combined);
+
         batch.begin();
 
         batch.end();
-
-
-
-
 
         //prueba tiempo
         timeCounter +=delta;
@@ -64,6 +60,6 @@ public class SpashScreen extends MasterScreen {
 
     @Override
     public void dispose() {
-
+        batch.dispose();
     }
 }
