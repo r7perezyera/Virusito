@@ -24,10 +24,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
-<<<<<<< HEAD
-=======
 import com.badlogic.gdx.utils.Array;
->>>>>>> parent of 06abf36... Revert "Merge branch 'master' of https://github.com/r7perezyera/Virusito"
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -289,12 +286,9 @@ class Endless extends MasterScreen {
         batch.end();
         batch.setProjectionMatrix(HUDcamera.combined);
         HUDstage.draw();
-<<<<<<< HEAD
-=======
 
         //Box2D
         b2dr.render(world,camera.combined);
->>>>>>> parent of 06abf36... Revert "Merge branch 'master' of https://github.com/r7perezyera/Virusito"
     }
 
 
