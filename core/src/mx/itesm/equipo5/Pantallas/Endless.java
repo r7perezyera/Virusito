@@ -464,12 +464,13 @@ class Endless extends MasterScreen {
         float newPosX = player.getSprite().getX() + (dx * player.getSpeed());
         checkRectangle.setPosition(newPosX, newPosY);
 
-
+        /* MOVIMIENTO SIN BOX2D
         boolean collides = collidesWith(walls, checkRectangle);
         if (!collides) {
             player.moveX(dx);
             player.moveY(dy);
         }
+        */
         if (collidesWith(enemyRect, checkRectangle)) {
             if(timeSinceDamage>2){
                 player.setHealth(player.getHealth()-1);
