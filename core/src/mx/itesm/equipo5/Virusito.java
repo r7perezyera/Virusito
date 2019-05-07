@@ -6,7 +6,7 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 
-import mx.itesm.equipo5.Pantallas.LoadingScreen;
+import mx.itesm.equipo5.Pantallas.SpashScreen;
 
 public class Virusito extends Game {
 
@@ -32,7 +32,7 @@ public class Virusito extends Game {
         //assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
 
         // Pone la pantalla inicial
-        setScreen(new LoadingScreen(this));     // original, keep this
+        setScreen(new SpashScreen(this));     // original, keep this
         /*setCanPlayMusic(true);
         setCanPlaySound(true);*/
 
