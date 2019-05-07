@@ -27,6 +27,10 @@ public abstract class Projectile {
             launchY();
     }
 
+    public boolean isDestroyed() {
+        return destroyed;
+    }
+
     public void render(SpriteBatch batch) {
         if (!destroyed) batch.draw(texture, sprite.getX(), sprite.getY(),10,10);
     }
