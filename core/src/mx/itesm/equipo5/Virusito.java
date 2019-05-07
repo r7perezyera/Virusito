@@ -3,10 +3,8 @@ package mx.itesm.equipo5;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Music;
 
-import mx.itesm.equipo5.Pantallas.SpashScreen;
+import mx.itesm.equipo5.Pantallas.SplashScreen;
 
 public class Virusito extends Game {
 
@@ -32,7 +30,7 @@ public class Virusito extends Game {
         //assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
 
         // Pone la pantalla inicial
-        setScreen(new SpashScreen(this));     // original, keep this
+        setScreen(new SplashScreen(this));     // original, keep this
         /*setCanPlayMusic(true);
         setCanPlaySound(true);*/
 
