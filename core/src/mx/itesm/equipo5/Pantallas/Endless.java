@@ -389,7 +389,7 @@ class Endless extends MasterScreen {
         for (int i = 0; i<numEnemies; i++){
             xbegin += 50;
             ybegin += 50;
-            Minion minion = new Minion(type, movementPattern.FOLLOWER, diff, xbegin, ybegin,world);
+            Minion minion = new Minion(type, movementPattern.ZIGZAG, diff, xbegin, ybegin,world);
             enemies.add(minion);
         }
 
@@ -551,7 +551,7 @@ class Endless extends MasterScreen {
                             }
                             Random random = new Random();
                             if (random.nextInt(6) == 4){
-                                Item pila = new Item(enemies.get(i).getPosition());
+                                Item pila = new Item(enemies.get(j).getPosition());
                                 pilas.add(pila);
                             }
                             enemies.remove(j);
