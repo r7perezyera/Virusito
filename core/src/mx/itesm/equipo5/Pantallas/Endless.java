@@ -207,11 +207,16 @@ class Endless extends MasterScreen {
 
 
         if (!bullets.isEmpty()){
+            updateBullet();
             for (int i =bullets.size()-1;i>=0;i--){
-                FriendlyBullet bullet = bullets.get(i);
-                bullet.render(batch);
-                bullet.update();
-                updateBullet();
+                if (bullets.get(i).isDestroyed()){
+                    bullets.remove(i);
+                }else {
+                    FriendlyBullet bullet = bullets.get(i);
+                    bullet.render(batch);
+                    bullet.update();
+                }
+
             }
         }
         if (!enemies.isEmpty()){
@@ -249,7 +254,8 @@ class Endless extends MasterScreen {
 
         if (round%3 == 0){
             numEnemies = 7;
-            diff.next();
+            diff = diff.next();
+            System.out.println(diff);
             Minion minion = new Minion(type.next(), movementPattern.FOLLOWER, diff, 500, 500);
             enemies.add(minion);
         }
@@ -374,9 +380,8 @@ class Endless extends MasterScreen {
             }
 
             for (int j = enemies.size()-1; j >= 0; j--){
-                    if (checkRectangle.overlaps(enemies.get(j).getRectangle())){
+                    if (checkRectangle.overlaps(enemies.get(j).getRectangle())) {
                         bullet.destroy();
-                        bullets.remove(i);
                         enemies.get(j).doDamage(1);
                         if (enemies.get(j).isDestroyed()) {
                             enemies.remove(j);
