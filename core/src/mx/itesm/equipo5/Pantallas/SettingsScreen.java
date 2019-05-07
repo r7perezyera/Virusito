@@ -110,7 +110,7 @@ class SettingsScreen extends MasterScreen {
 
 
         storyResetButton = new Button("Botones/Replay_Bttn.png").getiButton();
-        storyResetButton.setPosition((MasterScreen.WIDTH/2)+25, (MasterScreen.HEIGHT/2)-150);
+        storyResetButton.setPosition((MasterScreen.WIDTH/2), (MasterScreen.HEIGHT/2)-196);
         settingsStage.addActor(storyResetButton);
         storyResetButton.addListener(new ClickListener() {
             @Override
@@ -136,7 +136,7 @@ class SettingsScreen extends MasterScreen {
         Text text = new Text();
         text.displayText(batch, "SETTINGS", MasterScreen.WIDTH/2, 5*(MasterScreen.HEIGHT/6)+100);
         text.displayButtonText(batch, "Reset best round?", (MasterScreen.WIDTH/2)+50, (MasterScreen.HEIGHT/2)-30);
-        text.displayButtonText(batch, "Best round is " + lvlPrefs.getInteger("endlessBestRound"), (MasterScreen.WIDTH/2)+50, (MasterScreen.HEIGHT/2)-200);
+        text.displayButtonText(batch, "Best round is " + lvlPrefs.getInteger("endlessBestRound"), (MasterScreen.WIDTH/2)+50, (MasterScreen.HEIGHT/2)-225);
 
         batch.draw(musicLabelTexture, (MasterScreen.WIDTH/2)-180, (MasterScreen.HEIGHT/2)+70);
         batch.draw(SFXLabelTexture, (MasterScreen.WIDTH/2)-20, (MasterScreen.HEIGHT/2)+30);
