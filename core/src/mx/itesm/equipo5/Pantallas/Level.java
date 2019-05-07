@@ -210,17 +210,17 @@ class Level extends MasterScreen {
     }
 
     private void spawn() {
-        Minion minion = new Minion(enemyType.FLOATER, movementPattern.FOLLOWER, difficulty.EASY, 800, 400);
+        Minion minion = new Minion(enemyType.FLOATER, movementPattern.FOLLOWER, difficulty.EASY, 800, 400,world);
         enemies.add(minion);
-        minion = new Minion(enemyType.CRAWLER, movementPattern.AVOIDER, difficulty.EASY, 850, 100);
+        minion = new Minion(enemyType.CRAWLER, movementPattern.AVOIDER, difficulty.EASY, 850, 100,world);
         enemies.add(minion);
-        minion = new Minion(enemyType.CRAWLBOSS, movementPattern.ZIGZAG, difficulty.EASY, 800, 100);
+        minion = new Minion(enemyType.CRAWLBOSS, movementPattern.ZIGZAG, difficulty.EASY, 800, 100,world);
         enemies.add(minion);
-        minion = new Minion(enemyType.TEETH, movementPattern.ZIGZAG, difficulty.EASY, 850, 200);
+        minion = new Minion(enemyType.TEETH, movementPattern.ZIGZAG, difficulty.EASY, 850, 200,world);
         enemies.add(minion);
-        minion = new Minion(enemyType.TEEHTBOSS, movementPattern.ZIGZAG, difficulty.EASY, 800, 200);
+        minion = new Minion(enemyType.TEEHTBOSS, movementPattern.ZIGZAG, difficulty.EASY, 800, 200,world);
         enemies.add(minion);
-        minion = new Minion(enemyType.FLOATBOSS, movementPattern.ZIGZAG, difficulty.EASY, 850, 300);
+        minion = new Minion(enemyType.FLOATBOSS, movementPattern.ZIGZAG, difficulty.EASY, 850, 300,world);
         enemies.add(minion);
     }
 

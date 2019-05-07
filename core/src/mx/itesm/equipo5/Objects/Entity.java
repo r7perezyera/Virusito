@@ -90,19 +90,23 @@ public abstract class Entity{
 
     }
 
+    //This will use Box2d
+    public void move(float dx,float dy){
+        //Box2D movement
+        b2body.setLinearVelocity(dx*10000,dy*10000);
+        this.setX(b2body.getPosition().x-getWidth()/2);//Medio ineficiente, pone sprite donde esta body
+        this.setY(b2body.getPosition().y-getHeight()/2);
+    }
 
     public void doDamage(float damage){
         health -= damage;
         if (health<=0){
             destroy();
+            destroyed = true;
         }
     }
 
-    public void destroy(){
-        destroyed = true;
-        rectangle.setPosition(2000,2000);
-        speed=0;
-    }
+    public void destroy(){}
 
     public float getSpeed(){
         return speed;

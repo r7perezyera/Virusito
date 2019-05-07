@@ -356,16 +356,16 @@ class Endless extends MasterScreen {
             numEnemies = 7;
             diff = diff.next();
             System.out.println(diff);
-            Minion minion = new Minion(type.next(), movementPattern.FOLLOWER, diff, 500, 500);
+            Minion minion = new Minion(type.next(), movementPattern.FOLLOWER, diff, 500, 500,world);
             enemies.add(minion);
         }
 
-        int xbegin = 500;
-        int ybegin = 500;
+        int xbegin = 200;
+        int ybegin = 200;
         for (int i = 0; i<numEnemies; i++){
             xbegin += 50;
             ybegin += 50;
-            Minion minion = new Minion(type, movementPattern.ZIGZAG, diff, xbegin, ybegin);
+            Minion minion = new Minion(type, movementPattern.ZIGZAG, diff, xbegin, ybegin,world);
             enemies.add(minion);
         }
 
@@ -460,8 +460,8 @@ class Endless extends MasterScreen {
             player.setDir(viewingDirection.FRONT);
         }
 
-        float newPosY = player.getSprite().getY() + (dy * player.getSpeed());
-        float newPosX = player.getSprite().getX() + (dx * player.getSpeed());
+        float newPosY = player.getSprite().getY();
+        float newPosX = player.getSprite().getX();
         checkRectangle.setPosition(newPosX, newPosY);
 
         /* MOVIMIENTO SIN BOX2D
