@@ -103,6 +103,7 @@ class Endless extends MasterScreen {
         FixtureDef fdef = new FixtureDef();
         Body body;
 
+        /*
         for (MapObject object : map.getLayers().get("Paredes").getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
@@ -116,6 +117,7 @@ class Endless extends MasterScreen {
 
             body.createFixture(fdef);
         }
+        */
 
     }
 
