@@ -387,29 +387,11 @@ class Endless extends MasterScreen {
             enemies.add(minion);
         }
 
-        float xbegin = player.getPosition().x;
-        float ybegin = player.getPosition().y;
+        int[] nivelX = {2,3,4,5,6,2,3,4,5,6};
+        int[] nivelY = {6,7,8,7,6,4,3,2,3,4};
         for (int i = 0; i<numEnemies; i++){
-            Random random = new Random();
-            int turn =random.nextInt(2);
-            if (turn==0) turn =-1;
-            int distX = turn*random.nextInt(100);
-            distX += turn*150 +xbegin;
-            int distY = turn*random.nextInt(100);
-            distY += turn*150 +ybegin;
 
-            if (distX<=0 ){
-                distX = (int)xbegin+300;
-            }else if(distX>=WIDTH){
-                distX = (int) (WIDTH-300);
-            }
-            if (distY<=0){
-                distY = (int) ybegin+300;
-            }else if(distX>=HEIGHT){
-                distX = (int) (HEIGHT-300);
-            }
-
-            Minion minion = new Minion(type, movementPattern.ZIGZAG, diff, distX, distY,world);
+            Minion minion = new Minion(type, movementPattern.ZIGZAG, diff, WIDTH*nivelX[i]/7, HEIGHT*nivelY[i]/9,world);
             enemies.add(minion);
         }
 

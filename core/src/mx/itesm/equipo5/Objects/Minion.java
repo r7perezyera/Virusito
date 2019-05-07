@@ -14,6 +14,8 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
+import mx.itesm.equipo5.MasterScreen;
+
 public class Minion extends Entity {
 
     private enemyType type;
@@ -126,6 +128,11 @@ public class Minion extends Entity {
         Vector2 position = b2body.getPosition();
 
         if (!destroyed) {
+            if (position.x -width/2 <=0 || position.y-width/2<=0){
+                isDestroyed();
+            }else if(position.x -width/2 >= MasterScreen.WIDTH || position.y-width/2 >= MasterScreen.WIDTH){
+                isDestroyed();
+            }
             if (type == enemyType.FLOATBOSS || type == enemyType.FLOATER) {
                 batch.draw(texture, position.x - width/2, position.y-height/2);
                 rectangle.set(position.x - width/2, position.y-height/2, width, height);
