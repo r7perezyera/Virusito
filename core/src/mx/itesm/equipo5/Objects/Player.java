@@ -34,6 +34,7 @@ public class Player extends Entity {
     private Animation animationFront;
     private Animation animationLeft;
     private Animation animationRight;
+    private Animation animationBack;
     private float animationTimer;
     private viewingDirection dir =  viewingDirection.FRONT;
 
@@ -78,6 +79,17 @@ public class Player extends Entity {
         animationLeft = new Animation(0.15f,textureRegionArray);
         animationLeft.setPlayMode(Animation.PlayMode.LOOP);
 
+        //Load texture back
+        texture = new Texture("Animaciones/Principal_Animacion_Back.png");
+
+        region = new TextureRegion(texture);
+        texturasPersonajes = region.split(width,height);
+
+        textureRegionArray = new Array(texturasPersonajes[0]);
+
+        animationBack = new Animation(0.15f,textureRegionArray);
+        animationBack.setPlayMode(Animation.PlayMode.LOOP);
+
         //Sprites
         sprite = new Sprite(texturasPersonajes[0][0]);
         sprite.setPosition(x,y); //TODO quitar posicion de sprite, enemigos deben seguir a b2body
@@ -118,6 +130,9 @@ public class Player extends Entity {
         }
         else if (dir== viewingDirection.RIGHT){
             TextureRegion region = (TextureRegion) animationRight.getKeyFrame(animationTimer);
+            batch.draw(region,position.x-sprite.getWidth()/2, position.y-sprite.getHeight()/2);
+        }else if (dir== viewingDirection.BACK){
+            TextureRegion region = (TextureRegion) animationBack.getKeyFrame(animationTimer);
             batch.draw(region,position.x-sprite.getWidth()/2, position.y-sprite.getHeight()/2);
         }
 
