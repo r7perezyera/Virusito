@@ -1,5 +1,6 @@
 package mx.itesm.equipo5.Objects;
 
+import static mx.itesm.equipo5.MasterScreen.PPM;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -7,10 +8,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import java.util.LinkedList;
@@ -19,8 +22,7 @@ import java.util.List;
 public class Player extends Entity {
 
     //Box2D
-    public World world;
-    public Body b2body;
+
 
     private List<Sprite> sprites = new LinkedList<Sprite>();
 
@@ -96,8 +98,8 @@ public class Player extends Entity {
         b2body = world.createBody(bdef);
 
         FixtureDef fdef = new FixtureDef();
-        CircleShape shape = new CircleShape();
-        shape.setRadius(50);
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(sprite.getWidth()/2,sprite.getHeight()/2);
 
         fdef.shape = shape;
         b2body.createFixture(fdef);
@@ -105,17 +107,18 @@ public class Player extends Entity {
 
     public void render(SpriteBatch batch) {
         animationTimer += Gdx.graphics.getDeltaTime();
+        Vector2 position = b2body.getPosition();
         if (dir== viewingDirection.FRONT) {
             TextureRegion region = (TextureRegion) animationFront.getKeyFrame(animationTimer);
-            batch.draw(region, sprite.getX(), sprite.getY());
+            batch.draw(region, position.x-sprite.getWidth()/2, position.y-sprite.getHeight()/2);
         }
         else if (dir== viewingDirection.LEFT){
             TextureRegion region = (TextureRegion) animationLeft.getKeyFrame(animationTimer);
-            batch.draw(region, sprite.getX(), sprite.getY());
+            batch.draw(region,position.x-sprite.getWidth()/2, position.y-sprite.getHeight()/2);
         }
         else if (dir== viewingDirection.RIGHT){
             TextureRegion region = (TextureRegion) animationRight.getKeyFrame(animationTimer);
-            batch.draw(region, sprite.getX(), sprite.getY());
+            batch.draw(region,position.x-sprite.getWidth()/2, position.y-sprite.getHeight()/2);
         }
 
     }

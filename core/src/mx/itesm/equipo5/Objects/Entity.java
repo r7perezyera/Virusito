@@ -4,8 +4,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.World;
 
-public abstract class Entity extends Sprite{
+public abstract class Entity{
 
 
     protected float x, y, speed; //Position and speed
@@ -17,6 +20,10 @@ public abstract class Entity extends Sprite{
     protected float health; //When health<0, destroyed = True
     protected Texture texture;
     protected Rectangle rectangle = new Rectangle();
+
+    //Box2D
+    public World world;
+    public Body b2body;
 
     public Entity(){
         //The constructor varies depending on the type of entity
@@ -30,12 +37,16 @@ public abstract class Entity extends Sprite{
         this.health = health;
     }
 
-    public float getX() {
-        return sprite.getX();
+    public float getX() { return sprite.getX();
     }
 
     public float getY() {
         return sprite.getY();
+    }
+
+    public Vector2 getPosition(){
+        Vector2 position = b2body.getPosition();
+        return position;
     }
 
     public float getHeight() {

@@ -42,6 +42,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.LinkedList;
 import java.util.Vector;
 
+import mx.itesm.equipo5.B2DWorldCreator;
 import mx.itesm.equipo5.Button;
 import mx.itesm.equipo5.JoyStick;
 import mx.itesm.equipo5.MasterScreen;
@@ -164,25 +165,8 @@ class Endless extends MasterScreen {
         world = new World(new Vector2(0,0),true);
         b2dr = new Box2DDebugRenderer();
 
-        BodyDef bdef = new BodyDef();
-        PolygonShape shape = new PolygonShape();
-        FixtureDef fdef = new FixtureDef();
-        Body body;
+        new B2DWorldCreator(world,map);
 
-
-        for (MapObject object : map.getLayers().get("Paredes").getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rect.getX()+rect.getWidth()/2)/PPM,(rect.getY()+rect.getHeight()/2)/PPM);
-
-            body = world.createBody(bdef);
-
-            shape.setAsBox((rect.getWidth()/2)/PPM,(rect.getHeight()/2)/PPM);
-            fdef.shape = shape;
-
-            body.createFixture(fdef);
-        }
     }
 
     private void loadText() {
@@ -321,7 +305,7 @@ class Endless extends MasterScreen {
         if (!enemies.isEmpty()){
             for (Minion minion : enemies){
                 minion.render(batch);
-                minion.move(player.getX(), player.getY());
+                minion.move(player.getPosition());
             }
         }else {
             spawn();
@@ -372,16 +356,16 @@ class Endless extends MasterScreen {
             numEnemies = 7;
             diff = diff.next();
             System.out.println(diff);
-            Minion minion = new Minion(type.next(), movementPattern.FOLLOWER, diff, 500, 500);
+            Minion minion = new Minion(type.next(), movementPattern.FOLLOWER, diff, 500, 500,world);
             enemies.add(minion);
         }
 
-        int xbegin = 800;
+        int xbegin = 500;
         int ybegin = 500;
         for (int i = 0; i<numEnemies; i++){
             xbegin += 50;
             ybegin += 50;
-            Minion minion = new Minion(type, movementPattern.ZIGZAG, diff, xbegin, ybegin);
+            Minion minion = new Minion(type, movementPattern.ZIGZAG, diff, xbegin, ybegin,world);
             enemies.add(minion);
         }
 
@@ -556,6 +540,9 @@ class Endless extends MasterScreen {
     public void dispose() {
         HUDstage.dispose();
         mapRenderer.dispose();
+        map.dispose();
+        world.dispose();
+        b2dr.dispose();
     }
 
     private class PauseScene extends Stage {
