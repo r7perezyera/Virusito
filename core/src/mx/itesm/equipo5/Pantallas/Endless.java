@@ -305,7 +305,7 @@ class Endless extends MasterScreen {
         if (!enemies.isEmpty()){
             for (Minion minion : enemies){
                 minion.render(batch);
-                minion.move(player.getPosition());
+                minion.move(player.getX(),player.getY());
             }
         }else {
             spawn();
@@ -356,7 +356,7 @@ class Endless extends MasterScreen {
             numEnemies = 7;
             diff = diff.next();
             System.out.println(diff);
-            Minion minion = new Minion(type.next(), movementPattern.FOLLOWER, diff, 500, 500,world);
+            Minion minion = new Minion(type.next(), movementPattern.FOLLOWER, diff, 500, 500);
             enemies.add(minion);
         }
 
@@ -365,7 +365,7 @@ class Endless extends MasterScreen {
         for (int i = 0; i<numEnemies; i++){
             xbegin += 50;
             ybegin += 50;
-            Minion minion = new Minion(type, movementPattern.ZIGZAG, diff, xbegin, ybegin,world);
+            Minion minion = new Minion(type, movementPattern.ZIGZAG, diff, xbegin, ybegin);
             enemies.add(minion);
         }
 
