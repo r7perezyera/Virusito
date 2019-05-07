@@ -123,17 +123,21 @@ public class Player extends Entity {
         if (dir== viewingDirection.FRONT) {
             TextureRegion region = (TextureRegion) animationFront.getKeyFrame(animationTimer);
             batch.draw(region, position.x-sprite.getWidth()/2, position.y-sprite.getHeight()/2);
+            rectangle.set(sprite.getX()-1,sprite.getY()-1,width+2,height+2);
         }
         else if (dir== viewingDirection.LEFT){
             TextureRegion region = (TextureRegion) animationLeft.getKeyFrame(animationTimer);
             batch.draw(region,position.x-sprite.getWidth()/2, position.y-sprite.getHeight()/2);
+            rectangle.set(sprite.getX()-1,sprite.getY()-1,width+2,height+2);
         }
         else if (dir== viewingDirection.RIGHT){
             TextureRegion region = (TextureRegion) animationRight.getKeyFrame(animationTimer);
             batch.draw(region,position.x-sprite.getWidth()/2, position.y-sprite.getHeight()/2);
+            rectangle.set(sprite.getX()-1,sprite.getY()-1,width+2,height+2);
         }else if (dir== viewingDirection.BACK){
             TextureRegion region = (TextureRegion) animationBack.getKeyFrame(animationTimer);
             batch.draw(region,position.x-sprite.getWidth()/2, position.y-sprite.getHeight()/2);
+            rectangle.set(sprite.getX()-1,sprite.getY()-1,width+2,height+2);
         }
 
     }

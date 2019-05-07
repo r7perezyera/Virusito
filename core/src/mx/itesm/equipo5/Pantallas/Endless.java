@@ -323,8 +323,7 @@ class Endless extends MasterScreen {
             for (int i = pilas.size()-1; i>=0; i--){
                 Item pila = pilas.get(i);
                 pila.render(batch);
-                if (player.getRectangle().overlaps(pila.getRectangle()) ) {
-                    System.out.println("puerk");
+                if (player.getRectangle().overlaps(pila.getRectangle())  && player.getHealth()<3) {
                     player.setHealth(player.getHealth() + 1);
                     pilas.remove(pila);
                 }
@@ -552,7 +551,10 @@ class Endless extends MasterScreen {
                                 minionDeathSound.play();
                             }
                             Random random = new Random();
-                            if (random.nextInt(6) == 4){
+                            if (random.nextInt(6) == 4 && !enemies.get(j).isBoss()){
+                                Item pila = new Item(enemies.get(j).getPosition());
+                                pilas.add(pila);
+                            }else if (enemies.get(j).isBoss()){
                                 Item pila = new Item(enemies.get(j).getPosition());
                                 pilas.add(pila);
                             }

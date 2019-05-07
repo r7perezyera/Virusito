@@ -21,6 +21,7 @@ public class Minion extends Entity {
     private enemyType type;
     private movementPattern move;
     private difficulty diff;
+    private boolean boss;
 
     private float zigzagTimer = 0;
     private Vector2 zigzagVector;
@@ -83,11 +84,17 @@ public class Minion extends Entity {
         //Box2D
         this.world = world;
         defineMinion(x,y);
+        boss = false;
 
     }
 
     public void setBoss(){
         health +=3;
+        boss = true;
+    }
+
+    public boolean isBoss(){
+        return boss;
     }
 
     private void defineMinion(float x, float y) {
