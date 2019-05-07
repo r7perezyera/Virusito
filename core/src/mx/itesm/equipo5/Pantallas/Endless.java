@@ -307,6 +307,8 @@ class Endless extends MasterScreen {
                 if (!(gameState == GameState.PAUSED)) {
                     // code moved
                     minion.move(player.getPosition().x,player.getPosition().y);
+                }else{
+                    minion.move(player.getPosition().x,player.getPosition().y,false);
                 }
             }
         }else {
@@ -477,6 +479,8 @@ class Endless extends MasterScreen {
             float newPosX = player.getSprite().getX() + (dx * player.getSpeed());
             checkRectangle.setPosition(newPosX, newPosY);
             // end of moved code
+        }else{
+            player.b2body.setLinearVelocity(0,0);
         }
 
         float newPosY = player.getSprite().getY();
