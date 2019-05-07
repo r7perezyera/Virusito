@@ -565,13 +565,14 @@ class Endless extends MasterScreen {
         b2dr.dispose();
     }
 
+
     private class PauseScene extends Stage {
 
         public PauseScene(Viewport view, SpriteBatch batch) {
             super(view, batch);
             // Creación de texturas
-            Texture texturaBtnSalir;
-            Texture texturaBtnContinuar;
+            Texture homeBttnTexture;
+            Texture playBttnTexture;
             //Texture restartButton;
 
             Pixmap pixmap = new Pixmap((int) (WIDTH * 0.7f), (int) (HEIGHT * 0.8f), Pixmap.Format.RGBA8888);
@@ -583,12 +584,11 @@ class Endless extends MasterScreen {
             rectImg.setPosition(0.15f * WIDTH, 0.1f * HEIGHT);
             this.addActor(rectImg);
 
-            texturaBtnSalir = assetManager.get("Botones/Home_Bttn.png");
-            TextureRegionDrawable trdSalir = new TextureRegionDrawable(new TextureRegion(texturaBtnSalir));
-            ImageButton btnSalir = new ImageButton(trdSalir);
-            btnSalir.setPosition(WIDTH / 2 - btnSalir.getWidth() / 2, HEIGHT / 2);
-            //HUDstage.addActor(btnSalir);
-            btnSalir.addListener(new ClickListener() {
+            homeBttnTexture = assetManager.get("Botones/Home_Bttn.png");
+            TextureRegionDrawable trdSalir = new TextureRegionDrawable(new TextureRegion(homeBttnTexture));
+            ImageButton homeButton = new ImageButton(trdSalir);
+            homeButton.setPosition((WIDTH/2 - homeButton.getWidth()/2)-250, (HEIGHT/2)+50);
+            homeButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     // Regresa al menú
@@ -599,15 +599,14 @@ class Endless extends MasterScreen {
 
                 }
             });
-            this.addActor(btnSalir);
+            this.addActor(homeButton);
 
-            texturaBtnContinuar = assetManager.get("Botones/Play_Bttn.png");
+            playBttnTexture = assetManager.get("Botones/Play_Bttn.png");
             TextureRegionDrawable trdContinuar = new TextureRegionDrawable(
-                    new TextureRegion(texturaBtnContinuar));
-            ImageButton btnContinuar = new ImageButton(trdContinuar);
-            btnContinuar.setPosition(WIDTH / 2 - btnContinuar.getWidth() / 2 - 150, HEIGHT / 4);
-            //HUDstage.addActor(btnContinuar);
-            btnContinuar.addListener(new ClickListener() {
+                    new TextureRegion(playBttnTexture));
+            ImageButton playButton = new ImageButton(trdContinuar);
+            playButton.setPosition(WIDTH / 2 - playButton.getWidth() / 2 , HEIGHT / 4);
+            playButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     // return to the game
@@ -616,7 +615,7 @@ class Endless extends MasterScreen {
                     gameState = GameState.PLAYING;
                 }
             });
-            this.addActor(btnContinuar);
+            this.addActor(playButton);
 
 
             /*restartButton = assetManager.get("Botones/noAssetForThatYet.png");
