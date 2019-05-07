@@ -39,7 +39,7 @@ public class Virusito extends Game {
 
         prefs.putBoolean("soundON", true);
         prefs.putBoolean("level1Passed", false);
-        prefs.putInteger("endlessBestRound",0);
+        //prefs.putInteger("endlessBestRound",0);
 
         if (!prefs.getBoolean("level1Passed")) {
             prefs.putBoolean("level1Passed", false);
