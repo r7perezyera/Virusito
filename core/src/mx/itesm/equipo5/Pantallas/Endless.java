@@ -494,8 +494,6 @@ class Endless extends MasterScreen {
                 timeSinceDamage=0;
             }
         }
-
-            // TODO set Virusito's coordinates, load new map
     }
 
 
@@ -532,7 +530,6 @@ class Endless extends MasterScreen {
                 }
             }
         }
-
     }
 
     public boolean collidesWith(LinkedList<Rectangle> rectangles, Rectangle checkRectangle){
