@@ -1,6 +1,7 @@
 package mx.itesm.equipo5.Pantallas;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
@@ -51,7 +52,7 @@ class SettingsScreen extends MasterScreen {
         loadText();
 
         Gdx.input.setInputProcessor(settingsStage);
-        Gdx.input.setCatchBackKey(false);
+        Gdx.input.setCatchBackKey(true);
     }
 
     private void loadText() {
@@ -129,6 +130,9 @@ class SettingsScreen extends MasterScreen {
 
         settingsStage.draw();
 
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+            game.setScreen(new MenuScreen(game));
+        }
     }
 
 

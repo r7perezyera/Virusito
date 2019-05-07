@@ -1,6 +1,7 @@
 package mx.itesm.equipo5.Pantallas;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -36,7 +37,7 @@ class HelpScreen extends MasterScreen {
         loadText();
 
         Gdx.input.setInputProcessor(helpStage);
-        Gdx.input.setCatchBackKey(false);
+        Gdx.input.setCatchBackKey(true);
     }
 
     private void loadText() {
@@ -80,6 +81,9 @@ class HelpScreen extends MasterScreen {
 
         helpStage.draw();
 
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+            game.setScreen(new MenuScreen(game));
+        }
     }
 
 
