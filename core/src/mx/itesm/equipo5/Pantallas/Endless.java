@@ -5,6 +5,7 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.MapObject;
@@ -73,6 +74,11 @@ class Endless extends MasterScreen {
 
     private LinkedList<Rectangle> enemyRect;
     private Music music;
+    private Sound shootingSound;
+    private Sound playerDeathSound;
+    private Sound minionDeathSound;
+    private Sound bossDeathSound;
+
 
     // Users preferences
     private Preferences lvlPrefs = Gdx.app.getPreferences("userPrefs");
@@ -110,6 +116,7 @@ class Endless extends MasterScreen {
 
         if (isSoundOn) {
             loadMusic();
+            loadSFX();
         }
 
         player = new Player(300,300,3);
@@ -126,6 +133,13 @@ class Endless extends MasterScreen {
         music = Gdx.audio.newMusic(Gdx.files.internal("Music/DifferentHeaven-Nekozilla.mp3"));
         music.setLooping(true);
         music.play();
+    }
+
+    private void loadSFX(){
+        shootingSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Shoot.wav"));
+        playerDeathSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/PlayerDeath.wav"));
+        minionDeathSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/DeathMinion.wav"));
+        bossDeathSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/DeathBoss.wav"));
     }
 
 
@@ -193,6 +207,7 @@ class Endless extends MasterScreen {
         }else {
             game.setScreen(new LoseScreen(game));
             if (isSoundOn) {
+                playerDeathSound.play();
                 music.stop();
             }
         }
@@ -284,18 +299,30 @@ class Endless extends MasterScreen {
                 FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, 0);
                 bullets.add(bullet);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
+                if(isSoundOn){
+                    shootingSound.play();
+                }
             } else if (46 <= angle && angle <= 136) {
                 FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) Math.PI / 2);
                 bullets.add(bullet);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
+                if(isSoundOn){
+                    shootingSound.play();
+                }
             } else if (136 <= angle && angle <= 225) {
                 FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) Math.PI);
                 bullets.add(bullet);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
+                if(isSoundOn){
+                    shootingSound.play();
+                }
             } else if (226 <= angle && angle <= 315) {
                 FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) (3 * Math.PI) / 2);
                 bullets.add(bullet);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
+                if(isSoundOn){
+                    shootingSound.play();
+                }
             }
 
         }else if (timeSinceShot >= friendlyShotCooldown*2) {
@@ -384,6 +411,7 @@ class Endless extends MasterScreen {
                         bullet.destroy();
                         enemies.get(j).doDamage(1);
                         if (enemies.get(j).isDestroyed()) {
+                            minionDeathSound.play();
                             enemies.remove(j);
                             enemyRect.remove(j);
                         }
