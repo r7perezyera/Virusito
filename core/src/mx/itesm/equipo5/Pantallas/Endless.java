@@ -100,6 +100,7 @@ class Endless extends MasterScreen {
         getWalls();
         spawn();
         getEnemies();
+        text = new Text();
 
         if (isSoundOn) {
             loadMusic();
@@ -190,7 +191,6 @@ class Endless extends MasterScreen {
         batch.draw(life, WIDTH/2-(life.getWidth()/2f),650);
 
         // construir Text
-        text = new Text();
         text.displayText(batch, "Round: " +round, MasterScreen.WIDTH/6, 5*(MasterScreen.HEIGHT/6)+100);
         text.displayText(batch, "Enemies: " +enemies.size(), MasterScreen.WIDTH*5/6, 5*(MasterScreen.HEIGHT/6)+100);
 
