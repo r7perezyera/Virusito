@@ -82,6 +82,8 @@ class Endless extends MasterScreen {
     private enemyType type;
     private int round = 0;
 
+    private GameState gameState;
+
 
 
     public Endless(Virusito juego) {
@@ -99,6 +101,7 @@ class Endless extends MasterScreen {
         spawn();
         getEnemies();
         loadText();
+        gameState = GameState.PLAYING;
 
         if (isSoundOn) {
             loadMusic();
