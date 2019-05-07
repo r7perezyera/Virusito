@@ -413,6 +413,15 @@ class Endless extends MasterScreen {
         }else if (timeSinceShot >= friendlyShotCooldown*2) {
             timeSinceShot=0.0f;
         }
+        if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
+            player.setDir(viewingDirection.RIGHT);
+        } else if (46 <= angle && angle <= 136) {
+            player.setDir(viewingDirection.BACK);
+        } else if (136 <= angle && angle <= 225) {
+            player.setDir(viewingDirection.LEFT);
+        } else if (226 <= angle && angle <= 315) {
+            player.setDir(viewingDirection.FRONT);
+        }
     }
 
     private void getWalls(){
@@ -450,15 +459,6 @@ class Endless extends MasterScreen {
         player.setX(player.b2body.getPosition().x-player.getWidth()/2);//Medio ineficiente, pone sprite donde esta body
         player.setY(player.b2body.getPosition().y-player.getHeight()/2);
 
-        if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
-            player.setDir(viewingDirection.RIGHT);
-        } else if (46 <= angle && angle <= 136) {
-            player.setDir(viewingDirection.FRONT);
-        } else if (136 <= angle && angle <= 225) {
-            player.setDir(viewingDirection.LEFT);
-        } else if (226 <= angle && angle <= 315) {
-            player.setDir(viewingDirection.FRONT);
-        }
 
         float newPosY = player.getSprite().getY();
         float newPosX = player.getSprite().getX();
