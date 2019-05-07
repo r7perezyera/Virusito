@@ -305,7 +305,7 @@ class Endless extends MasterScreen {
         if (!enemies.isEmpty()){
             for (Minion minion : enemies){
                 minion.render(batch);
-                minion.move(player.getX(),player.getY());
+                minion.move(player.getPosition().x,player.getPosition().y);
             }
         }else {
             spawn();

@@ -80,7 +80,7 @@ public class Player extends Entity {
 
         //Sprites
         sprite = new Sprite(texturasPersonajes[0][0]);
-        sprite.setPosition(x,y);
+        sprite.setPosition(x,y); //TODO quitar posicion de sprite, enemigos deben seguir a b2body
 
         rectangle.set(x,y,width,height);
 
