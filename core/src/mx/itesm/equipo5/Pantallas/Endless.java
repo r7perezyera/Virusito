@@ -212,11 +212,12 @@ class Endless extends MasterScreen {
         HUDstage = new Stage(HUDview);
 
 
-        Texture pauseButton = new Texture("Botones/Pause_Bttn.png");
-        TextureRegionDrawable trdPauseButton = new TextureRegionDrawable(new TextureRegion(pauseButton));
-        ImageButton imgPauseButton = new Button("Botones/Pause_Bttn.png").getiButton();
-        imgPauseButton.setPosition(MasterScreen.WIDTH - imgPauseButton.getWidth(), MasterScreen.HEIGHT - imgPauseButton.getHeight());
-        imgPauseButton.addListener(new ClickListener(){
+        Texture textPauseButton = new Texture("Botones/Pause_Bttn.png");
+        TextureRegionDrawable trdPauseButton = new TextureRegionDrawable(new TextureRegion(textPauseButton));
+        ImageButton pauseButton = new Button("Botones/Pause_Bttn.png").getiButton();
+        pauseButton.setPosition(MasterScreen.WIDTH - 1.5f*pauseButton.getWidth(), MasterScreen.HEIGHT - 2*pauseButton.getHeight());
+        HUDstage.addActor(pauseButton);
+        pauseButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // response
@@ -500,7 +501,9 @@ class Endless extends MasterScreen {
                         bullet.destroy();
                         enemies.get(j).doDamage(1);
                         if (enemies.get(j).isDestroyed()) {
-                            minionDeathSound.play();
+                            if (isSoundOn) {
+                                minionDeathSound.play();
+                            }
                             enemies.remove(j);
                             enemyRect.remove(j);
                         }
@@ -547,7 +550,7 @@ class Endless extends MasterScreen {
             // Creación de texturas
             Texture texturaBtnSalir;
             Texture texturaBtnContinuar;
-            Texture restartButton;
+            //Texture restartButton;
 
             Pixmap pixmap = new Pixmap((int) (WIDTH * 0.7f), (int) (HEIGHT * 0.8f), Pixmap.Format.RGBA8888);
             pixmap.setColor(0f, 0, 0, 0f);
@@ -559,10 +562,10 @@ class Endless extends MasterScreen {
             this.addActor(rectImg);
 
             texturaBtnSalir = assetManager.get("Botones/Home_Bttn.png");
-            TextureRegionDrawable trdSalir = new TextureRegionDrawable(
-                    new TextureRegion(texturaBtnSalir));
+            TextureRegionDrawable trdSalir = new TextureRegionDrawable(new TextureRegion(texturaBtnSalir));
             ImageButton btnSalir = new ImageButton(trdSalir);
             btnSalir.setPosition(WIDTH / 2 - btnSalir.getWidth() / 2, HEIGHT / 2);
+            //HUDstage.addActor(btnSalir);
             btnSalir.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -581,6 +584,7 @@ class Endless extends MasterScreen {
                     new TextureRegion(texturaBtnContinuar));
             ImageButton btnContinuar = new ImageButton(trdContinuar);
             btnContinuar.setPosition(WIDTH / 2 - btnContinuar.getWidth() / 2 - 150, HEIGHT / 4);
+            //HUDstage.addActor(btnContinuar);
             btnContinuar.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
