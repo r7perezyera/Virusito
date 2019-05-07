@@ -119,7 +119,7 @@ class Endless extends MasterScreen {
             loadMusic();
         }
 
-        player = new Player(300,300,3,world);
+        player = new Player(300,300,3,this.world);
 
         Gdx.input.setCatchBackKey(false);
     }
@@ -205,10 +205,12 @@ class Endless extends MasterScreen {
 
         eraseScreen();
 
+        //Update World
+        world.step(1/60f,6,2);
+
         timeSinceShot += delta;
         timeSinceDamage += delta;
         shoot();
-
 
         updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY());
 
