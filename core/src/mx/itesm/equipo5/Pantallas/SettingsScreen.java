@@ -31,7 +31,7 @@ class SettingsScreen extends MasterScreen {
     private ImageButton musicOffButton;
     private ImageButton storyResetButton;
 
-    private String bestRound;
+    private int bestRound;
 
     Texture musicLabelTexture = new Texture("Botones/Music.png");
     Texture SFXLabelTexture = new Texture("Botones/Vfx.png");
@@ -55,11 +55,13 @@ class SettingsScreen extends MasterScreen {
         Gdx.input.setInputProcessor(settingsStage);
         Gdx.input.setCatchBackKey(true);
 
-        if (bestRound == null) {
-            bestRound = ""+0;
+        bestRound = lvlPrefs.getInteger("endlessBestRound");
+        if (bestRound == 0) {
+            bestRound = 0;
         } else  {
-            bestRound = ""+lvlPrefs.getInteger("endlessBestRound");
+            bestRound = lvlPrefs.getInteger("endlessBestRound");
         }
+        lvlPrefs.flush();
     }
 
     private void createButtons() {
@@ -128,6 +130,7 @@ class SettingsScreen extends MasterScreen {
                 System.out.println("level1Passed pref set to false !!");
                 //lvlPrefs.putBoolean("level1Passed", false);
                 lvlPrefs.putInteger("endlessBestRound",0);
+                bestRound = 0;
                 lvlPrefs.flush();
             }
         });
