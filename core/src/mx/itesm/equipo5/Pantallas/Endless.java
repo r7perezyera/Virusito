@@ -619,7 +619,7 @@ class Endless extends MasterScreen {
             this.addActor(btnContinuar);
 
 
-            /*restartButton = assetManager.get("Botones/BotonReinicioN.png");
+            /*restartButton = assetManager.get("Botones/noAssetForThatYet.png");
 
             TextureRegionDrawable trdRestart = new TextureRegionDrawable(new TextureRegion(restartButton));
 
