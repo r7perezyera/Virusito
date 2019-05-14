@@ -21,7 +21,7 @@ class AboutScreen extends MasterScreen {
 
     private ImageButton homeButton;
 
-    private Text text;
+    //private Text text;
 
     public AboutScreen(Virusito juego) {
         super(juego);
@@ -35,7 +35,7 @@ class AboutScreen extends MasterScreen {
 
         createButtons();
 
-        text = new Text();
+        //text = new Text();
 
         Gdx.input.setInputProcessor(aboutStage);
         Gdx.input.setCatchBackKey(true);
@@ -61,7 +61,7 @@ class AboutScreen extends MasterScreen {
 
         batch.begin();
         batch.draw(background, 0, 0);
-
+        /*
         text.displayText(batch, "ABOUT US", MasterScreen.WIDTH/2, 5*(MasterScreen.HEIGHT/6)+100);
 
         // screen left-hand side
@@ -73,6 +73,7 @@ class AboutScreen extends MasterScreen {
         text.displayHUDText(batch, "Roberto Tellez\nISC\nDeveloper", (MasterScreen.WIDTH/2)+140, 2*(MasterScreen.HEIGHT/6)-50);
 
         text.displayHUDText(batch, "Contact\nanborgesa.studios@gmail.com", 2*(MasterScreen.WIDTH/3)+140, 5*(MasterScreen.HEIGHT/6)+15);
+        */
 
         batch.end();
 
