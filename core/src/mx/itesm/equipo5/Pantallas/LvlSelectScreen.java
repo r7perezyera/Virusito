@@ -116,6 +116,11 @@ public class LvlSelectScreen extends MasterScreen {
         }
 
 
+        batch.draw(lvlLockedTexture, (MasterScreen.WIDTH/2-lvl1Button.getWidth()/2)+150, (MasterScreen.HEIGHT/2-lvl1Button.getHeight()/2));
+
+        batch.draw(lvlLockedTexture, (4*MasterScreen.WIDTH/5)-lvl1Button.getWidth()/2+35, (MasterScreen.HEIGHT/2-lvl1Button.getHeight()/2));
+
+
         batch.end();
 
 
