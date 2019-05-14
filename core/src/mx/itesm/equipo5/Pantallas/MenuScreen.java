@@ -79,7 +79,7 @@ public class MenuScreen extends MasterScreen {
                     music.stop();
                     playSound.play();
                 }
-                game.setScreen(new Endless(game));
+                game.setScreen(new LvlSelectScreen(game));
             }
         });
 
