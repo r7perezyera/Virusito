@@ -25,7 +25,7 @@ public class LvlSelectScreen extends MasterScreen {
     private ImageButton lvl3Button;
     private ImageButton lvlEndlessButton;
 
-    private Texture lvlLockedTexture;
+    private Texture lvlLockedTexture = new Texture("Botones/Level_Blocked.png");
 
     private Preferences lvlPrefs = Gdx.app.getPreferences("userPrefs");
 
@@ -71,6 +71,35 @@ public class LvlSelectScreen extends MasterScreen {
                 game.setScreen(new Level(game));
             }
         });
+
+        // level 2 button
+        lvl2Button = new Button("Botones/Level_2.png").getiButton();
+        lvl2Button.setPosition(MasterScreen.WIDTH/5-lvl1Button.getWidth()/2, (MasterScreen.HEIGHT/2-lvl1Button.getHeight()/2));
+        if (lvlPrefs.getBoolean("level1Passed")) {
+            lvlSelectStage.addActor(lvl2Button);
+        }
+        lvl2Button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                // Responder al evento del boton
+                game.setScreen(new Level(game));
+            }
+        });
+
+        lvl3Button = new Button("Botones/Level_3.png").getiButton();
+        lvl3Button.setPosition(MasterScreen.WIDTH/5-lvl3Button.getWidth()/2, (MasterScreen.HEIGHT/2-lvl1Button.getHeight()/2));
+        if (lvlPrefs.getBoolean("level2Passed")) {
+            lvlSelectStage.addActor(lvl3Button);
+        }
+        lvl3Button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                // Responder al evento del boton
+                game.setScreen(new Level(game));
+            }
+        });
     }
 
     @Override
@@ -79,6 +108,13 @@ public class LvlSelectScreen extends MasterScreen {
 
         batch.begin();
         batch.draw(background,0,0);
+
+
+        batch.draw(lvlLockedTexture, (MasterScreen.WIDTH/3-lvl1Button.getWidth()/2)+100, (MasterScreen.HEIGHT/2-lvl1Button.getHeight()/2));
+        if (lvlPrefs.getBoolean("level2Passed", false)) {
+            System.out.println("si lo dibuja");
+        }
+
 
         batch.end();
 
