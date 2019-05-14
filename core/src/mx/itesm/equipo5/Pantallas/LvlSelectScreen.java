@@ -109,17 +109,17 @@ public class LvlSelectScreen extends MasterScreen {
         batch.begin();
         batch.draw(background,0,0);
 
-
-        batch.draw(lvlLockedTexture, (MasterScreen.WIDTH/3-lvl1Button.getWidth()/2)+100, (MasterScreen.HEIGHT/2-lvl1Button.getHeight()/2));
-        if (lvlPrefs.getBoolean("level2Passed", false)) {
-            System.out.println("si lo dibuja");
+        //System.out.println(lvlPrefs.getBoolean("level2Passed"));
+        if (!lvlPrefs.getBoolean("level1Passed")) {
+            //System.out.println("si lo dibuja");
+            batch.draw(lvlLockedTexture, (MasterScreen.WIDTH/3-lvl1Button.getWidth()/2)+100, (MasterScreen.HEIGHT/2-lvl1Button.getHeight()/2));
         }
-
-
-        batch.draw(lvlLockedTexture, (MasterScreen.WIDTH/2-lvl1Button.getWidth()/2)+150, (MasterScreen.HEIGHT/2-lvl1Button.getHeight()/2));
-
-        batch.draw(lvlLockedTexture, (4*MasterScreen.WIDTH/5)-lvl1Button.getWidth()/2+35, (MasterScreen.HEIGHT/2-lvl1Button.getHeight()/2));
-
+        if (!lvlPrefs.getBoolean("level2Passed")) {
+            batch.draw(lvlLockedTexture, (MasterScreen.WIDTH/2-lvl1Button.getWidth()/2)+150, (MasterScreen.HEIGHT/2-lvl1Button.getHeight()/2));
+        }
+        if (!lvlPrefs.getBoolean("level3Passed")) {
+            batch.draw(lvlLockedTexture, (4*MasterScreen.WIDTH/5)-lvl1Button.getWidth()/2+35, (MasterScreen.HEIGHT/2-lvl1Button.getHeight()/2));
+        }
 
         batch.end();
 
