@@ -12,11 +12,6 @@ public class SplashScreen extends MasterScreen {
 
     private Texture background;
     private Texture logo;
-
-    private Stage aboutStage;
-
-    private Text text;
-
     private float timeCounter;
 
     public SplashScreen(Virusito game) {
