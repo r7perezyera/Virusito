@@ -29,8 +29,9 @@ public class MenuScreen extends MasterScreen {
     // Users preferences
     private Preferences lvlPrefs = Gdx.app.getPreferences("userPrefs");
     boolean isSoundOn = lvlPrefs.getBoolean("soundOn");
-    private Sound playSound;
 
+    // Music and SFX
+    private Sound playSound;
     private Music music;
 
     public MenuScreen(Virusito juego) {
@@ -43,16 +44,15 @@ public class MenuScreen extends MasterScreen {
 
         background = new Texture("Pantallas/PantallaMenu.jpg");
         createButtons();
-        //Pasamoe el control de input a la escenea
+        //Pasamos el control de input a la escenea
         Gdx.input.setInputProcessor(menuStage);
         Gdx.input.setCatchBackKey(false);
 
-            loadMusic();
-            loadSFX();
+        loadMusic();
+        loadSFX();
+
         if (isSoundOn) {
             music.play();
-        }else{
-            music.stop();
         }
     }
 
@@ -62,7 +62,6 @@ public class MenuScreen extends MasterScreen {
     private void loadMusic() {
         music = Gdx.audio.newMusic(Gdx.files.internal("Music/Tobu&Itro-Sunburst.mp3"));
         music.setLooping(true);
-        music.play();
     }
 
     private void createButtons() {
@@ -138,20 +137,11 @@ public class MenuScreen extends MasterScreen {
 
     @Override
     public void render(float delta) {
-    if(!isSoundOn && music.isPlaying()){
-        music.stop();
-    }else if (isSoundOn && !music.isPlaying()){
-        music.play();
-    }
         eraseScreen();
         batch.begin();
-
         //Dibujar
-
         batch.draw(background, 0,0);
-
         batch.end();
-
         menuStage.draw();
 
     }
