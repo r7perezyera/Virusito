@@ -135,7 +135,7 @@ class Endless extends MasterScreen {
         buildHUD();
         createJoysticks();
         getWalls();
-        player = new Player(300,300,3,this.world, weaponType.SHOTGUN);
+        player = new Player(300,300,3,this.world, weaponType.PISTOL);
         friendlyShotCooldown = player.getCooldown();
         spawn();
         getEnemies();
@@ -304,6 +304,7 @@ class Endless extends MasterScreen {
 
             }
         }
+
         if (!enemies.isEmpty()){
             for (Minion minion : enemies){
                 minion.render(batch);
@@ -319,6 +320,7 @@ class Endless extends MasterScreen {
             getEnemies();
 
         }
+
         if(!pilas.isEmpty()){
             for (int i = pilas.size()-1; i>=0; i--){
                 Item pila = pilas.get(i);
@@ -387,7 +389,7 @@ class Endless extends MasterScreen {
             numEnemies = 7;
             diff = diff.next();
             System.out.println(diff);
-            Minion minion = new Minion(type.next(), movementPattern.ZIGZAG, diff, 500, 500,world);
+            Minion minion = new Minion(type.next(), movementPattern.AVOIDER, diff, 500, 500,world);
             minion.setBoss();
             enemies.add(minion);
         }
@@ -396,7 +398,7 @@ class Endless extends MasterScreen {
         int[] nivelY = {6,7,8,7,6,4,3,2,3,4};
         for (int i = 0; i<numEnemies; i++){
 
-            Minion minion = new Minion(type, movementPattern.ZIGZAG, diff, WIDTH*nivelX[i]/7, HEIGHT*nivelY[i]/9,world);
+            Minion minion = new Minion(type, movementPattern.AVOIDER, diff, WIDTH*nivelX[i]/7, HEIGHT*nivelY[i]/9,world);
             enemies.add(minion);
         }
 
@@ -489,15 +491,6 @@ class Endless extends MasterScreen {
             player.setX(player.b2body.getPosition().x-player.getWidth()/2);//Medio ineficiente, pone sprite donde esta body
             player.setY(player.b2body.getPosition().y-player.getHeight()/2);
 
-            /*if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
-                player.setDir(viewingDirection.RIGHT);
-            } else if (46 <= angle && angle <= 136) {
-                player.setDir(viewingDirection.FRONT);
-            } else if (136 <= angle && angle <= 225) {
-                player.setDir(viewingDirection.LEFT);
-            } else if (226 <= angle && angle <= 315) {
-                player.setDir(viewingDirection.FRONT);
-            }*/
 
             float newPosY = player.getSprite().getY() + (dy * player.getSpeed());
             float newPosX = player.getSprite().getX() + (dx * player.getSpeed());
@@ -662,29 +655,7 @@ class Endless extends MasterScreen {
             this.addActor(playButton);
 
             // TODO now that we have the asset, create and place the level restart button for the pause menu
-            /*restartButton = assetManager.get("Botones/noAssetForThatYet.png");
 
-            TextureRegionDrawable trdRestart = new TextureRegionDrawable(new TextureRegion(restartButton));
-
-            ImageButton restartBtn = new ImageButton(trdRestart);
-
-            restartBtn.setPosition(WIDTH/2 - restartBtn.getWidth()/2 + 150, HEIGHT/4);
-
-            restartBtn.addListener(new ClickListener() {
-
-                @Override
-
-                public void clicked(InputEvent event, float x, float y) {
-                    if(isSoundOn) {
-                        music.stop();
-                    }
-                    game.setScreen(new Endless(game));
-
-                }
-
-            });
-
-            this.addActor(restartBtn);*/
         }
     }
 
