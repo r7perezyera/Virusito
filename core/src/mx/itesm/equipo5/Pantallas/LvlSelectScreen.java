@@ -19,13 +19,13 @@ public class LvlSelectScreen extends MasterScreen {
 
     private Stage lvlSelectStage;
 
+    private Texture lvlLockedTexture = new Texture("Botones/Level_Blocked.png");
+
     private ImageButton homeButton;
     private ImageButton lvl1Button;
     private ImageButton lvl2Button;
     private ImageButton lvl3Button;
     private ImageButton lvlEndlessButton;
-
-    private Texture lvlLockedTexture = new Texture("Botones/Level_Blocked.png");
 
     private Preferences lvlPrefs = Gdx.app.getPreferences("userPrefs");
 
@@ -58,6 +58,12 @@ public class LvlSelectScreen extends MasterScreen {
                 game.setScreen(new MenuScreen(game));
             }
         });
+
+        // unlock all levels
+        lvlPrefs.putBoolean("level1Passed", true);
+        lvlPrefs.putBoolean("level2Passed", true);
+        lvlPrefs.putBoolean("level3Passed", true);
+        // for test purposes - remove at end
 
         // level 1 button - should be ALWAYS available
         lvl1Button = new Button("Botones/Level_1.png").getiButton();

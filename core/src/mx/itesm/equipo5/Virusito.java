@@ -40,18 +40,15 @@ public class Virusito extends Game {
         prefs.putBoolean("soundON", true);
 
 
-        prefs.putBoolean("level1Passed", true);
-
+        prefs.putBoolean("level1Passed", false);
 
         if (!prefs.getBoolean("level1Passed")) {
-            prefs.putBoolean("level1Passed", true);
+            prefs.putBoolean("level2Passed", false);
         }
         if (!prefs.getBoolean("level2Passed")) {
-            prefs.putBoolean("level2Passed", true);
-        }
-        if (!prefs.getBoolean("level3Passed")) {
             prefs.putBoolean("level3Passed", false);
         }
+
 
         prefs.flush();
     }
