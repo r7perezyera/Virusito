@@ -116,7 +116,7 @@ class Endless extends MasterScreen {
 
     private ImageButton pauseButton;
 
-    private PauseStage pauseScene;
+    private PauseScene pauseScene;
 
 
 
@@ -613,12 +613,6 @@ class Endless extends MasterScreen {
     }
 
 
-<<<<<<< HEAD
-    /*private class PauseScene extends Stage {
-
-
-    }*/
-=======
     private class PauseScene extends Stage {
 
         public PauseScene(Viewport view, SpriteBatch batch) {
@@ -696,6 +690,5 @@ class Endless extends MasterScreen {
             this.addActor(restartBtn);*/
         }
     }
->>>>>>> parent of 6ec780e... Working on pause screen
 
 }
