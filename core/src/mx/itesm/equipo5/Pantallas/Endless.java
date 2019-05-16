@@ -613,9 +613,89 @@ class Endless extends MasterScreen {
     }
 
 
+<<<<<<< HEAD
     /*private class PauseScene extends Stage {
 
 
     }*/
+=======
+    private class PauseScene extends Stage {
+
+        public PauseScene(Viewport view, SpriteBatch batch) {
+            super(view, batch);
+            // Creación de texturas
+            Texture homeBttnTexture;
+            Texture playBttnTexture;
+            //Texture restartButton;
+
+            Pixmap pixmap = new Pixmap((int) (WIDTH * 0.7f), (int) (HEIGHT * 0.8f), Pixmap.Format.RGBA8888);
+            pixmap.setColor(1f, 1f, 1f, 0.75f);
+            pixmap.fillRectangle(0, 0, pixmap.getWidth(), pixmap.getHeight());
+            Texture texturaRectangulo = new Texture(pixmap);
+            pixmap.dispose();
+            Image rectImg = new Image(texturaRectangulo);
+            rectImg.setPosition(0.15f * WIDTH, 0.1f * HEIGHT);
+            this.addActor(rectImg);
+
+            homeBttnTexture = assetManager.get("Botones/Home_Bttn.png");
+            TextureRegionDrawable trdSalir = new TextureRegionDrawable(new TextureRegion(homeBttnTexture));
+            ImageButton homeButton = new ImageButton(trdSalir);
+            homeButton.setPosition((WIDTH/2 - homeButton.getWidth()/2)-250, (HEIGHT/2)+50);
+            homeButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    // Regresa al menú
+                    if (isSoundOn) {
+                        music.dispose();
+                    }
+                    game.setScreen(new MenuScreen(game));
+
+                }
+            });
+            this.addActor(homeButton);
+
+            playBttnTexture = assetManager.get("Botones/Play_Bttn.png");
+            TextureRegionDrawable trdContinuar = new TextureRegionDrawable(
+                    new TextureRegion(playBttnTexture));
+            ImageButton playButton = new ImageButton(trdContinuar);
+            playButton.setPosition(WIDTH / 2 - playButton.getWidth() / 2 , HEIGHT / 4);
+            playButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    // return to the game
+                    loadMap();
+                    Gdx.input.setInputProcessor(HUDstage);
+                    gameState = GameState.PLAYING;
+                }
+            });
+            this.addActor(playButton);
+
+            // TODO now that we have the asset, create and place the level restart button for the pause menu
+            /*restartButton = assetManager.get("Botones/noAssetForThatYet.png");
+
+            TextureRegionDrawable trdRestart = new TextureRegionDrawable(new TextureRegion(restartButton));
+
+            ImageButton restartBtn = new ImageButton(trdRestart);
+
+            restartBtn.setPosition(WIDTH/2 - restartBtn.getWidth()/2 + 150, HEIGHT/4);
+
+            restartBtn.addListener(new ClickListener() {
+
+                @Override
+
+                public void clicked(InputEvent event, float x, float y) {
+                    if(isSoundOn) {
+                        music.stop();
+                    }
+                    game.setScreen(new Endless(game));
+
+                }
+
+            });
+
+            this.addActor(restartBtn);*/
+        }
+    }
+>>>>>>> parent of 6ec780e... Working on pause screen
 
 }
