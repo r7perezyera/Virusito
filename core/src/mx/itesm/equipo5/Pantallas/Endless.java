@@ -622,7 +622,7 @@ class Endless extends MasterScreen {
             //Texture restartButton;
 
             Pixmap pixmap = new Pixmap((int) (WIDTH * 0.7f), (int) (HEIGHT * 0.8f), Pixmap.Format.RGBA8888);
-            pixmap.setColor(1f, 1f, 1f, 0.75f);
+            pixmap.setColor(0.5f, 0.5f, 0.6f, 0.75f);
             pixmap.fillRectangle(0, 0, pixmap.getWidth(), pixmap.getHeight());
             Texture texturaRectangulo = new Texture(pixmap);
             pixmap.dispose();
@@ -664,28 +664,24 @@ class Endless extends MasterScreen {
             this.addActor(playButton);
 
             // TODO now that we have the asset, create and place the level restart button for the pause menu
-            /*restartButton = assetManager.get("Botones/noAssetForThatYet.png");
+            /*restartButton = assetManager.get("Botones/Replay_Bttn.png");
 
             TextureRegionDrawable trdRestart = new TextureRegionDrawable(new TextureRegion(restartButton));
 
-            ImageButton restartBtn = new ImageButton(trdRestart);
+            ImageButton restartBttn = new ImageButton(trdRestart);
 
-            restartBtn.setPosition(WIDTH/2 - restartBtn.getWidth()/2 + 150, HEIGHT/4);
+            restartBttn.setPosition(WIDTH/2 - restartBttn.getWidth()/2 + 150, HEIGHT/4);
 
-            restartBtn.addListener(new ClickListener() {
-
+            restartBttn.addListener(new ClickListener() {
                 @Override
-
                 public void clicked(InputEvent event, float x, float y) {
                     if(isSoundOn) {
                         music.stop();
                     }
+                    // we should get rid of the current screen tho, call dispose i guess
                     game.setScreen(new Endless(game));
-
                 }
-
             });
-
             this.addActor(restartBtn);*/
         }
     }
