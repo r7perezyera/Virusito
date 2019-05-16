@@ -59,6 +59,12 @@ public class LvlSelectScreen extends MasterScreen {
             }
         });
 
+        // unlock all levels
+        lvlPrefs.putBoolean("level1Passed", true);
+        lvlPrefs.putBoolean("level2Passed", true);
+        lvlPrefs.putBoolean("level3Passed", true);
+        // for test purposes - remove at end
+
         // level 1 button - should be ALWAYS available
         lvl1Button = new Button("Botones/Level_1.png").getiButton();
         lvl1Button.setPosition(MasterScreen.WIDTH/5-lvl1Button.getWidth()/2, (MasterScreen.HEIGHT/2-lvl1Button.getHeight()/2));
