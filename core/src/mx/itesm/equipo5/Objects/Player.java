@@ -48,9 +48,9 @@ public class Player extends Entity {
         this.speed = 7;
         this.weapon = weapon;
         if (weapon == weaponType.PISTOL){
-            cooldown = 0.5f;
+            cooldown = 0.25f;
         }else if (weapon == weaponType.SHOTGUN){
-            cooldown = 1.5f;
+            cooldown = 0.75f;
         }else if (weapon == weaponType.BAZOOKA){
             cooldown = 1f;
         }
@@ -157,10 +157,15 @@ public class Player extends Entity {
 
     public LinkedList<FriendlyBullet> shoot(float dir, LinkedList<FriendlyBullet> bullets){
        if (weapon == weaponType.PISTOL){
-            FriendlyBullet bullet = new FriendlyBullet(getX()+getWidth()/2, getY()+getHeight()/2, dir);
+            FriendlyBullet bullet = new FriendlyBullet(getX()+getWidth()/2, getY()+getHeight()/2, dir, weapon);
             bullets.add(bullet);
        }else if (weapon == weaponType.SHOTGUN){
-
+           FriendlyBullet bullet = new FriendlyBullet(getX()+getWidth()/2, getY()+getHeight()/2, dir, weapon);
+           bullets.add(bullet);
+           bullet = new FriendlyBullet(getX()+getWidth()/2, getY()+getHeight()/2, (float) (dir + (Math.PI/4)), weapon);
+           bullets.add(bullet);
+           bullet = new FriendlyBullet(getX()+getWidth()/2, getY()+getHeight()/2, (float) (dir - (Math.PI/4)), weapon);
+           bullets.add(bullet);
        }else if (weapon == weaponType.BAZOOKA){
 
        }

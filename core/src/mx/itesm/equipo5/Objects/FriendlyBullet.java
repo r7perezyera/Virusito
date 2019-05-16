@@ -6,9 +6,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 public class FriendlyBullet extends Projectile {
-    public FriendlyBullet(float x, float y, float direction, weaponType) {
+    public FriendlyBullet(float x, float y, float direction, weaponType weapon) {
         super(x, y, direction);
-        this.texture = new Texture("Balas/Bala.png");
+        if (weapon == weaponType.PISTOL){
+            this.texture = new Texture("Balas/Bala.png");
+        }else if (weapon == weaponType.SHOTGUN){
+            this.texture = new Texture("Balas/Bala.png");
+        }else if (weapon == weaponType.BAZOOKA){
+
+        }
         this.speed = 10;
         this.damage = 2;
 
