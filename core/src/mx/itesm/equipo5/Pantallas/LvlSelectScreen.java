@@ -19,13 +19,13 @@ public class LvlSelectScreen extends MasterScreen {
 
     private Stage lvlSelectStage;
 
+    private Texture lvlLockedTexture = new Texture("Botones/Level_Blocked.png");
+
     private ImageButton homeButton;
     private ImageButton lvl1Button;
     private ImageButton lvl2Button;
     private ImageButton lvl3Button;
     private ImageButton lvlEndlessButton;
-
-    private Texture lvlLockedTexture = new Texture("Botones/Level_Blocked.png");
 
     private Preferences lvlPrefs = Gdx.app.getPreferences("userPrefs");
 
