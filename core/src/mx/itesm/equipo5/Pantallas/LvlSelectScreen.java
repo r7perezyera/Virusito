@@ -74,7 +74,7 @@ public class LvlSelectScreen extends MasterScreen {
 
         // level 2 button
         lvl2Button = new Button("Botones/Level_2.png").getiButton();
-        lvl2Button.setPosition(MasterScreen.WIDTH/5-lvl1Button.getWidth()/2, (MasterScreen.HEIGHT/2-lvl1Button.getHeight()/2));
+        lvl2Button.setPosition((MasterScreen.WIDTH/3-lvl2Button.getWidth()/2)+100, (MasterScreen.HEIGHT/2-lvl2Button.getHeight()/2));
         if (lvlPrefs.getBoolean("level1Passed")) {
             lvlSelectStage.addActor(lvl2Button);
         }
@@ -88,7 +88,7 @@ public class LvlSelectScreen extends MasterScreen {
         });
 
         lvl3Button = new Button("Botones/Level_3.png").getiButton();
-        lvl3Button.setPosition(MasterScreen.WIDTH/5-lvl3Button.getWidth()/2, (MasterScreen.HEIGHT/2-lvl1Button.getHeight()/2));
+        lvl3Button.setPosition((MasterScreen.WIDTH/2-lvl3Button.getWidth()/2)+150, (MasterScreen.HEIGHT/2-lvl3Button.getHeight()/2));
         if (lvlPrefs.getBoolean("level2Passed")) {
             lvlSelectStage.addActor(lvl3Button);
         }
@@ -100,6 +100,20 @@ public class LvlSelectScreen extends MasterScreen {
                 game.setScreen(new Level(game));
             }
         });
+
+        lvlEndlessButton = new Button("Botones/Endless_Bttn.png").getiButton();
+        lvlEndlessButton.setPosition((4*MasterScreen.WIDTH/5)-lvlEndlessButton.getWidth()/2+35, (MasterScreen.HEIGHT/2-lvlEndlessButton.getHeight()/2));
+        if (lvlPrefs.getBoolean("level3Passed")) {
+            lvlSelectStage.addActor(lvlEndlessButton);
+        }
+        lvlEndlessButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                // Responder al evento del boton
+                game.setScreen(new Endless(game));
+            }
+        });
     }
 
     @Override
@@ -109,16 +123,17 @@ public class LvlSelectScreen extends MasterScreen {
         batch.begin();
         batch.draw(background,0,0);
 
-        //System.out.println(lvlPrefs.getBoolean("level2Passed"));
+        // dont draw lvl2 button yet
         if (!lvlPrefs.getBoolean("level1Passed")) {
-            //System.out.println("si lo dibuja");
-            batch.draw(lvlLockedTexture, (MasterScreen.WIDTH/3-lvl1Button.getWidth()/2)+100, (MasterScreen.HEIGHT/2-lvl1Button.getHeight()/2));
+            batch.draw(lvlLockedTexture, (MasterScreen.WIDTH/3-lvl2Button.getWidth()/2)+100, (MasterScreen.HEIGHT/2-lvl2Button.getHeight()/2));
         }
+        // dont draw lvl3 button yet
         if (!lvlPrefs.getBoolean("level2Passed")) {
-            batch.draw(lvlLockedTexture, (MasterScreen.WIDTH/2-lvl1Button.getWidth()/2)+150, (MasterScreen.HEIGHT/2-lvl1Button.getHeight()/2));
+            batch.draw(lvlLockedTexture, (MasterScreen.WIDTH/2-lvl3Button.getWidth()/2)+150, (MasterScreen.HEIGHT/2-lvl3Button.getHeight()/2));
         }
+        // dont draw endless button yet
         if (!lvlPrefs.getBoolean("level3Passed")) {
-            batch.draw(lvlLockedTexture, (4*MasterScreen.WIDTH/5)-lvl1Button.getWidth()/2+35, (MasterScreen.HEIGHT/2-lvl1Button.getHeight()/2));
+            batch.draw(lvlLockedTexture, (4*MasterScreen.WIDTH/5)-lvl3Button.getWidth()/2+35, (MasterScreen.HEIGHT/2-lvl3Button.getHeight()/2));
         }
 
         batch.end();

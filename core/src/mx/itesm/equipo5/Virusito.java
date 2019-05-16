@@ -38,18 +38,19 @@ public class Virusito extends Game {
         Preferences prefs = Gdx.app.getPreferences("userPrefs");
 
         prefs.putBoolean("soundON", true);
-        prefs.putBoolean("level1Passed", false);
-        //prefs.putInteger("endlessBestRound",0);
+
+
+        prefs.putBoolean("level1Passed", true);
+
 
         if (!prefs.getBoolean("level1Passed")) {
-            prefs.putBoolean("level1Passed", false);
+            prefs.putBoolean("level1Passed", true);
         }
         if (!prefs.getBoolean("level2Passed")) {
-            prefs.putBoolean("level2Passed", false);
+            prefs.putBoolean("level2Passed", true);
         }
         if (!prefs.getBoolean("level3Passed")) {
             prefs.putBoolean("level3Passed", false);
-            prefs.putBoolean("endlessUnlocked", false);
         }
 
         prefs.flush();
