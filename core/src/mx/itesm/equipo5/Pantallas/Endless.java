@@ -622,7 +622,9 @@ class Endless extends MasterScreen {
             Texture playBttnTexture;
             //Texture restartButton;
 
-            Pixmap pixmap = new Pixmap((int) (WIDTH * 0.7f), (int) (HEIGHT * 0.8f), Pixmap.Format.RGBA8888);
+            float pixmapWidth = WIDTH * 0.7f;
+            float pixmapHeight = HEIGHT * 0.8f;
+            Pixmap pixmap = new Pixmap((int) (pixmapWidth), (int) (pixmapHeight), Pixmap.Format.RGBA8888);
             pixmap.setColor(1f, 1f, 1f, 0.75f);
             pixmap.fillRectangle(0, 0, pixmap.getWidth(), pixmap.getHeight());
             Texture texturaRectangulo = new Texture(pixmap);
@@ -634,7 +636,7 @@ class Endless extends MasterScreen {
             homeBttnTexture = assetManager.get("Botones/Home_Bttn.png");
             TextureRegionDrawable trdSalir = new TextureRegionDrawable(new TextureRegion(homeBttnTexture));
             ImageButton homeButton = new ImageButton(trdSalir);
-            homeButton.setPosition((WIDTH/2 - homeButton.getWidth()/2)-250, (HEIGHT/2)+50);
+            homeButton.setPosition(pixmapWidth/6 + homeButton.getWidth()/2, pixmapHeight - homeButton.getHeight()/2);
             homeButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -652,7 +654,7 @@ class Endless extends MasterScreen {
             TextureRegionDrawable trdContinuar = new TextureRegionDrawable(
                     new TextureRegion(playBttnTexture));
             ImageButton playButton = new ImageButton(trdContinuar);
-            playButton.setPosition(WIDTH / 2 - playButton.getWidth() / 2 , HEIGHT / 4);
+            playButton.setPosition(pixmapWidth - playButton.getWidth()/2 , pixmapHeight/6);
             playButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
