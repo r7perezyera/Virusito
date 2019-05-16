@@ -81,7 +81,7 @@ public class Player extends Entity {
         texture = new Texture("Animaciones/Principal_Anim_I.png");
 
         region = new TextureRegion(texture);
-        texturasPersonajes = region.split(53,height);
+        texturasPersonajes = region.split(54,height);
 
         textureRegionArray = new Array(texturasPersonajes[0]);
 
