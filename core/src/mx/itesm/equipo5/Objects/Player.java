@@ -37,14 +37,23 @@ public class Player extends Entity {
     private Animation animationBack;
     private float animationTimer;
     private viewingDirection dir =  viewingDirection.FRONT;
+    private weaponType weapon;
 
 
-    public Player(float x, float y, float health,World world) {
+    public Player(float x, float y, float health,World world, weaponType weapon) {
 
         width = 50;
         height = 57;
         this.health = health;
         this.speed = 7;
+        this.weapon = weapon;
+        if (weapon == weaponType.PISTOL){
+            cooldown = 0.5f;
+        }else if (weapon == weaponType.SHOTGUN){
+            cooldown = 1.5f;
+        }else if (weapon == weaponType.BAZOOKA){
+            cooldown = 1f;
+        }
         //Load texture front
         texture = new Texture("Animaciones/Principal_Animacion.png");
 
@@ -145,4 +154,18 @@ public class Player extends Entity {
     public void setDir(viewingDirection view){
         this.dir = view;
     }
+
+    public LinkedList<FriendlyBullet> shoot(float dir, LinkedList<FriendlyBullet> bullets){
+       if (weapon == weaponType.PISTOL){
+            FriendlyBullet bullet = new FriendlyBullet(getX()+getWidth()/2, getY()+getHeight()/2, dir);
+            bullets.add(bullet);
+       }else if (weapon == weaponType.SHOTGUN){
+
+       }else if (weapon == weaponType.BAZOOKA){
+
+       }
+        return bullets;
+
+    }
+
 }

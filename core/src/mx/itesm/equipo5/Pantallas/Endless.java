@@ -1,6 +1,5 @@
 package mx.itesm.equipo5.Pantallas;
 
-import static mx.itesm.equipo5.MasterScreen.PPM;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Input;
@@ -24,16 +23,12 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -41,7 +36,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.Vector;
 
 import mx.itesm.equipo5.B2DWorldCreator;
 import mx.itesm.equipo5.Button;
@@ -55,9 +49,9 @@ import mx.itesm.equipo5.Objects.difficulty;
 import mx.itesm.equipo5.Objects.enemyType;
 import mx.itesm.equipo5.Objects.movementPattern;
 import mx.itesm.equipo5.Objects.viewingDirection;
+import mx.itesm.equipo5.Objects.weaponType;
 import mx.itesm.equipo5.Text;
 import mx.itesm.equipo5.Virusito;
-import sun.security.util.Length;
 
 class Endless extends MasterScreen {
 
@@ -71,7 +65,7 @@ class Endless extends MasterScreen {
     private LinkedList<Item> pilas = new LinkedList<Item>();
     private LinkedList<Minion> enemies = new LinkedList<Minion>();
     private float timeSinceShot;
-    private float friendlyShotCooldown = 0.5f;
+    private float friendlyShotCooldown;
 
     private Text text;
     private TiledMap map;
@@ -141,7 +135,8 @@ class Endless extends MasterScreen {
         buildHUD();
         createJoysticks();
         getWalls();
-        player = new Player(300,300,3,this.world);
+        player = new Player(300,300,3,this.world, weaponType.PISTOL);
+        friendlyShotCooldown = player.getCooldown();
         spawn();
         getEnemies();
 
@@ -416,36 +411,32 @@ class Endless extends MasterScreen {
 
         if(timeSinceShot<=friendlyShotCooldown) {
             if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
-                FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, 0);
-                bullets.add(bullet);
+                bullets  = player.shoot(0.0f, bullets);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
                 if(isSoundOn){
                     shootingSound.play();
                 }
             } else if (46 <= angle && angle <= 136) {
-                FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) Math.PI / 2);
-                bullets.add(bullet);
+                bullets  = player.shoot((float) Math.PI / 2, bullets);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
                 if(isSoundOn){
                     shootingSound.play();
                 }
             } else if (136 <= angle && angle <= 225) {
-                FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) Math.PI);
-                bullets.add(bullet);
+                bullets  = player.shoot((float) Math.PI, bullets);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
                 if(isSoundOn){
                     shootingSound.play();
                 }
             } else if (226 <= angle && angle <= 315) {
-                FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) (3 * Math.PI) / 2);
-                bullets.add(bullet);
+                bullets  = player.shoot((float) (3*Math.PI) / 2, bullets);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
                 if(isSoundOn){
                     shootingSound.play();
                 }
             }
 
-        }else if (timeSinceShot >= friendlyShotCooldown*2) {
+        }else if (timeSinceShot >= 2*friendlyShotCooldown) {
             timeSinceShot=0.0f;
         }
         if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
@@ -558,7 +549,11 @@ class Endless extends MasterScreen {
                         enemies.get(j).doDamage(1);
                         if (enemies.get(j).isDestroyed()) {
                             if (isSoundOn) {
-                                minionDeathSound.play();
+                                if (enemies.get(j).isBoss()){
+                                    bossDeathSound.play();
+                                }else{
+                                    minionDeathSound.play();
+                                }
                             }
                             Random random = new Random();
                             if (random.nextInt(6) == 4 && !enemies.get(j).isBoss()){

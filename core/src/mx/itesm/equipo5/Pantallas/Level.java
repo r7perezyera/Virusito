@@ -35,6 +35,7 @@ import mx.itesm.equipo5.Objects.difficulty;
 import mx.itesm.equipo5.Objects.enemyType;
 import mx.itesm.equipo5.Objects.movementPattern;
 import mx.itesm.equipo5.Objects.viewingDirection;
+import mx.itesm.equipo5.Objects.weaponType;
 import mx.itesm.equipo5.Virusito;
 
 class Level extends MasterScreen {
@@ -105,7 +106,7 @@ class Level extends MasterScreen {
             loadMusic();
         }
 
-        player = new Player(300,300,3,world);
+        player = new Player(300,300,3,world, weaponType.PISTOL);
 
         Gdx.input.setCatchBackKey(false);
     }

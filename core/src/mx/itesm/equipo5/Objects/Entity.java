@@ -20,6 +20,7 @@ public abstract class Entity{
     protected float health; //When health<0, destroyed = True
     protected Texture texture;
     protected Rectangle rectangle = new Rectangle();
+    protected float cooldown;
 
     //Box2D
     public World world;
@@ -121,4 +122,8 @@ public abstract class Entity{
     }
 
     public Rectangle getRectangle() {return rectangle;}
+
+    public  float getCooldown() {
+        return cooldown;
+    }
 }
