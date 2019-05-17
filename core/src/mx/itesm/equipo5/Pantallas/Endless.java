@@ -41,6 +41,7 @@ import mx.itesm.equipo5.B2DWorldCreator;
 import mx.itesm.equipo5.Button;
 import mx.itesm.equipo5.JoyStick;
 import mx.itesm.equipo5.MasterScreen;
+import mx.itesm.equipo5.Objects.EnemyBullet;
 import mx.itesm.equipo5.Objects.FriendlyBullet;
 import mx.itesm.equipo5.Objects.Item;
 import mx.itesm.equipo5.Objects.Minion;
@@ -62,6 +63,7 @@ class Endless extends MasterScreen {
     private float timeSinceDamage;
 
     private LinkedList<FriendlyBullet> bullets = new LinkedList<FriendlyBullet>();
+    private LinkedList<EnemyBullet> enemyBullets = new LinkedList<EnemyBullet>();
     private LinkedList<Item> pilas = new LinkedList<Item>();
     private LinkedList<Minion> enemies = new LinkedList<Minion>();
     private float timeSinceShot;
@@ -305,17 +307,33 @@ class Endless extends MasterScreen {
             }
         }
 
+        if (!enemyBullets.isEmpty()){
+            updateEnemyBullet(true);
+            for (int i =enemyBullets.size()-1;i>=0;i--){
+                if (enemyBullets.get(i).isDestroyed()){
+                    enemyBullets.remove(i);
+                }else {
+                    EnemyBullet bullet = enemyBullets.get(i);
+                    bullet.render(batch);
+                    bullet.update();
+                }
+
+            }
+        }
+
+
         if (!enemies.isEmpty()){
             for (Minion minion : enemies){
                 minion.render(batch);
                 if (!(gameState == GameState.PAUSED)) {
                     // code moved
-                    minion.move(player.getPosition().x,player.getPosition().y);
+                    enemyBullets = minion.move(player.getPosition().x,player.getPosition().y, enemyBullets);
                 }else{
                     minion.setVelocity(0,0);
                 }
             }
-        }else {
+        }
+        else {
             spawn();
             getEnemies();
 
@@ -339,6 +357,7 @@ class Endless extends MasterScreen {
             pauseScene.draw();
             updateCharacter(0,0,false);
             updateBullet(false);
+            //updateEnemyBullet(false);
 
         }
 
@@ -397,8 +416,7 @@ class Endless extends MasterScreen {
         int[] nivelX = {2,3,4,5,6,2,3,4,5,6};
         int[] nivelY = {6,7,8,7,6,4,3,2,3,4};
         for (int i = 0; i<numEnemies; i++){
-
-            Minion minion = new Minion(type, movementPattern.AVOIDER, diff, WIDTH*nivelX[i]/7, HEIGHT*nivelY[i]/9,world);
+            Minion minion = new Minion(type, movementPattern.ZIGZAG, diff, WIDTH*nivelX[i]/7, HEIGHT*nivelY[i]/9,world);
             enemies.add(minion);
         }
 
@@ -562,6 +580,33 @@ class Endless extends MasterScreen {
                         }
 
                     }
+                }
+            }
+        }
+    }
+
+    private void updateEnemyBullet(boolean update){
+
+        if (update) {
+            for(int i =enemyBullets.size()-1;i>=0;i--){
+                EnemyBullet bullet = enemyBullets.get(i);
+                Rectangle checkRectangle;
+                checkRectangle = new Rectangle();
+                checkRectangle.set(bullet.getRectangle());
+                float newPosY = bullet.getSprite().getY() + bullet.getSpeed();
+                float newPosX = bullet.getSprite().getX() + bullet.getSpeed();
+                checkRectangle.setPosition(newPosX, newPosY);
+
+                if(collidesWith(walls,checkRectangle)) {
+                    bullet.destroy();
+                    enemyBullets.remove(i);
+                }
+
+                Rectangle playerRect = player.getRectangle();
+                if (checkRectangle.overlaps(playerRect)){
+                    player.doDamage(2);
+                    bullet.destroy();
+                    enemyBullets.remove(i);
                 }
             }
         }
