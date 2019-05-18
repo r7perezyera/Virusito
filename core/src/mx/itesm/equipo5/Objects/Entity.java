@@ -94,7 +94,7 @@ public abstract class Entity{
     //This will use Box2d
     public void move(float dx,float dy){
         //Box2D movement
-        b2body.setLinearVelocity(dx*2,dy*2); //TODO
+        b2body.setLinearVelocity(dx*10000,dy*10000); //TODO
         this.setX(b2body.getPosition().x-getWidth()/2);//Medio ineficiente, pone sprite donde esta body
         this.setY(b2body.getPosition().y-getHeight()/2);
     }
