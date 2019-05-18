@@ -1,6 +1,5 @@
 package mx.itesm.equipo5.Pantallas;
 
-import static mx.itesm.equipo5.MasterScreen.PPM;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Input;
@@ -24,16 +23,12 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -41,12 +36,12 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.Vector;
 
 import mx.itesm.equipo5.B2DWorldCreator;
 import mx.itesm.equipo5.Button;
 import mx.itesm.equipo5.JoyStick;
 import mx.itesm.equipo5.MasterScreen;
+import mx.itesm.equipo5.Objects.EnemyBullet;
 import mx.itesm.equipo5.Objects.FriendlyBullet;
 import mx.itesm.equipo5.Objects.Item;
 import mx.itesm.equipo5.Objects.Minion;
@@ -55,9 +50,9 @@ import mx.itesm.equipo5.Objects.difficulty;
 import mx.itesm.equipo5.Objects.enemyType;
 import mx.itesm.equipo5.Objects.movementPattern;
 import mx.itesm.equipo5.Objects.viewingDirection;
+import mx.itesm.equipo5.Objects.weaponType;
 import mx.itesm.equipo5.Text;
 import mx.itesm.equipo5.Virusito;
-import sun.security.util.Length;
 
 class Endless extends MasterScreen {
 
@@ -68,10 +63,11 @@ class Endless extends MasterScreen {
     private float timeSinceDamage;
 
     private LinkedList<FriendlyBullet> bullets = new LinkedList<FriendlyBullet>();
+    private LinkedList<EnemyBullet> enemyBullets = new LinkedList<EnemyBullet>();
     private LinkedList<Item> pilas = new LinkedList<Item>();
     private LinkedList<Minion> enemies = new LinkedList<Minion>();
     private float timeSinceShot;
-    private float friendlyShotCooldown = 0.5f;
+    private float friendlyShotCooldown;
 
     private Text text;
     private TiledMap map;
@@ -141,7 +137,8 @@ class Endless extends MasterScreen {
         buildHUD();
         createJoysticks();
         getWalls();
-        player = new Player(300,300,3,this.world);
+        player = new Player(300,300,3,this.world, weaponType.BAZOOKA);
+        friendlyShotCooldown = player.getCooldown();
         spawn();
         getEnemies();
         text = new Text();
@@ -253,89 +250,109 @@ class Endless extends MasterScreen {
 
     @Override
     public void render(float delta) {
-
         eraseScreen();
 
-        //Update World
-        world.step(1/60f,6,2);
+            //Update World
+            world.step(1 / 60f, 6, 2);
 
-        timeSinceShot += delta;
-        timeSinceDamage += delta;
-        shoot();
-
-        updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY(), true);
-
-        batch.setProjectionMatrix(camera.combined);
-        // render the game map
-        mapRenderer.setView(camera);
-        mapRenderer.render();
+            shoot();
 
 
-        if (player.getHealth()==3){
-            life = new Texture("HUD/Bateria/Bateria_Llena.png");
-        }else if (player.getHealth()==2){
-            life = new Texture("HUD/Bateria/Bateria_Agotando.png");
-        }else if (player.getHealth()==1){
-            life = new Texture("HUD/Bateria/Bateria_Ultima.png");
-        }else {
-            if (isSoundOn) {
-                playerDeathSound.play();
-                music.stop();
+
+            batch.setProjectionMatrix(camera.combined);
+            // render the game map
+            mapRenderer.setView(camera);
+            mapRenderer.render();
+
+
+            if (player.getHealth() == 3) {
+                life = new Texture("HUD/Bateria/Bateria_Llena.png");
+            } else if (player.getHealth() == 2) {
+                life = new Texture("HUD/Bateria/Bateria_Agotando.png");
+            } else if (player.getHealth() == 1) {
+                life = new Texture("HUD/Bateria/Bateria_Ultima.png");
+            } else {
+                if (isSoundOn) {
+                    playerDeathSound.play();
+                    music.stop();
+                }
+                lvlPrefs.putInteger("endlessBestRound", round);
+                lvlPrefs.flush();
+                game.setScreen(new LoseScreen(game));
             }
-            lvlPrefs.putInteger("endlessBestRound",round);
-            lvlPrefs.flush();
-            System.out.println("se guarda "+ round +  " como hiscore");
-            game.setScreen(new LoseScreen(game));
-        }
 
 
-        batch.begin();
-        player.render(batch);
-        batch.draw(life, WIDTH/2-(life.getWidth()/2f),650);
+            batch.begin();
+            player.render(batch);
+            batch.draw(life, WIDTH / 2 - (life.getWidth() / 2f), 650);
 
-        text.displayHUDText(batch, "Round: " +round, MasterScreen.WIDTH/6, 5*(MasterScreen.HEIGHT/6)+100);
-        text.displayHUDText(batch, "Enemies: " +enemies.size(), MasterScreen.WIDTH*5/6, 5*(MasterScreen.HEIGHT/6)+100);
+            text.displayHUDText(batch, "Round: " + round, MasterScreen.WIDTH / 6, 5 * (MasterScreen.HEIGHT / 6) + 100);
+            text.displayHUDText(batch, "Enemies: " + enemies.size(), MasterScreen.WIDTH * 5 / 6, 5 * (MasterScreen.HEIGHT / 6) + 100);
 
 
-        if (!bullets.isEmpty()){
+
+
+            if (!enemies.isEmpty()) {
+                for (Minion minion : enemies) {
+                    minion.render(batch);
+                    if (!(gameState == GameState.PAUSED)) {
+                        // code moved
+                        enemyBullets = minion.move(player.getPosition().x, player.getPosition().y, enemyBullets);
+                    } else {
+                        minion.setVelocity(0, 0);
+                    }
+                }
+            }
+            else {
+                spawn();
+                getEnemies();
+
+            }
+
+            if (!pilas.isEmpty()) {
+                for (int i = pilas.size() - 1; i >= 0; i--) {
+                    Item pila = pilas.get(i);
+                    pila.render(batch);
+                    if (player.getRectangle().overlaps(pila.getRectangle()) && player.getHealth() < 3) {
+                        player.setHealth(player.getHealth() + 1);
+                        pilas.remove(pila);
+                    }
+                }
+            }
+
+        if (gameState == GameState.PLAYING) {
+            updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY(), true);
             updateBullet(true);
-            for (int i =bullets.size()-1;i>=0;i--){
-                if (bullets.get(i).isDestroyed()){
-                    bullets.remove(i);
-                }else {
-                    FriendlyBullet bullet = bullets.get(i);
-                    bullet.render(batch);
-                    bullet.update();
-                }
+            updateEnemyBullet(true);
+            timeSinceShot += delta;
+            timeSinceDamage += delta;
+            if (!bullets.isEmpty()) {
+                for (int i = bullets.size() - 1; i >= 0; i--) {
+                    if (bullets.get(i).isDestroyed()) {
+                        bullets.remove(i);
+                    } else {
+                        FriendlyBullet bullet = bullets.get(i);
+                        bullet.render(batch);
+                        bullet.update();
+                    }
 
-            }
-        }
-        if (!enemies.isEmpty()){
-            for (Minion minion : enemies){
-                minion.render(batch);
-                if (!(gameState == GameState.PAUSED)) {
-                    // code moved
-                    minion.move(player.getPosition().x,player.getPosition().y);
-                }else{
-                    minion.setVelocity(0,0);
                 }
             }
-        }else {
-            spawn();
-            getEnemies();
 
-        }
-        if(!pilas.isEmpty()){
-            for (int i = pilas.size()-1; i>=0; i--){
-                Item pila = pilas.get(i);
-                pila.render(batch);
-                if (player.getRectangle().overlaps(pila.getRectangle())  && player.getHealth()<3) {
-                    player.setHealth(player.getHealth() + 1);
-                    pilas.remove(pila);
+            if (!enemyBullets.isEmpty()) {
+                for (int i = enemyBullets.size() - 1; i >= 0; i--) {
+                    if (enemyBullets.get(i).isDestroyed()) {
+                        enemyBullets.remove(i);
+                    } else {
+                        EnemyBullet bullet = enemyBullets.get(i);
+                        bullet.render(batch);
+                        bullet.update();
+                    }
+
                 }
             }
-        }
 
+        }
 
         batch.end();
 
@@ -343,16 +360,20 @@ class Endless extends MasterScreen {
             pauseScene.draw();
             updateCharacter(0,0,false);
             updateBullet(false);
-        }
+            updateEnemyBullet(false);
+            shootingStick.remove();
+            movingStick.remove();
+            createJoysticks();
 
-        if (gameState == GameState.PLAYING) {
-            updateCharacter(0,0,true);
-            updateBullet(true);
         }
-
 
         batch.setProjectionMatrix(HUDcamera.combined);
         HUDstage.draw();
+
+        if (round == 10){
+            game.setScreen(new WinScreen(game));
+        }
+
 
         // pausa si presionamos Android Back
         if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
@@ -387,7 +408,7 @@ class Endless extends MasterScreen {
             numEnemies = 7;
             diff = diff.next();
             System.out.println(diff);
-            Minion minion = new Minion(type.next(), movementPattern.ZIGZAG, diff, 500, 500,world);
+            Minion minion = new Minion(type.next(), movementPattern.AVOIDER, diff, 500, 500,world);
             minion.setBoss();
             enemies.add(minion);
         }
@@ -395,7 +416,6 @@ class Endless extends MasterScreen {
         int[] nivelX = {2,3,4,5,6,2,3,4,5,6};
         int[] nivelY = {6,7,8,7,6,4,3,2,3,4};
         for (int i = 0; i<numEnemies; i++){
-
             Minion minion = new Minion(type, movementPattern.ZIGZAG, diff, WIDTH*nivelX[i]/7, HEIGHT*nivelY[i]/9,world);
             enemies.add(minion);
         }
@@ -412,36 +432,32 @@ class Endless extends MasterScreen {
 
         if(timeSinceShot<=friendlyShotCooldown) {
             if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
-                FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, 0);
-                bullets.add(bullet);
+                bullets  = player.shoot(0.0f, bullets);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
                 if(isSoundOn){
                     shootingSound.play();
                 }
             } else if (46 <= angle && angle <= 136) {
-                FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) Math.PI / 2);
-                bullets.add(bullet);
+                bullets  = player.shoot((float) Math.PI / 2, bullets);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
                 if(isSoundOn){
                     shootingSound.play();
                 }
             } else if (136 <= angle && angle <= 225) {
-                FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) Math.PI);
-                bullets.add(bullet);
+                bullets  = player.shoot((float) Math.PI, bullets);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
                 if(isSoundOn){
                     shootingSound.play();
                 }
             } else if (226 <= angle && angle <= 315) {
-                FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) (3 * Math.PI) / 2);
-                bullets.add(bullet);
+                bullets  = player.shoot((float) (3*Math.PI) / 2, bullets);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
                 if(isSoundOn){
                     shootingSound.play();
                 }
             }
 
-        }else if (timeSinceShot >= friendlyShotCooldown*2) {
+        }else if (timeSinceShot >= 2*friendlyShotCooldown) {
             timeSinceShot=0.0f;
         }
         if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
@@ -493,21 +509,20 @@ class Endless extends MasterScreen {
             player.setX(player.b2body.getPosition().x-player.getWidth()/2);//Medio ineficiente, pone sprite donde esta body
             player.setY(player.b2body.getPosition().y-player.getHeight()/2);
 
-            /*if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
-                player.setDir(viewingDirection.RIGHT);
-            } else if (46 <= angle && angle <= 136) {
-                player.setDir(viewingDirection.FRONT);
-            } else if (136 <= angle && angle <= 225) {
-                player.setDir(viewingDirection.LEFT);
-            } else if (226 <= angle && angle <= 315) {
-                player.setDir(viewingDirection.FRONT);
-            }*/
 
             float newPosY = player.getSprite().getY() + (dy * player.getSpeed());
             float newPosX = player.getSprite().getX() + (dx * player.getSpeed());
             checkRectangle.setPosition(newPosX, newPosY);
             // end of moved code
-        }else{
+            if (collidesWith(enemyRect, checkRectangle)) {
+                if(timeSinceDamage>2){
+                    player.doDamage(1);
+                    timeSinceDamage=0;
+                }
+            }
+
+        }
+        else{
             player.b2body.setLinearVelocity(0,0);
         }
 
@@ -522,18 +537,13 @@ class Endless extends MasterScreen {
             player.moveY(dy);
         }
         */
-        if (collidesWith(enemyRect, checkRectangle)) {
-            if(timeSinceDamage>2){
-                player.setHealth(player.getHealth()-1);
-                timeSinceDamage=0;
-            }
-        }
+
     }
 
 
     private void updateBullet(boolean update){
 
-        if (update) {
+        if (update && !bullets.isEmpty()) {
             for(int i =bullets.size()-1;i>=0;i--){
                 FriendlyBullet bullet = bullets.get(i);
                 Rectangle checkRectangle;
@@ -551,10 +561,14 @@ class Endless extends MasterScreen {
                 for (int j = enemies.size()-1; j >= 0; j--){
                     if (checkRectangle.overlaps(enemies.get(j).getRectangle())) {
                         bullet.destroy();
-                        enemies.get(j).doDamage(1);
+                        enemies.get(j).doDamage(bullet.getDamage());
                         if (enemies.get(j).isDestroyed()) {
                             if (isSoundOn) {
-                                minionDeathSound.play();
+                                if (enemies.get(j).isBoss()){
+                                    bossDeathSound.play();
+                                }else{
+                                    minionDeathSound.play();
+                                }
                             }
                             Random random = new Random();
                             if (random.nextInt(6) == 4 && !enemies.get(j).isBoss()){
@@ -569,6 +583,33 @@ class Endless extends MasterScreen {
                         }
 
                     }
+                }
+            }
+        }
+    }
+
+    private void updateEnemyBullet(boolean update){
+
+        if (update && !enemyBullets.isEmpty()) {
+            for(int i =enemyBullets.size()-1;i>=0;i--){
+                EnemyBullet bullet = enemyBullets.get(i);
+                Rectangle checkRectangle;
+                checkRectangle = new Rectangle();
+                checkRectangle.set(bullet.getRectangle());
+                float newPosY = bullet.getSprite().getY() + bullet.getSpeed();
+                float newPosX = bullet.getSprite().getX() + bullet.getSpeed();
+                checkRectangle.setPosition(newPosX, newPosY);
+
+                if(collidesWith(walls,checkRectangle)) {
+                    bullet.destroy();
+                    enemyBullets.remove(i);
+                }
+
+                Rectangle playerRect = player.getRectangle();
+                if (checkRectangle.overlaps(playerRect)){
+                    player.doDamage(bullet.getDamage());
+                    bullet.destroy();
+                    enemyBullets.remove(i);
                 }
             }
         }
@@ -617,7 +658,9 @@ class Endless extends MasterScreen {
             Texture playBttnTexture;
             //Texture restartButton;
 
-            Pixmap pixmap = new Pixmap((int) (WIDTH * 0.7f), (int) (HEIGHT * 0.8f), Pixmap.Format.RGBA8888);
+            float pixmapWidth = WIDTH * 0.7f;
+            float pixmapHeight = HEIGHT * 0.8f;
+            Pixmap pixmap = new Pixmap((int) (pixmapWidth), (int) (pixmapHeight), Pixmap.Format.RGBA8888);
             pixmap.setColor(1f, 1f, 1f, 0.75f);
             pixmap.fillRectangle(0, 0, pixmap.getWidth(), pixmap.getHeight());
             Texture texturaRectangulo = new Texture(pixmap);
@@ -629,7 +672,7 @@ class Endless extends MasterScreen {
             homeBttnTexture = assetManager.get("Botones/Home_Bttn.png");
             TextureRegionDrawable trdSalir = new TextureRegionDrawable(new TextureRegion(homeBttnTexture));
             ImageButton homeButton = new ImageButton(trdSalir);
-            homeButton.setPosition((WIDTH/2 - homeButton.getWidth()/2)-250, (HEIGHT/2)+50);
+            homeButton.setPosition(pixmapWidth/6 + homeButton.getWidth()/2, pixmapHeight - homeButton.getHeight()/2);
             homeButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -647,7 +690,7 @@ class Endless extends MasterScreen {
             TextureRegionDrawable trdContinuar = new TextureRegionDrawable(
                     new TextureRegion(playBttnTexture));
             ImageButton playButton = new ImageButton(trdContinuar);
-            playButton.setPosition(WIDTH / 2 - playButton.getWidth() / 2 , HEIGHT / 4);
+            playButton.setPosition(pixmapWidth - playButton.getWidth()/2 , pixmapHeight/6);
             playButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -660,29 +703,6 @@ class Endless extends MasterScreen {
             this.addActor(playButton);
 
 
-            /*restartButton = assetManager.get("Botones/noAssetForThatYet.png");
-
-            TextureRegionDrawable trdRestart = new TextureRegionDrawable(new TextureRegion(restartButton));
-
-            ImageButton restartBtn = new ImageButton(trdRestart);
-
-            restartBtn.setPosition(WIDTH/2 - restartBtn.getWidth()/2 + 150, HEIGHT/4);
-
-            restartBtn.addListener(new ClickListener() {
-
-                @Override
-
-                public void clicked(InputEvent event, float x, float y) {
-                    if(isSoundOn) {
-                        music.stop();
-                    }
-                    game.setScreen(new Endless(game));
-
-                }
-
-            });
-
-            this.addActor(restartBtn);*/
         }
     }
 

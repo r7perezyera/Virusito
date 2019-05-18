@@ -6,11 +6,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 public class FriendlyBullet extends Projectile {
-    public FriendlyBullet(float x, float y, float direction) {
+    public FriendlyBullet(float x, float y, float direction, weaponType weapon) {
         super(x, y, direction);
-        this.texture = new Texture("Balas/Bala.png");
+        if (weapon == weaponType.PISTOL){
+            this.texture = new Texture("Balas/Bala.png");
+            this.damage = 1;
+        }else if (weapon == weaponType.SHOTGUN){
+            this.texture = new Texture("Balas/Bala_3.png");
+            this.damage = 2;
+        }else if (weapon == weaponType.BAZOOKA){
+            this.texture = new Texture("Balas/Bala_big.png");
+            this.damage = 4;
+        }
         this.speed = 10;
-        this.damage = 2;
 
         sprite = new Sprite(texture);
         sprite.setPosition(x,y);

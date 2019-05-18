@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-up" width="22" height="12" tilewidth="60" tileheight="60" infinite="0" nextlayerid="5" nextobjectid="27">
+ <tileset firstgid="1" name="AssetsTiles" tilewidth="60" tileheight="60" tilecount="216" columns="18">
+  <image source="AssetsTiles.png" width="1080" height="720"/>
+ </tileset>
+ <layer id="1" name="Capa de Patrones 1" width="22" height="12">
+  <data encoding="csv">
+38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,
+38,93,37,37,57,58,37,93,37,37,37,93,57,58,37,37,37,93,57,58,93,38,
+38,93,37,93,75,76,37,109,57,58,37,109,75,76,93,109,37,109,75,76,93,38,
+38,37,109,93,93,37,109,109,75,76,37,109,109,109,93,37,37,109,37,37,37,38,
+38,37,109,109,37,37,109,37,37,37,93,37,37,57,58,37,37,109,37,37,38,38,
+38,57,58,37,93,37,109,37,37,109,109,109,109,75,76,37,93,57,58,37,37,2,
+38,75,76,93,37,57,58,37,93,93,37,37,109,37,93,93,37,75,76,37,37,20,
+38,37,37,37,37,75,76,37,93,57,58,37,37,57,58,109,109,109,93,93,38,38,
+38,93,93,109,109,37,109,109,37,75,76,37,37,75,76,37,93,109,109,57,58,38,
+38,57,58,37,109,109,37,109,109,37,93,37,109,109,37,57,58,93,37,75,76,38,
+38,75,76,93,93,37,37,37,37,37,93,93,109,37,37,75,76,37,37,37,93,38,
+38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38,38
+</data>
+ </layer>
+ <objectgroup id="2" name="Paredes">
+  <object id="1" x="0" y="0" width="60" height="720"/>
+  <object id="2" x="60" y="0" width="1260" height="60"/>
+  <object id="3" x="1260" y="60" width="60" height="240"/>
+  <object id="4" x="1200" y="240" width="60" height="60"/>
+  <object id="5" x="1200" y="420" width="120" height="60"/>
+  <object id="6" x="1260" y="480" width="60" height="240"/>
+  <object id="7" x="60" y="660" width="1200" height="60"/>
+ </objectgroup>
+ <objectgroup id="3" name="Puertas">
+  <object id="8" x="1260" y="300" width="60" height="120"/>
+ </objectgroup>
+ <objectgroup id="4" name="Piso Lento">
+  <object id="9" x="660" y="120" width="60" height="120"/>
+  <object id="10" x="720" y="180" width="120" height="60"/>
+  <object id="11" x="900" y="120" width="60" height="60"/>
+  <object id="12" x="1020" y="120" width="60" height="180"/>
+  <object id="13" x="540" y="300" width="240" height="60"/>
+  <object id="14" x="720" y="360" width="60" height="60"/>
+  <object id="15" x="900" y="420" width="180" height="60"/>
+  <object id="16" x="1020" y="480" width="120" height="60"/>
+  <object id="17" x="420" y="120" width="60" height="120"/>
+  <object id="18" x="360" y="180" width="60" height="180"/>
+  <object id="19" x="120" y="180" width="60" height="120"/>
+  <object id="20" x="180" y="240" width="60" height="60"/>
+  <object id="21" x="180" y="480" width="120" height="60"/>
+  <object id="22" x="240" y="540" width="120" height="60"/>
+  <object id="23" x="360" y="480" width="120" height="60"/>
+  <object id="24" x="420" y="540" width="120" height="60"/>
+  <object id="25" x="720" y="540" width="120" height="60"/>
+  <object id="26" x="720" y="600" width="60" height="60"/>
+ </objectgroup>
+</map>

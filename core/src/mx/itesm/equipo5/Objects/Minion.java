@@ -14,6 +14,9 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
+import java.util.LinkedList;
+import java.util.Random;
+
 import mx.itesm.equipo5.MasterScreen;
 
 public class Minion extends Entity {
@@ -24,7 +27,14 @@ public class Minion extends Entity {
     private boolean boss;
 
     private float zigzagTimer = 0;
+    private float avoiderTimer = 0;
+    private float distanceAvoid=0;
+    private int signX=0;
+    private int signY=0;
+
     private Vector2 zigzagVector;
+    private Vector2 avoiderVector;
+
     private Animation animation;
     private float animationTimer;
 
@@ -156,7 +166,8 @@ public class Minion extends Entity {
     public void destroy(){
         world.destroyBody(b2body);
     }
-    public void move(float x, float y){
+
+    public LinkedList<EnemyBullet> move(float x, float y, LinkedList<EnemyBullet> bullets){
             Vector2 position = b2body.getPosition();
             if (move == movementPattern.FOLLOWER) {
                 Vector2 vector = new Vector2(x - position.x - width / 2, y - position.y - height / 2);
@@ -164,15 +175,37 @@ public class Minion extends Entity {
                 float dx = (float) (speed * Math.cos(angle));
                 float dy = (float) (speed * Math.sin(angle));
                 b2body.setLinearVelocity(dx * 80, dy * 80);
-            } else if (move == movementPattern.AVOIDER) {
-                Vector2 vector = new Vector2(x - 100 - position.x - width / 2, y - 100 - position.y - height / 2);
-                float angle = vector.angle();
-                float dx = (float) (speed * Math.cos(angle));
-                float dy = (float) (speed * Math.sin(angle));
-                b2body.setLinearVelocity(dx * 80, dy * 80);
-            } else if (move == movementPattern.ZIGZAG) { //TODO
+            }
+            else if (move == movementPattern.AVOIDER) {
+                if(avoiderTimer==0) {
+                    Random random = new Random();
+                    distanceAvoid = random.nextInt(100);
+                    signX = random.nextInt(2);
+                    if (signX == 0) {
+                        signX = -1;
+                    }
+                    signY = random.nextInt(2);
+                    if (signY == 0) {
+                        signY = -1;
+                    }
+                    avoiderVector = new Vector2(x - 100 + distanceAvoid * signX - position.x - width / 2, y - 100 + distanceAvoid * signY - position.y - height / 2);
+                }
+                if(avoiderTimer < 4) {
+                    float angle = avoiderVector.angle();
+                    float dx = (float) (speed * Math.cos(angle));
+                    float dy = (float) (speed * Math.sin(angle));
+                    b2body.setLinearVelocity(dx * 80, dy * 80);
+                    avoiderTimer += .05f;
+                }else{
+                    avoiderTimer =0;
+                    Vector2 vector = new Vector2( x+50/2-position.x,  y+57/2-position.y);
+                    float angle = vector.angle();
+                    bullets = shoot(MathUtils.degreesToRadians * angle, bullets);
+                }
+
+            } else if (move == movementPattern.ZIGZAG) {
                 if (zigzagTimer == 0) {
-                    zigzagVector = new Vector2(x - position.x - width / 2, y - position.y - height / 2);
+                    zigzagVector = new Vector2(x -position.x - width / 2, y - position.y - height / 2);
                 }
                 if (zigzagTimer < 4) {
                     if (zigzagTimer < 2) {
@@ -187,9 +220,11 @@ public class Minion extends Entity {
                         b2body.setLinearVelocity(dx * 80, dy * 80);
                     }
                     zigzagTimer += .05;
-                } else zigzagTimer = 0;
+                } else{
+                    zigzagTimer = 0;
+                }
             }
-
+        return bullets;
 
     }
 
@@ -197,5 +232,11 @@ public class Minion extends Entity {
         b2body.setLinearVelocity(dx * 80, dy * 80);
     }
 
+    public LinkedList<EnemyBullet>  shoot(float dir, LinkedList<EnemyBullet> bullets){
+        Vector2 position = b2body.getPosition();
+        EnemyBullet bullet = new EnemyBullet(getX()+getWidth()/2, getY()+getHeight()/2, dir);
+        bullets.add(bullet);
+        return bullets;
+    }
 
 }

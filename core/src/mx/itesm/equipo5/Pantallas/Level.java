@@ -2,12 +2,16 @@ package mx.itesm.equipo5.Pantallas;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -20,40 +24,50 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
 import java.util.LinkedList;
+import java.util.Random;
+
+import mx.itesm.equipo5.B2DWorldCreator;
+import mx.itesm.equipo5.Button;
 import mx.itesm.equipo5.JoyStick;
 import mx.itesm.equipo5.MasterScreen;
-import mx.itesm.equipo5.Objects.Minion;
 import mx.itesm.equipo5.Objects.FriendlyBullet;
+import mx.itesm.equipo5.Objects.Item;
+import mx.itesm.equipo5.Objects.Minion;
 import mx.itesm.equipo5.Objects.Player;
 import mx.itesm.equipo5.Objects.difficulty;
 import mx.itesm.equipo5.Objects.enemyType;
 import mx.itesm.equipo5.Objects.movementPattern;
 import mx.itesm.equipo5.Objects.viewingDirection;
+import mx.itesm.equipo5.Objects.weaponType;
+import mx.itesm.equipo5.Text;
 import mx.itesm.equipo5.Virusito;
 
 class Level extends MasterScreen {
 
+    private AssetManager assetManager;
+
     //Esto es para probar colisiones
-    private Array<Rectangle> walls;
-    private Array<Rectangle> tvs;
-    private ShapeRenderer sr;
+    private LinkedList<Rectangle> walls;
     private float timeSinceDamage;
 
     private LinkedList<FriendlyBullet> bullets = new LinkedList<FriendlyBullet>();
+    private LinkedList<Item> pilas = new LinkedList<Item>();
     private LinkedList<Minion> enemies = new LinkedList<Minion>();
     private float timeSinceShot;
-    private float friendlyShotCooldown = 0.5f;
-    private float timeSinceAttack;
+    private float friendlyShotCooldown;
 
-    private float enemyShotCooldown;
-
-
+    private Text text;
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
 
@@ -66,48 +80,97 @@ class Level extends MasterScreen {
     private Touchpad shootingStick;
     private Touchpad movingStick;
 
-    // BOX2D FISICA
-    // vamos a agregar una simulacion de fisica
+    // Box2D variables
     private World world;    // simulacion
     private Body body;    // quien recibe / esta dentro de la simulacion
-    private Box2DDebugRenderer debug;
+    private Box2DDebugRenderer b2dr;
 
     private Player player; //Personaje
-    private Array<Rectangle> doors;
-    private Array<Rectangle> enemyRect;
+
+    private LinkedList<Rectangle> enemyRect;
     private Music music;
+    private Sound shootingSound;
+    private Sound playerDeathSound;
+    private Sound minionDeathSound;
+    private Sound bossDeathSound;
+
 
     // Users preferences
     private Preferences lvlPrefs = Gdx.app.getPreferences("userPrefs");
-    boolean isSoundOn = lvlPrefs.getBoolean("soundOn");
-    boolean lvlPassed = lvlPrefs.getBoolean("level1Passed");
+    private boolean isSoundOn = lvlPrefs.getBoolean("soundOn");
+    private int highestRound = lvlPrefs.getInteger("endlessBestRound");
+
+    //rounds
+    private difficulty diff = difficulty.EASY;
+    private enemyType type;
+    private int round = 0;
 
 
+    private GameState gameState;
+
+    private ImageButton pauseButton;
+
+    private PauseScene pauseScene;
+
+
+
+    //Box2D
 
     public Level(Virusito juego) {
         super(juego);
+
     }
+
 
     @Override
     public void show() {
-    // Agregar la escena, finalmente
+        // Agregar la escena, finalmente
 
+        assetManager = new AssetManager();
+
+
+        loadTextures();
         loadMap();
+        setPhysics();
         buildHUD();
         createJoysticks();
         getWalls();
+        player = new Player(300,300,3,this.world, weaponType.PISTOL);
+        friendlyShotCooldown = player.getCooldown();
         spawn();
-        getTVs();
-        getDoors();
         getEnemies();
+
+
+
+        loadText();
+        gameState = GameState.PLAYING;
+
 
         if (isSoundOn) {
             loadMusic();
+            loadSFX();
         }
 
-        player = new Player(300,300,3,world);
 
-        Gdx.input.setCatchBackKey(false);
+
+        Gdx.input.setCatchBackKey(true);
+    }
+
+    private void loadTextures() {
+        assetManager.load("Botones/Play_Bttn.png", Texture.class);
+        assetManager.load("Botones/Home_Bttn.png", Texture.class);
+    }
+
+    private void setPhysics() {
+        world = new World(new Vector2(0,0),true);
+        b2dr = new Box2DDebugRenderer();
+
+        new B2DWorldCreator(world,map);
+
+    }
+
+    private void loadText() {
+        text = new Text();
     }
 
     private void loadMusic() {
@@ -116,23 +179,49 @@ class Level extends MasterScreen {
         music.play();
     }
 
+    private void loadSFX(){
+        shootingSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Shoot.wav"));
+        playerDeathSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/PlayerDeath.wav"));
+        minionDeathSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/DeathMinion.wav"));
+        bossDeathSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/DeathBoss.wav"));
+    }
 
     private void loadMap() {
-        AssetManager manager = new AssetManager();
-        manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
-        manager.load("Mapa1/1-1.tmx", TiledMap.class);
-        manager.finishLoading();
-        map = manager.get("Mapa1/1-1.tmx");
-        mapRenderer = new OrthogonalTiledMapRenderer(map);
+        //AssetManager manager = new AssetManager();
+        assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+        assetManager.load("Mapa1/endless.tmx", TiledMap.class);
+        assetManager.finishLoading();
+        map = assetManager.get("Mapa1/endless.tmx");
+        mapRenderer = new OrthogonalTiledMapRenderer(map,1/PPM);
     }
 
     private void buildHUD() {
-        HUDcamera = new OrthographicCamera(WIDTH, HEIGHT);
-        HUDcamera.position.set(WIDTH/2, HEIGHT/2, 0);
+        HUDcamera = new OrthographicCamera(WIDTH/PPM, HEIGHT/PPM);
+        HUDcamera.position.set((WIDTH/2)/PPM, (HEIGHT/2)/PPM, 0);
         HUDcamera.update();
-        HUDview = new StretchViewport(WIDTH, HEIGHT, HUDcamera);
+        HUDview = new StretchViewport(WIDTH/PPM, HEIGHT/PPM, HUDcamera);
 
         HUDstage = new Stage(HUDview);
+
+
+        Texture textPauseButton = new Texture("Botones/Pause_Bttn.png");
+        TextureRegionDrawable trdPauseButton = new TextureRegionDrawable(new TextureRegion(textPauseButton));
+        ImageButton pauseButton = new Button("Botones/Pause_Bttn.png").getiButton();
+        pauseButton.setPosition(MasterScreen.WIDTH - 1.5f*pauseButton.getWidth(), MasterScreen.HEIGHT - 2*pauseButton.getHeight());
+        HUDstage.addActor(pauseButton);
+        pauseButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                gameState = GameState.PAUSED;
+                pauseScene = new PauseScene(HUDview, batch);
+                Gdx.input.setInputProcessor(pauseScene);
+
+            }
+        });
+
+
+
+
 
         // ahora la escena es quien atiende los eventos
         Gdx.input.setInputProcessor(HUDstage);
@@ -140,16 +229,15 @@ class Level extends MasterScreen {
 
     private void createJoysticks() {
         Box2D.init();
-        world = new World(new Vector2(0f,-9.81f), true);
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.DynamicBody;
         def.position.set(0, 0);
         body = world.createBody(def);
 
         movingStick = new JoyStick("HUD/Pad/padBack.png", "HUD/Pad/padKnob.png", body).getPad();
-        movingStick.setPosition(16,16);
+        movingStick.setPosition(16/PPM,16/PPM);
         shootingStick = new JoyStick("HUD/Pad/padBack.png", "HUD/Pad/padKnob.png", body).getPad();
-        shootingStick.setPosition(WIDTH-256,16);
+        shootingStick.setPosition((WIDTH-256)/PPM,16/PPM);
 
         // Agregar la escena, finalmente
         HUDstage.addActor(shootingStick);
@@ -159,19 +247,23 @@ class Level extends MasterScreen {
 
     @Override
     public void render(float delta) {
+
         eraseScreen();
 
+        //Update World
+        world.step(1/60f,6,2);
+
         timeSinceShot += delta;
-        timeSinceAttack += delta;
         timeSinceDamage += delta;
         shoot();
 
-        updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY());
+        updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY(), true);
 
         batch.setProjectionMatrix(camera.combined);
         // render the game map
         mapRenderer.setView(camera);
         mapRenderer.render();
+
 
         if (player.getHealth()==3){
             life = new Texture("HUD/Bateria/Bateria_Llena.png");
@@ -180,48 +272,134 @@ class Level extends MasterScreen {
         }else if (player.getHealth()==1){
             life = new Texture("HUD/Bateria/Bateria_Ultima.png");
         }else {
-            game.setScreen(new LoseScreen(game));
             if (isSoundOn) {
+                playerDeathSound.play();
                 music.stop();
             }
+            lvlPrefs.putInteger("endlessBestRound",round);
+            lvlPrefs.flush();
+            System.out.println("se guarda "+ round +  " como hiscore");
+            game.setScreen(new LoseScreen(game));
         }
+
 
         batch.begin();
         player.render(batch);
         batch.draw(life, WIDTH/2-(life.getWidth()/2f),650);
+
+        text.displayHUDText(batch, "Round: " +round, MasterScreen.WIDTH/6, 5*(MasterScreen.HEIGHT/6)+100);
+        text.displayHUDText(batch, "Enemies: " +enemies.size(), MasterScreen.WIDTH*5/6, 5*(MasterScreen.HEIGHT/6)+100);
+
+
         if (!bullets.isEmpty()){
+            updateBullet(true);
             for (int i =bullets.size()-1;i>=0;i--){
-                FriendlyBullet bullet = bullets.get(i);
-                bullet.render(batch);
-                bullet.update();
-                updateBullet();
+                if (bullets.get(i).isDestroyed()){
+                    bullets.remove(i);
+                }else {
+                    FriendlyBullet bullet = bullets.get(i);
+                    bullet.render(batch);
+                    bullet.update();
+                }
+
             }
         }
         if (!enemies.isEmpty()){
             for (Minion minion : enemies){
                 minion.render(batch);
-                minion.move(player.getX(), player.getY());
+                if (!(gameState == GameState.PAUSED)) {
+                    // code moved
+                    minion.move(player.getPosition().x,player.getPosition().y);
+                }else{
+                    minion.setVelocity(0,0);
+                }
+            }
+        }else {
+            spawn();
+            getEnemies();
+
+        }
+        if(!pilas.isEmpty()){
+            for (int i = pilas.size()-1; i>=0; i--){
+                Item pila = pilas.get(i);
+                pila.render(batch);
+                if (player.getRectangle().overlaps(pila.getRectangle())  && player.getHealth()<3) {
+                    player.setHealth(player.getHealth() + 1);
+                    pilas.remove(pila);
+                }
             }
         }
 
+
         batch.end();
+
+        if (gameState == GameState.PAUSED) {
+            pauseScene.draw();
+            updateCharacter(0,0,false);
+            updateBullet(false);
+        }
+
+        if (gameState == GameState.PLAYING) {
+            updateCharacter(0,0,true);
+            updateBullet(true);
+        }
+
+
         batch.setProjectionMatrix(HUDcamera.combined);
         HUDstage.draw();
+
+        if (round == 10){
+            game.setScreen(new WinScreen(game));
+        }
+
+
+        // pausa si presionamos Android Back
+        if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
+            gameState = GameState.PAUSED;
+            pauseScene = new PauseScene(HUDview, batch);
+            Gdx.input.setInputProcessor(pauseScene);
+        }
+
+        //Box2D
+        //b2dr.render(world,camera.combined);
     }
 
+
+
     private void spawn() {
-        Minion minion = new Minion(enemyType.FLOATER, movementPattern.FOLLOWER, difficulty.EASY, 800, 400,world);
-        enemies.add(minion);
-        minion = new Minion(enemyType.CRAWLER, movementPattern.AVOIDER, difficulty.EASY, 850, 100,world);
-        enemies.add(minion);
-        minion = new Minion(enemyType.CRAWLBOSS, movementPattern.ZIGZAG, difficulty.EASY, 800, 100,world);
-        enemies.add(minion);
-        minion = new Minion(enemyType.TEETH, movementPattern.ZIGZAG, difficulty.EASY, 850, 200,world);
-        enemies.add(minion);
-        minion = new Minion(enemyType.TEEHTBOSS, movementPattern.ZIGZAG, difficulty.EASY, 800, 200,world);
-        enemies.add(minion);
-        minion = new Minion(enemyType.FLOATBOSS, movementPattern.ZIGZAG, difficulty.EASY, 850, 300,world);
-        enemies.add(minion);
+        enemies = new LinkedList<Minion>();
+        int numEnemies = 0;
+
+        round++;
+        if (diff == difficulty.EASY){
+            numEnemies = 5;
+            type = enemyType.FLOATER;
+        }else if (diff == difficulty.MEDIUM){
+            numEnemies = 8;
+            type = enemyType.TEETH;
+        }else if (diff == difficulty.HARD){
+            numEnemies = 10;
+            type = enemyType.CRAWLER;
+        }
+
+        if (round%3 == 0){
+            numEnemies = 7;
+            diff = diff.next();
+            System.out.println(diff);
+            Minion minion = new Minion(type.next(), movementPattern.ZIGZAG, diff, 500, 500,world);
+            minion.setBoss();
+            enemies.add(minion);
+        }
+
+        int[] nivelX = {2,3,4,5,6,2,3,4,5,6};
+        int[] nivelY = {6,7,8,7,6,4,3,2,3,4};
+        for (int i = 0; i<numEnemies; i++){
+
+            Minion minion = new Minion(type, movementPattern.ZIGZAG, diff, WIDTH*nivelX[i]/7, HEIGHT*nivelY[i]/9,world);
+            enemies.add(minion);
+        }
+
+
     }
 
     private void shoot() {
@@ -233,30 +411,47 @@ class Level extends MasterScreen {
 
         if(timeSinceShot<=friendlyShotCooldown) {
             if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
-                FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, 0);
-                bullets.add(bullet);
+                bullets  = player.shoot(0.0f, bullets);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
+                if(isSoundOn){
+                    shootingSound.play();
+                }
             } else if (46 <= angle && angle <= 136) {
-                FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) Math.PI / 2);
-                bullets.add(bullet);
+                bullets  = player.shoot((float) Math.PI / 2, bullets);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
+                if(isSoundOn){
+                    shootingSound.play();
+                }
             } else if (136 <= angle && angle <= 225) {
-                FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) Math.PI);
-                bullets.add(bullet);
+                bullets  = player.shoot((float) Math.PI, bullets);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
+                if(isSoundOn){
+                    shootingSound.play();
+                }
             } else if (226 <= angle && angle <= 315) {
-                FriendlyBullet bullet = new FriendlyBullet(player.getX()+player.getWidth()/2, player.getY()+player.getHeight()/2, (float) (3 * Math.PI) / 2);
-                bullets.add(bullet);
+                bullets  = player.shoot((float) (3*Math.PI) / 2, bullets);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
+                if(isSoundOn){
+                    shootingSound.play();
+                }
             }
 
-        }else if (timeSinceShot >= friendlyShotCooldown*2) {
+        }else if (timeSinceShot >= 2*friendlyShotCooldown) {
             timeSinceShot=0.0f;
+        }
+        if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
+            player.setDir(viewingDirection.RIGHT);
+        } else if (46 <= angle && angle <= 136) {
+            player.setDir(viewingDirection.BACK);
+        } else if (136 <= angle && angle <= 225) {
+            player.setDir(viewingDirection.LEFT);
+        } else if (226 <= angle && angle <= 315) {
+            player.setDir(viewingDirection.FRONT);
         }
     }
 
     private void getWalls(){
-        walls = new Array<Rectangle>();
+        walls = new LinkedList<Rectangle>();
         for(MapObject object : map.getLayers().get("Paredes").getObjects()){
             if(object instanceof RectangleMapObject){
                 Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -265,108 +460,120 @@ class Level extends MasterScreen {
         }
     }
 
-    private void getTVs(){
-        tvs = new Array<Rectangle>();
-        for(MapObject object : map.getLayers().get("Teles").getObjects()){
-            if(object instanceof RectangleMapObject){
-                Rectangle rect = ((RectangleMapObject) object).getRectangle();
-                tvs.add(rect);
-            }
-        }
-    }
-
-    private void getDoors(){
-        doors = new Array<Rectangle>();
-        for(MapObject object : map.getLayers().get("Puertas").getObjects()){
-            if(object instanceof RectangleMapObject){
-                Rectangle rect = ((RectangleMapObject) object).getRectangle();
-                doors.add(rect);
-            }
-        }
-    }
-
     private void getEnemies(){
-        enemyRect = new Array<Rectangle>();
-        for(Minion enemy :enemies){
-                Rectangle rect = enemy.getRectangle();
-                enemyRect.add(rect);
-            }
+        enemyRect = new LinkedList<Rectangle>();
+        for(Minion enemy : enemies){
+            Rectangle rect = enemy.getRectangle();
+            enemyRect.add(rect);
+        }
     }
 
-
-    private void updateCharacter(float dx, float dy) {
+    private void updateCharacter(float dx, float dy, boolean update) {
         Rectangle checkRectangle;
         checkRectangle = new Rectangle();
         checkRectangle.set(player.getRectangle());
 
-        //animation
-        float changeX = movingStick.getKnobPercentX();
-        float changeY = movingStick.getKnobPercentY();
-        Vector2 vector = new Vector2(changeX,changeY);
-        float angle = vector.angle();
 
-        if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
-            player.setDir(viewingDirection.RIGHT);
-        } else if (46 <= angle && angle <= 136) {
-            player.setDir(viewingDirection.FRONT);
-        } else if (136 <= angle && angle <= 225) {
-            player.setDir(viewingDirection.LEFT);
-        } else if (226 <= angle && angle <= 315) {
-            player.setDir(viewingDirection.FRONT);
+        if (update) {
+            // code to move
+            //animation
+            float changeX = movingStick.getKnobPercentX();
+            float changeY = movingStick.getKnobPercentY();
+            Vector2 vector = new Vector2(changeX,changeY);
+            float angle = vector.angle();
+
+
+            //Box2D movement
+            player.b2body.setLinearVelocity(changeX*10000,changeY*10000);
+            player.setX(player.b2body.getPosition().x-player.getWidth()/2);//Medio ineficiente, pone sprite donde esta body
+            player.setY(player.b2body.getPosition().y-player.getHeight()/2);
+
+            /*if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
+                player.setDir(viewingDirection.RIGHT);
+            } else if (46 <= angle && angle <= 136) {
+                player.setDir(viewingDirection.FRONT);
+            } else if (136 <= angle && angle <= 225) {
+                player.setDir(viewingDirection.LEFT);
+            } else if (226 <= angle && angle <= 315) {
+                player.setDir(viewingDirection.FRONT);
+            }*/
+
+            float newPosY = player.getSprite().getY() + (dy * player.getSpeed());
+            float newPosX = player.getSprite().getX() + (dx * player.getSpeed());
+            checkRectangle.setPosition(newPosX, newPosY);
+            // end of moved code
+        }else{
+            player.b2body.setLinearVelocity(0,0);
         }
 
-        float newPosY = player.getSprite().getY() + (dy * player.getSpeed());
-        float newPosX = player.getSprite().getX() + (dx * player.getSpeed());
+        float newPosY = player.getSprite().getY();
+        float newPosX = player.getSprite().getX();
         checkRectangle.setPosition(newPosX, newPosY);
 
-
-        boolean collides = collidesWith(walls, checkRectangle) || collidesWith(tvs, checkRectangle);
+        /* MOVIMIENTO SIN BOX2D
+        boolean collides = collidesWith(walls, checkRectangle);
         if (!collides) {
             player.moveX(dx);
             player.moveY(dy);
         }
+        */
         if (collidesWith(enemyRect, checkRectangle)) {
             if(timeSinceDamage>2){
                 player.setHealth(player.getHealth()-1);
                 timeSinceDamage=0;
             }
         }
-        if (collidesWith(doors,checkRectangle)){
-            game.setScreen(new WinScreen(game));
-            lvlPrefs.putBoolean("level1Passed", true);
-            if (isSoundOn) {
-                music.stop();
-            }
-
-            // TODO set Virusito's coordinates, load new map
-        }
     }
 
-    private void updateBullet(){
-        for(int i =bullets.size()-1;i>=0;i--){
-            FriendlyBullet bullet = bullets.get(i);
-            Rectangle checkRectangle;
-            checkRectangle = new Rectangle();
-            checkRectangle.set(bullet.getRectangle());
-            float newPosY = bullet.getSprite().getY() + bullet.getSpeed();
-            float newPosX = bullet.getSprite().getX() + bullet.getSpeed();
-            checkRectangle.setPosition(newPosX, newPosY);
-            if(collidesWith(walls,checkRectangle)||collidesWith(doors,checkRectangle)) {
-                bullet.destroy();
-                bullets.remove(i);
-            }
-            for (int j = enemies.size()-1; j >= 0; j--){
-                    if (checkRectangle.overlaps(enemies.get(j).getRectangle())){
+
+    private void updateBullet(boolean update){
+
+        if (update) {
+            for(int i =bullets.size()-1;i>=0;i--){
+                FriendlyBullet bullet = bullets.get(i);
+                Rectangle checkRectangle;
+                checkRectangle = new Rectangle();
+                checkRectangle.set(bullet.getRectangle());
+                float newPosY = bullet.getSprite().getY() + bullet.getSpeed();
+                float newPosX = bullet.getSprite().getX() + bullet.getSpeed();
+                checkRectangle.setPosition(newPosX, newPosY);
+
+                if(collidesWith(walls,checkRectangle)) {
+                    bullet.destroy();
+                    bullets.remove(i);
+                }
+
+                for (int j = enemies.size()-1; j >= 0; j--){
+                    if (checkRectangle.overlaps(enemies.get(j).getRectangle())) {
                         bullet.destroy();
-                        bullets.remove(i);
-                        enemies.remove(j);
-                        enemyRect.removeIndex(j);
+                        enemies.get(j).doDamage(1);
+                        if (enemies.get(j).isDestroyed()) {
+                            if (isSoundOn) {
+                                if (enemies.get(j).isBoss()){
+                                    bossDeathSound.play();
+                                }else{
+                                    minionDeathSound.play();
+                                }
+                            }
+                            Random random = new Random();
+                            if (random.nextInt(6) == 4 && !enemies.get(j).isBoss()){
+                                Item pila = new Item(enemies.get(j).getPosition());
+                                pilas.add(pila);
+                            }else if (enemies.get(j).isBoss()){
+                                Item pila = new Item(enemies.get(j).getPosition());
+                                pilas.add(pila);
+                            }
+                            enemies.remove(j);
+                            enemyRect.remove(j);
+                        }
+
                     }
+                }
             }
         }
     }
 
-    public boolean collidesWith(Array<Rectangle> rectangles, Rectangle checkRectangle){
+    public boolean collidesWith(LinkedList<Rectangle> rectangles, Rectangle checkRectangle){
         for(Rectangle rectangle : rectangles){
             if(checkRectangle.overlaps(rectangle)) return true;
         }
@@ -394,5 +601,88 @@ class Level extends MasterScreen {
     public void dispose() {
         HUDstage.dispose();
         mapRenderer.dispose();
+        map.dispose();
+        world.dispose();
+        b2dr.dispose();
     }
+
+
+    private class PauseScene extends Stage {
+
+        public PauseScene(Viewport view, SpriteBatch batch) {
+            super(view, batch);
+            // Creación de texturas
+            Texture homeBttnTexture;
+            Texture playBttnTexture;
+            //Texture restartButton;
+
+            Pixmap pixmap = new Pixmap((int) (WIDTH * 0.7f), (int) (HEIGHT * 0.8f), Pixmap.Format.RGBA8888);
+            pixmap.setColor(1f, 1f, 1f, 0.75f);
+            pixmap.fillRectangle(0, 0, pixmap.getWidth(), pixmap.getHeight());
+            Texture texturaRectangulo = new Texture(pixmap);
+            pixmap.dispose();
+            Image rectImg = new Image(texturaRectangulo);
+            rectImg.setPosition(0.15f * WIDTH, 0.1f * HEIGHT);
+            this.addActor(rectImg);
+
+            homeBttnTexture = assetManager.get("Botones/Home_Bttn.png");
+            TextureRegionDrawable trdSalir = new TextureRegionDrawable(new TextureRegion(homeBttnTexture));
+            ImageButton homeButton = new ImageButton(trdSalir);
+            homeButton.setPosition((WIDTH/2 - homeButton.getWidth()/2)-250, (HEIGHT/2)+50);
+            homeButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    // Regresa al menú
+                    if (isSoundOn) {
+                        music.dispose();
+                    }
+                    game.setScreen(new MenuScreen(game));
+
+                }
+            });
+            this.addActor(homeButton);
+
+            playBttnTexture = assetManager.get("Botones/Play_Bttn.png");
+            TextureRegionDrawable trdContinuar = new TextureRegionDrawable(
+                    new TextureRegion(playBttnTexture));
+            ImageButton playButton = new ImageButton(trdContinuar);
+            playButton.setPosition(WIDTH / 2 - playButton.getWidth() / 2 , HEIGHT / 4);
+            playButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    // return to the game
+                    loadMap();
+                    Gdx.input.setInputProcessor(HUDstage);
+                    gameState = GameState.PLAYING;
+                }
+            });
+            this.addActor(playButton);
+
+            // TODO now that we have the asset, create and place the level restart button for the pause menu
+            /*restartButton = assetManager.get("Botones/noAssetForThatYet.png");
+
+            TextureRegionDrawable trdRestart = new TextureRegionDrawable(new TextureRegion(restartButton));
+
+            ImageButton restartBtn = new ImageButton(trdRestart);
+
+            restartBtn.setPosition(WIDTH/2 - restartBtn.getWidth()/2 + 150, HEIGHT/4);
+
+            restartBtn.addListener(new ClickListener() {
+
+                @Override
+
+                public void clicked(InputEvent event, float x, float y) {
+                    if(isSoundOn) {
+                        music.stop();
+                    }
+                    game.setScreen(new Endless(game));
+
+                }
+
+            });
+
+            this.addActor(restartBtn);*/
+        }
+    }
+
 }

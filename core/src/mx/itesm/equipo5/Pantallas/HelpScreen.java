@@ -21,7 +21,7 @@ class HelpScreen extends MasterScreen {
 
     private ImageButton homeButton;
 
-    private Text text;
+    //private Text text;
 
     public HelpScreen(Virusito juego) {
         super(juego);
@@ -35,7 +35,7 @@ class HelpScreen extends MasterScreen {
 
         createButtons();
 
-        text = new Text();
+        //text = new Text();
 
         Gdx.input.setInputProcessor(helpStage);
         Gdx.input.setCatchBackKey(true);
@@ -62,16 +62,17 @@ class HelpScreen extends MasterScreen {
         batch.begin();
         batch.draw(background, 0, 0);
 
+        /*
+        text.displayDialogText(batch, "HOW TO PLAY", MasterScreen.WIDTH/2, 5*(MasterScreen.HEIGHT/6)+100);
 
-        text.displayText(batch, "HOW TO PLAY", MasterScreen.WIDTH/2, 5*(MasterScreen.HEIGHT/6)+100);
-
-        text.displayText(batch, "Use the joystick on the left\nto move around the map",
+        text.displayDialogText(batch, "Use the joystick on the left\nto move around the map",
                 (MasterScreen.WIDTH/3)+10, 5*(MasterScreen.HEIGHT/6));
 
-        text.displayText(batch, "Use the joystick on the right\nto aim and shoot at the enemies",
+        text.displayDialogText(batch, "Use the joystick on the right\nto aim and shoot at the enemies",
                 (MasterScreen.WIDTH/3)+10, 4*(MasterScreen.HEIGHT/6));
-        text.displayText(batch, "And remember: you are humanity's last hope!",
+        text.displayDialogText(batch, "And remember: you are humanity's last hope!",
                 (MasterScreen.WIDTH/3)+100, 3*(MasterScreen.HEIGHT/6)-10);
+        */
 
 
 

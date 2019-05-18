@@ -31,6 +31,8 @@ class SettingsScreen extends MasterScreen {
     private ImageButton musicOffButton;
     private ImageButton storyResetButton;
 
+    private Text text;
+
     private int bestRound;
 
     Texture musicLabelTexture = new Texture("Botones/Music.png");
@@ -49,6 +51,8 @@ class SettingsScreen extends MasterScreen {
         settingsStage = new Stage(view);
 
         background = new Texture("Pantallas/PantallaAjustes.jpg");
+
+        text = new Text();
 
         createButtons();
 
@@ -146,7 +150,6 @@ class SettingsScreen extends MasterScreen {
 
 
 
-        Text text = new Text();
         text.displayText(batch, "SETTINGS", MasterScreen.WIDTH/2, 5*(MasterScreen.HEIGHT/6)+100);
         text.displayButtonText(batch, "Reset best round?", (MasterScreen.WIDTH/2)+50, (MasterScreen.HEIGHT/2)-30);
         text.displayButtonText(batch, "Best round is " + bestRound, (MasterScreen.WIDTH/2)+50, (MasterScreen.HEIGHT/2)-225);
