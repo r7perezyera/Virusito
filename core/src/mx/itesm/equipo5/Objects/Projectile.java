@@ -51,6 +51,10 @@ public abstract class Projectile {
 
     public Sprite getSprite() {return sprite;}
 
+    public float getDamage() {
+        return damage;
+    }
+
     public float getSpeed() {
         return speed;
     }

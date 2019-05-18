@@ -3,7 +3,6 @@ package mx.itesm.equipo5.Pantallas;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -29,9 +28,6 @@ public class LvlSelectScreen extends MasterScreen {
     private ImageButton lvlEndlessButton;
 
     private Preferences lvlPrefs = Gdx.app.getPreferences("userPrefs");
-    boolean isSoundOn = lvlPrefs.getBoolean("soundOn");
-
-    private Sound playSound;
 
     public LvlSelectScreen(Virusito game) {
         super(game);
@@ -44,15 +40,10 @@ public class LvlSelectScreen extends MasterScreen {
 
         background = new Texture("Pantallas/PantallaNiveles.png");
 
-        loadSFX();
         createButtons();
 
         Gdx.input.setInputProcessor(lvlSelectStage);
         Gdx.input.setCatchBackKey(true);
-    }
-
-    private void loadSFX() {
-        playSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/PlayButton.wav"));
     }
 
     private void createButtons() {
@@ -84,10 +75,6 @@ public class LvlSelectScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                if(isSoundOn) {
-                    //music.stop();
-                    playSound.play();
-                }
                 game.setScreen(new Endless(game));
             }
         });
@@ -103,10 +90,6 @@ public class LvlSelectScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                if(isSoundOn) {
-                    //music.stop();
-                    playSound.play();
-                }
                 game.setScreen(new Level(game));
             }
         });
@@ -121,10 +104,6 @@ public class LvlSelectScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                if(isSoundOn) {
-                    //music.stop();
-                    playSound.play();
-                }
                 game.setScreen(new Level(game));
             }
         });
@@ -139,10 +118,6 @@ public class LvlSelectScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                if(isSoundOn) {
-                    //music.stop();
-                    playSound.play();
-                }
                 game.setScreen(new Endless(game));
             }
         });
