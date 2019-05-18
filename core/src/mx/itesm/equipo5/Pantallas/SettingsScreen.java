@@ -3,17 +3,11 @@ package mx.itesm.equipo5.Pantallas;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import mx.itesm.equipo5.Button;
 import mx.itesm.equipo5.MasterScreen;
@@ -29,6 +23,7 @@ class SettingsScreen extends MasterScreen {
     private ImageButton homeButton;
     private ImageButton musicOnButton;
     private ImageButton musicOffButton;
+    private ImageButton endlessResetButton;
     private ImageButton storyResetButton;
 
     private Text text;
@@ -121,10 +116,8 @@ class SettingsScreen extends MasterScreen {
             settingsStage.addActor(musicOffButton);
         }
 
-
-
         storyResetButton = new Button("Botones/Replay_Bttn.png").getiButton();
-        storyResetButton.setPosition((MasterScreen.WIDTH/2), (MasterScreen.HEIGHT/2)-196);
+        storyResetButton.setPosition((1*MasterScreen.WIDTH/3)-250, (MasterScreen.HEIGHT/2)-196);
         settingsStage.addActor(storyResetButton);
         storyResetButton.addListener(new ClickListener() {
             @Override
@@ -132,7 +125,21 @@ class SettingsScreen extends MasterScreen {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
                 System.out.println("level1Passed pref set to false !!");
-                //lvlPrefs.putBoolean("level1Passed", false);
+                lvlPrefs.putBoolean("level1Passed", false);
+                lvlPrefs.putBoolean("level2Passed", false);
+                lvlPrefs.putBoolean("level3Passed", false);
+                lvlPrefs.flush();
+            }
+        });
+
+        endlessResetButton = new Button("Botones/Replay_Bttn.png").getiButton();
+        endlessResetButton.setPosition((2*MasterScreen.WIDTH/3)+90, (MasterScreen.HEIGHT/2)-196);
+        settingsStage.addActor(endlessResetButton);
+        endlessResetButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                // Responder al evento del boton
                 lvlPrefs.putInteger("endlessBestRound",0);
                 bestRound = 0;
                 lvlPrefs.flush();
@@ -151,8 +158,8 @@ class SettingsScreen extends MasterScreen {
 
 
         text.displayText(batch, "SETTINGS", MasterScreen.WIDTH/2, 5*(MasterScreen.HEIGHT/6)+100);
-        text.displayButtonText(batch, "Reset best round?", (MasterScreen.WIDTH/2)+50, (MasterScreen.HEIGHT/2)-30);
-        text.displayButtonText(batch, "Highest round is " + bestRound, (MasterScreen.WIDTH/2)+50, (MasterScreen.HEIGHT/2)-225);
+        text.displayButtonText(batch, "Reset best round?", (4*MasterScreen.WIDTH/5)+10, (MasterScreen.HEIGHT/2)-30);
+        text.displayButtonText(batch, "Highest round is " + bestRound, (4*MasterScreen.WIDTH/5), (MasterScreen.HEIGHT/2)-225);
 
         batch.draw(musicLabelTexture, (MasterScreen.WIDTH/2)-180, (MasterScreen.HEIGHT/2)+70);
         batch.draw(SFXLabelTexture, (MasterScreen.WIDTH/2)-20, (MasterScreen.HEIGHT/2)+30);
