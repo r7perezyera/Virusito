@@ -30,7 +30,6 @@ public class MenuScreen extends MasterScreen {
     boolean isSoundOn = lvlPrefs.getBoolean("soundOn");
 
     // Music and SFX
-    private Sound playSound;
     private Music music;
 
     public MenuScreen(Virusito juego) {
@@ -48,16 +47,12 @@ public class MenuScreen extends MasterScreen {
         Gdx.input.setCatchBackKey(false);
 
         loadMusic();
-        loadSFX();
 
         if (isSoundOn) {
             music.play();
         }
     }
 
-    private void loadSFX() {
-        playSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/PlayButton.wav"));
-    }
     private void loadMusic() {
         music = Gdx.audio.newMusic(Gdx.files.internal("Music/Tobu&Itro-Sunburst.mp3"));
         music.setLooping(true);
@@ -75,7 +70,6 @@ public class MenuScreen extends MasterScreen {
                 // Responder al evento del boton
                 if(isSoundOn) {
                     music.stop();
-                    playSound.play();
                 }
                 game.setScreen(new LvlSelectScreen(game));
             }
