@@ -137,7 +137,7 @@ class Endless extends MasterScreen {
         buildHUD();
         createJoysticks();
         getWalls();
-        player = new Player(300,300,3,this.world, weaponType.SHOTGUN);
+        player = new Player(300,300,3,this.world, weaponType.BAZOOKA);
         friendlyShotCooldown = player.getCooldown();
         spawn();
         getEnemies();
@@ -249,107 +249,108 @@ class Endless extends MasterScreen {
 
     @Override
     public void render(float delta) {
-
         eraseScreen();
 
-        //Update World
-        world.step(1/60f,6,2);
+            //Update World
+            world.step(1 / 60f, 6, 2);
 
-        timeSinceShot += delta;
-        timeSinceDamage += delta;
-        shoot();
-
-        updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY(), true);
-
-        batch.setProjectionMatrix(camera.combined);
-        // render the game map
-        mapRenderer.setView(camera);
-        mapRenderer.render();
+            shoot();
 
 
-        if (player.getHealth()==3){
-            life = new Texture("HUD/Bateria/Bateria_Llena.png");
-        }else if (player.getHealth()==2){
-            life = new Texture("HUD/Bateria/Bateria_Agotando.png");
-        }else if (player.getHealth()==1){
-            life = new Texture("HUD/Bateria/Bateria_Ultima.png");
-        }else {
-            if (isSoundOn) {
-                playerDeathSound.play();
-                music.stop();
+
+            batch.setProjectionMatrix(camera.combined);
+            // render the game map
+            mapRenderer.setView(camera);
+            mapRenderer.render();
+
+
+            if (player.getHealth() == 3) {
+                life = new Texture("HUD/Bateria/Bateria_Llena.png");
+            } else if (player.getHealth() == 2) {
+                life = new Texture("HUD/Bateria/Bateria_Agotando.png");
+            } else if (player.getHealth() == 1) {
+                life = new Texture("HUD/Bateria/Bateria_Ultima.png");
+            } else {
+                if (isSoundOn) {
+                    playerDeathSound.play();
+                    music.stop();
+                }
+                lvlPrefs.putInteger("endlessBestRound", round);
+                lvlPrefs.flush();
+                game.setScreen(new LoseScreen(game));
             }
-            lvlPrefs.putInteger("endlessBestRound",round);
-            lvlPrefs.flush();
-            System.out.println("se guarda "+ round +  " como hiscore");
-            game.setScreen(new LoseScreen(game));
-        }
 
 
-        batch.begin();
-        player.render(batch);
-        batch.draw(life, WIDTH/2-(life.getWidth()/2f),650);
+            batch.begin();
+            player.render(batch);
+            batch.draw(life, WIDTH / 2 - (life.getWidth() / 2f), 650);
 
-        text.displayHUDText(batch, "Round: " +round, MasterScreen.WIDTH/6, 5*(MasterScreen.HEIGHT/6)+100);
-        text.displayHUDText(batch, "Enemies: " +enemies.size(), MasterScreen.WIDTH*5/6, 5*(MasterScreen.HEIGHT/6)+100);
+            text.displayHUDText(batch, "Round: " + round, MasterScreen.WIDTH / 6, 5 * (MasterScreen.HEIGHT / 6) + 100);
+            text.displayHUDText(batch, "Enemies: " + enemies.size(), MasterScreen.WIDTH * 5 / 6, 5 * (MasterScreen.HEIGHT / 6) + 100);
 
 
-        if (!bullets.isEmpty()){
+
+
+            if (!enemies.isEmpty()) {
+                for (Minion minion : enemies) {
+                    minion.render(batch);
+                    if (!(gameState == GameState.PAUSED)) {
+                        // code moved
+                        enemyBullets = minion.move(player.getPosition().x, player.getPosition().y, enemyBullets);
+                    } else {
+                        minion.setVelocity(0, 0);
+                    }
+                }
+            } else {
+                spawn();
+                getEnemies();
+
+            }
+
+            if (!pilas.isEmpty()) {
+                for (int i = pilas.size() - 1; i >= 0; i--) {
+                    Item pila = pilas.get(i);
+                    pila.render(batch);
+                    if (player.getRectangle().overlaps(pila.getRectangle()) && player.getHealth() < 3) {
+                        player.setHealth(player.getHealth() + 1);
+                        pilas.remove(pila);
+                    }
+                }
+            }
+
+        if (gameState == GameState.PLAYING) {
+            updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY(), true);
             updateBullet(true);
-            for (int i =bullets.size()-1;i>=0;i--){
-                if (bullets.get(i).isDestroyed()){
-                    bullets.remove(i);
-                }else {
-                    FriendlyBullet bullet = bullets.get(i);
-                    bullet.render(batch);
-                    bullet.update();
-                }
-
-            }
-        }
-
-        if (!enemyBullets.isEmpty()){
             updateEnemyBullet(true);
-            for (int i =enemyBullets.size()-1;i>=0;i--){
-                if (enemyBullets.get(i).isDestroyed()){
-                    enemyBullets.remove(i);
-                }else {
-                    EnemyBullet bullet = enemyBullets.get(i);
-                    bullet.render(batch);
-                    bullet.update();
-                }
+            timeSinceShot += delta;
+            timeSinceDamage += delta;
+            if (!bullets.isEmpty()) {
+                for (int i = bullets.size() - 1; i >= 0; i--) {
+                    if (bullets.get(i).isDestroyed()) {
+                        bullets.remove(i);
+                    } else {
+                        FriendlyBullet bullet = bullets.get(i);
+                        bullet.render(batch);
+                        bullet.update();
+                    }
 
-            }
-        }
-
-
-        if (!enemies.isEmpty()){
-            for (Minion minion : enemies){
-                minion.render(batch);
-                if (!(gameState == GameState.PAUSED)) {
-                    // code moved
-                    enemyBullets = minion.move(player.getPosition().x,player.getPosition().y, enemyBullets);
-                }else{
-                    minion.setVelocity(0,0);
                 }
             }
-        }
-        else {
-            spawn();
-            getEnemies();
 
-        }
+            if (!enemyBullets.isEmpty()) {
+                for (int i = enemyBullets.size() - 1; i >= 0; i--) {
+                    if (enemyBullets.get(i).isDestroyed()) {
+                        enemyBullets.remove(i);
+                    } else {
+                        EnemyBullet bullet = enemyBullets.get(i);
+                        bullet.render(batch);
+                        bullet.update();
+                    }
 
-        if(!pilas.isEmpty()){
-            for (int i = pilas.size()-1; i>=0; i--){
-                Item pila = pilas.get(i);
-                pila.render(batch);
-                if (player.getRectangle().overlaps(pila.getRectangle())  && player.getHealth()<3) {
-                    player.setHealth(player.getHealth() + 1);
-                    pilas.remove(pila);
                 }
             }
-        }
 
+        }
 
         batch.end();
 
@@ -357,15 +358,11 @@ class Endless extends MasterScreen {
             pauseScene.draw();
             updateCharacter(0,0,false);
             updateBullet(false);
-            //updateEnemyBullet(false);
+            updateEnemyBullet(false);
+            movingStick.setPosition(0,0);
+            shootingStick.setPosition(0,0);
 
         }
-
-        if (gameState == GameState.PLAYING) {
-            updateCharacter(0,0,true);
-            updateBullet(true);
-        }
-
 
         batch.setProjectionMatrix(HUDcamera.combined);
         HUDstage.draw();
@@ -514,7 +511,15 @@ class Endless extends MasterScreen {
             float newPosX = player.getSprite().getX() + (dx * player.getSpeed());
             checkRectangle.setPosition(newPosX, newPosY);
             // end of moved code
-        }else{
+            if (collidesWith(enemyRect, checkRectangle)) {
+                if(timeSinceDamage>2){
+                    player.doDamage(1);
+                    timeSinceDamage=0;
+                }
+            }
+
+        }
+        else{
             player.b2body.setLinearVelocity(0,0);
         }
 
@@ -529,18 +534,13 @@ class Endless extends MasterScreen {
             player.moveY(dy);
         }
         */
-        if (collidesWith(enemyRect, checkRectangle)) {
-            if(timeSinceDamage>2){
-                player.setHealth(player.getHealth()-1);
-                timeSinceDamage=0;
-            }
-        }
+
     }
 
 
     private void updateBullet(boolean update){
 
-        if (update) {
+        if (update && !bullets.isEmpty()) {
             for(int i =bullets.size()-1;i>=0;i--){
                 FriendlyBullet bullet = bullets.get(i);
                 Rectangle checkRectangle;
@@ -587,7 +587,7 @@ class Endless extends MasterScreen {
 
     private void updateEnemyBullet(boolean update){
 
-        if (update) {
+        if (update && !enemyBullets.isEmpty()) {
             for(int i =enemyBullets.size()-1;i>=0;i--){
                 EnemyBullet bullet = enemyBullets.get(i);
                 Rectangle checkRectangle;

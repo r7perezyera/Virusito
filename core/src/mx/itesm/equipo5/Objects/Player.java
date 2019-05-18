@@ -167,7 +167,8 @@ public class Player extends Entity {
            bullet = new FriendlyBullet(getX()+getWidth()/2, getY()+getHeight()/2, (float) (dir - (Math.PI/4)), weapon);
            bullets.add(bullet);
        }else if (weapon == weaponType.BAZOOKA){
-
+           FriendlyBullet bullet = new FriendlyBullet(getX()+getWidth()/2, getY()+getHeight()/2, dir, weapon);
+           bullets.add(bullet);
        }
         return bullets;
 
