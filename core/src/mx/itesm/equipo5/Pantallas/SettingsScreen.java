@@ -117,7 +117,7 @@ class SettingsScreen extends MasterScreen {
         }
 
         storyResetButton = new Button("Botones/Replay_Bttn.png").getiButton();
-        storyResetButton.setPosition((1*MasterScreen.WIDTH/3)-250, (MasterScreen.HEIGHT/2)-196);
+        storyResetButton.setPosition((1*MasterScreen.WIDTH/3)-200, (MasterScreen.HEIGHT/2)-196);
         settingsStage.addActor(storyResetButton);
         storyResetButton.addListener(new ClickListener() {
             @Override
@@ -158,6 +158,10 @@ class SettingsScreen extends MasterScreen {
 
 
         text.displayText(batch, "SETTINGS", MasterScreen.WIDTH/2, 5*(MasterScreen.HEIGHT/6)+100);
+
+        text.displayButtonText(batch, "Reset story?", (1*MasterScreen.WIDTH/3)-140, (MasterScreen.HEIGHT/2)-30);
+        text.displayButtonText(batch, "You'll lose progress!", (1*MasterScreen.WIDTH/3)-120, (MasterScreen.HEIGHT/2)-225);
+
         text.displayButtonText(batch, "Reset best round?", (4*MasterScreen.WIDTH/5)+10, (MasterScreen.HEIGHT/2)-30);
         text.displayButtonText(batch, "Highest round is " + bestRound, (4*MasterScreen.WIDTH/5), (MasterScreen.HEIGHT/2)-225);
 
