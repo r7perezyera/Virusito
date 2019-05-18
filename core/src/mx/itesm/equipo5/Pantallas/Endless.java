@@ -301,7 +301,8 @@ class Endless extends MasterScreen {
                         minion.setVelocity(0, 0);
                     }
                 }
-            } else {
+            }
+            else {
                 spawn();
                 getEnemies();
 
@@ -359,8 +360,9 @@ class Endless extends MasterScreen {
             updateCharacter(0,0,false);
             updateBullet(false);
             updateEnemyBullet(false);
-            movingStick.setPosition(0,0);
-            shootingStick.setPosition(0,0);
+            shootingStick.remove();
+            movingStick.remove();
+            createJoysticks();
 
         }
 
@@ -699,7 +701,6 @@ class Endless extends MasterScreen {
             });
             this.addActor(playButton);
 
-            // TODO now that we have the asset, create and place the level restart button for the pause menu
 
         }
     }
