@@ -137,7 +137,7 @@ class Endless extends MasterScreen {
         buildHUD();
         createJoysticks();
         getWalls();
-        player = new Player(300,300,3,this.world, weaponType.PISTOL);
+        player = new Player(300,300,3,this.world, weaponType.SHOTGUN);
         friendlyShotCooldown = player.getCooldown();
         spawn();
         getEnemies();
@@ -558,7 +558,7 @@ class Endless extends MasterScreen {
                 for (int j = enemies.size()-1; j >= 0; j--){
                     if (checkRectangle.overlaps(enemies.get(j).getRectangle())) {
                         bullet.destroy();
-                        enemies.get(j).doDamage(1);
+                        enemies.get(j).doDamage(bullet.getDamage());
                         if (enemies.get(j).isDestroyed()) {
                             if (isSoundOn) {
                                 if (enemies.get(j).isBoss()){
@@ -604,7 +604,7 @@ class Endless extends MasterScreen {
 
                 Rectangle playerRect = player.getRectangle();
                 if (checkRectangle.overlaps(playerRect)){
-                    player.doDamage(2);
+                    player.doDamage(bullet.getDamage());
                     bullet.destroy();
                     enemyBullets.remove(i);
                 }
