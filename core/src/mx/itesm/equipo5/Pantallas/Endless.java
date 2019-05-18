@@ -279,15 +279,6 @@ class Endless extends MasterScreen {
                 lvlPrefs.flush();
                 game.setScreen(new LoseScreen(game));
             }
-            if (round > highestRound) {
-                lvlPrefs.putInteger("endlessBestRound",round);
-                lvlPrefs.flush();
-                System.out.println("se guarda "+ round +  " como hiscore");
-            } else {
-                System.out.println("no se supero hiscore");
-            }
-            game.setScreen(new LoseScreen(game));
-        }
 
 
             batch.begin();

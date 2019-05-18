@@ -152,7 +152,7 @@ class SettingsScreen extends MasterScreen {
 
         text.displayText(batch, "SETTINGS", MasterScreen.WIDTH/2, 5*(MasterScreen.HEIGHT/6)+100);
         text.displayButtonText(batch, "Reset best round?", (MasterScreen.WIDTH/2)+50, (MasterScreen.HEIGHT/2)-30);
-        text.displayButtonText(batch, "Highest round is " + bestRound, (MasterScreen.WIDTH/2)+50, (MasterScreen.HEIGHT/2)-225);
+        text.displayButtonText(batch, "Best round is " + bestRound, (MasterScreen.WIDTH/2)+50, (MasterScreen.HEIGHT/2)-225);
 
         batch.draw(musicLabelTexture, (MasterScreen.WIDTH/2)-180, (MasterScreen.HEIGHT/2)+70);
         batch.draw(SFXLabelTexture, (MasterScreen.WIDTH/2)-20, (MasterScreen.HEIGHT/2)+30);
