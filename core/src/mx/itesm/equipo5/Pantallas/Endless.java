@@ -509,9 +509,7 @@ class Endless extends MasterScreen {
 
 
             //Box2D movement
-            player.b2body.setLinearVelocity(changeX*10000,changeY*10000);
-            player.setX(player.b2body.getPosition().x-player.getWidth()/2);//Medio ineficiente, pone sprite donde esta body
-            player.setY(player.b2body.getPosition().y-player.getHeight()/2);
+            player.move(dx,dy);
 
 
             float newPosY = player.getSprite().getY() + (dy * player.getSpeed());
