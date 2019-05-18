@@ -63,6 +63,7 @@ public class LvlSelectScreen extends MasterScreen {
         lvlPrefs.putBoolean("level1Passed", true);
         lvlPrefs.putBoolean("level2Passed", true);
         lvlPrefs.putBoolean("level3Passed", true);
+        lvlPrefs.flush();
         // for test purposes - remove at end
 
         // level 1 button - should be ALWAYS available
