@@ -1,8 +1,8 @@
 package mx.itesm.equipo5.Pantallas;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
@@ -54,7 +54,7 @@ import mx.itesm.equipo5.Objects.weaponType;
 import mx.itesm.equipo5.Text;
 import mx.itesm.equipo5.Virusito;
 
-class Level1 extends MasterScreen {
+class Level3 extends MasterScreen {
 
     private AssetManager assetManager;
 
@@ -118,7 +118,7 @@ class Level1 extends MasterScreen {
 
     //Box2D
 
-    public Level1(Virusito juego) {
+    public Level3(Virusito juego) {
         super(juego);
 
     }
@@ -320,16 +320,11 @@ class Level1 extends MasterScreen {
             }
         }
         else {
-            
-            if (room<4) {
-                spawn();
-                getEnemies();
-                loadMap();
-                player.setX(300);
-                player.setX(300);
-            }else {
-                game.setScreen(new WinScreen(game));
-            }
+            spawn();
+            getEnemies();
+            loadMap();
+            player.setX(300);
+            player.setX(300);
         }
 
         if (!pilas.isEmpty()) {
@@ -393,6 +388,9 @@ class Level1 extends MasterScreen {
         batch.setProjectionMatrix(HUDcamera.combined);
         HUDstage.draw();
 
+        if (room == 10){
+            game.setScreen(new WinScreen(game));
+        }
 
 
         // pausa si presionamos Android Back
