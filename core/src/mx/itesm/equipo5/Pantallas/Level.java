@@ -460,6 +460,10 @@ class Level extends MasterScreen {
         }
     }
 
+    private void getDoors(){ //TODO
+
+    }
+
     private void getEnemies(){
         enemyRect = new LinkedList<Rectangle>();
         for(Minion enemy : enemies){
