@@ -32,5 +32,19 @@ public class B2DWorldCreator {
 
             body.createFixture(fdef);
         }
+
+        for (MapObject object : map.getLayers().get("Puertas").getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            bdef.type = BodyDef.BodyType.StaticBody;
+            bdef.position.set((rect.getX()+rect.getWidth()/2)/PPM,(rect.getY()+rect.getHeight()/2)/PPM);
+
+            body = world.createBody(bdef);
+
+            shape.setAsBox((rect.getWidth()/2)/PPM,(rect.getHeight()/2)/PPM);
+            fdef.shape = shape;
+
+            body.createFixture(fdef);
+        }
     }
 }
