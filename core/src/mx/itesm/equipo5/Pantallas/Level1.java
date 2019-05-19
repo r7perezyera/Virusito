@@ -41,6 +41,7 @@ import mx.itesm.equipo5.B2DWorldCreator;
 import mx.itesm.equipo5.Button;
 import mx.itesm.equipo5.JoyStick;
 import mx.itesm.equipo5.MasterScreen;
+import mx.itesm.equipo5.Objects.EnemyBullet;
 import mx.itesm.equipo5.Objects.FriendlyBullet;
 import mx.itesm.equipo5.Objects.Item;
 import mx.itesm.equipo5.Objects.Minion;
@@ -53,7 +54,7 @@ import mx.itesm.equipo5.Objects.weaponType;
 import mx.itesm.equipo5.Text;
 import mx.itesm.equipo5.Virusito;
 
-class Level extends MasterScreen {
+class Level1 extends MasterScreen {
 
     private AssetManager assetManager;
 
@@ -62,6 +63,7 @@ class Level extends MasterScreen {
     private float timeSinceDamage;
 
     private LinkedList<FriendlyBullet> bullets = new LinkedList<FriendlyBullet>();
+    private LinkedList<EnemyBullet> enemyBullets = new LinkedList<EnemyBullet>();
     private LinkedList<Item> pilas = new LinkedList<Item>();
     private LinkedList<Minion> enemies = new LinkedList<Minion>();
     private float timeSinceShot;
@@ -103,7 +105,7 @@ class Level extends MasterScreen {
     //rounds
     private difficulty diff = difficulty.EASY;
     private enemyType type;
-    private int round = 0;
+    private int room = 0;
 
 
     private GameState gameState;
@@ -116,7 +118,7 @@ class Level extends MasterScreen {
 
     //Box2D
 
-    public Level(Virusito juego) {
+    public Level1(Virusito juego) {
         super(juego);
 
     }
@@ -135,10 +137,11 @@ class Level extends MasterScreen {
         buildHUD();
         createJoysticks();
         getWalls();
-        player = new Player(300,300,3,this.world, weaponType.PISTOL);
+        player = new Player(300,300,3,this.world, weaponType.BAZOOKA);
         friendlyShotCooldown = player.getCooldown();
         spawn();
         getEnemies();
+        text = new Text();
 
 
 
@@ -188,11 +191,32 @@ class Level extends MasterScreen {
 
     private void loadMap() {
         //AssetManager manager = new AssetManager();
-        assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
-        assetManager.load("Mapa1/endless.tmx", TiledMap.class);
-        assetManager.finishLoading();
-        map = assetManager.get("Mapa1/endless.tmx");
-        mapRenderer = new OrthogonalTiledMapRenderer(map,1/PPM);
+        if (room <=1){
+            assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+            assetManager.load("Mapa1/1-1.tmx", TiledMap.class);
+            assetManager.finishLoading();
+            map = assetManager.get("Mapa1/1-1.tmx");
+            mapRenderer = new OrthogonalTiledMapRenderer(map,1/PPM);
+        }else if (room == 2){
+            assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+            assetManager.load("Mapa1/1-2.tmx", TiledMap.class);
+            assetManager.finishLoading();
+            map = assetManager.get("Mapa1/1-2.tmx");
+            mapRenderer = new OrthogonalTiledMapRenderer(map,1/PPM);
+        }else if (room == 3){
+            assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+            assetManager.load("Mapa1/1-3.tmx", TiledMap.class);
+            assetManager.finishLoading();
+            map = assetManager.get("Mapa1/1-3.tmx");
+            mapRenderer = new OrthogonalTiledMapRenderer(map,1/PPM);
+        }else if (room == 4){
+            assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+            assetManager.load("Mapa1/1-4.tmx", TiledMap.class);
+            assetManager.finishLoading();
+            map = assetManager.get("Mapa1/1-4.tmx");
+            mapRenderer = new OrthogonalTiledMapRenderer(map,1/PPM);
+        }
+
     }
 
     private void buildHUD() {
@@ -247,17 +271,14 @@ class Level extends MasterScreen {
 
     @Override
     public void render(float delta) {
-
         eraseScreen();
 
         //Update World
-        world.step(1/60f,6,2);
+        world.step(1 / 60f, 6, 2);
 
-        timeSinceShot += delta;
-        timeSinceDamage += delta;
         shoot();
 
-        updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY(), true);
+
 
         batch.setProjectionMatrix(camera.combined);
         // render the game map
@@ -265,71 +286,91 @@ class Level extends MasterScreen {
         mapRenderer.render();
 
 
-        if (player.getHealth()==3){
+        if (player.getHealth() == 3) {
             life = new Texture("HUD/Bateria/Bateria_Llena.png");
-        }else if (player.getHealth()==2){
+        } else if (player.getHealth() == 2) {
             life = new Texture("HUD/Bateria/Bateria_Agotando.png");
-        }else if (player.getHealth()==1){
+        } else if (player.getHealth() == 1) {
             life = new Texture("HUD/Bateria/Bateria_Ultima.png");
-        }else {
+        } else {
             if (isSoundOn) {
                 playerDeathSound.play();
                 music.stop();
             }
-            lvlPrefs.putInteger("endlessBestRound",round);
-            lvlPrefs.flush();
-            System.out.println("se guarda "+ round +  " como hiscore");
             game.setScreen(new LoseScreen(game));
         }
 
 
         batch.begin();
         player.render(batch);
-        batch.draw(life, WIDTH/2-(life.getWidth()/2f),650);
-
-        text.displayHUDText(batch, "Round: " +round, MasterScreen.WIDTH/6, 5*(MasterScreen.HEIGHT/6)+100);
-        text.displayHUDText(batch, "Enemies: " +enemies.size(), MasterScreen.WIDTH*5/6, 5*(MasterScreen.HEIGHT/6)+100);
+        batch.draw(life, WIDTH / 2 - (life.getWidth() / 2f), 650);
 
 
-        if (!bullets.isEmpty()){
-            updateBullet(true);
-            for (int i =bullets.size()-1;i>=0;i--){
-                if (bullets.get(i).isDestroyed()){
-                    bullets.remove(i);
-                }else {
-                    FriendlyBullet bullet = bullets.get(i);
-                    bullet.render(batch);
-                    bullet.update();
-                }
 
-            }
-        }
-        if (!enemies.isEmpty()){
-            for (Minion minion : enemies){
+
+        if (!enemies.isEmpty()) {
+            for (Minion minion : enemies) {
                 minion.render(batch);
                 if (!(gameState == GameState.PAUSED)) {
                     // code moved
-                    minion.move(player.getPosition().x,player.getPosition().y);
-                }else{
-                    minion.setVelocity(0,0);
+                    enemyBullets = minion.move(player.getPosition().x, player.getPosition().y, enemyBullets);
+                } else {
+                    minion.setVelocity(0, 0);
                 }
             }
-        }else {
+        }
+        else {
             spawn();
             getEnemies();
-
+            loadMap();
+            player.setX(300);
+            player.setX(300);
         }
-        if(!pilas.isEmpty()){
-            for (int i = pilas.size()-1; i>=0; i--){
+
+        if (!pilas.isEmpty()) {
+            for (int i = pilas.size() - 1; i >= 0; i--) {
                 Item pila = pilas.get(i);
                 pila.render(batch);
-                if (player.getRectangle().overlaps(pila.getRectangle())  && player.getHealth()<3) {
+                if (player.getRectangle().overlaps(pila.getRectangle()) && player.getHealth() < 3) {
                     player.setHealth(player.getHealth() + 1);
                     pilas.remove(pila);
                 }
             }
         }
 
+        if (gameState == GameState.PLAYING) {
+            updateCharacter(movingStick.getKnobPercentX(), movingStick.getKnobPercentY(), true);
+            updateBullet(true);
+            updateEnemyBullet(true);
+            timeSinceShot += delta;
+            timeSinceDamage += delta;
+            if (!bullets.isEmpty()) {
+                for (int i = bullets.size() - 1; i >= 0; i--) {
+                    if (bullets.get(i).isDestroyed()) {
+                        bullets.remove(i);
+                    } else {
+                        FriendlyBullet bullet = bullets.get(i);
+                        bullet.render(batch);
+                        bullet.update();
+                    }
+
+                }
+            }
+
+            if (!enemyBullets.isEmpty()) {
+                for (int i = enemyBullets.size() - 1; i >= 0; i--) {
+                    if (enemyBullets.get(i).isDestroyed()) {
+                        enemyBullets.remove(i);
+                    } else {
+                        EnemyBullet bullet = enemyBullets.get(i);
+                        bullet.render(batch);
+                        bullet.update();
+                    }
+
+                }
+            }
+
+        }
 
         batch.end();
 
@@ -337,18 +378,17 @@ class Level extends MasterScreen {
             pauseScene.draw();
             updateCharacter(0,0,false);
             updateBullet(false);
-        }
+            updateEnemyBullet(false);
+            shootingStick.remove();
+            movingStick.remove();
+            createJoysticks();
 
-        if (gameState == GameState.PLAYING) {
-            updateCharacter(0,0,true);
-            updateBullet(true);
         }
-
 
         batch.setProjectionMatrix(HUDcamera.combined);
         HUDstage.draw();
 
-        if (round == 10){
+        if (room == 10){
             game.setScreen(new WinScreen(game));
         }
 
@@ -369,24 +409,21 @@ class Level extends MasterScreen {
     private void spawn() {
         enemies = new LinkedList<Minion>();
         int numEnemies = 0;
+        type = enemyType.FLOATER;
 
-        round++;
+        room++;
         if (diff == difficulty.EASY){
-            numEnemies = 5;
-            type = enemyType.FLOATER;
+            numEnemies = 3;
+
         }else if (diff == difficulty.MEDIUM){
-            numEnemies = 8;
-            type = enemyType.TEETH;
+            numEnemies = 4;
         }else if (diff == difficulty.HARD){
-            numEnemies = 10;
-            type = enemyType.CRAWLER;
+            numEnemies = 4;
         }
 
-        if (round%3 == 0){
+        if (room%4 == 0){
             numEnemies = 7;
-            diff = diff.next();
-            System.out.println(diff);
-            Minion minion = new Minion(type.next(), movementPattern.ZIGZAG, diff, 500, 500,world);
+            Minion minion = new Minion(type.next(), movementPattern.AVOIDER, diff, 500, 500,world);
             minion.setBoss();
             enemies.add(minion);
         }
@@ -394,10 +431,10 @@ class Level extends MasterScreen {
         int[] nivelX = {2,3,4,5,6,2,3,4,5,6};
         int[] nivelY = {6,7,8,7,6,4,3,2,3,4};
         for (int i = 0; i<numEnemies; i++){
-
             Minion minion = new Minion(type, movementPattern.ZIGZAG, diff, WIDTH*nivelX[i]/7, HEIGHT*nivelY[i]/9,world);
             enemies.add(minion);
         }
+        diff = diff.next();
 
 
     }
@@ -488,21 +525,20 @@ class Level extends MasterScreen {
             player.setX(player.b2body.getPosition().x-player.getWidth()/2);//Medio ineficiente, pone sprite donde esta body
             player.setY(player.b2body.getPosition().y-player.getHeight()/2);
 
-            /*if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
-                player.setDir(viewingDirection.RIGHT);
-            } else if (46 <= angle && angle <= 136) {
-                player.setDir(viewingDirection.FRONT);
-            } else if (136 <= angle && angle <= 225) {
-                player.setDir(viewingDirection.LEFT);
-            } else if (226 <= angle && angle <= 315) {
-                player.setDir(viewingDirection.FRONT);
-            }*/
 
             float newPosY = player.getSprite().getY() + (dy * player.getSpeed());
             float newPosX = player.getSprite().getX() + (dx * player.getSpeed());
             checkRectangle.setPosition(newPosX, newPosY);
             // end of moved code
-        }else{
+            if (collidesWith(enemyRect, checkRectangle)) {
+                if(timeSinceDamage>2){
+                    player.doDamage(1);
+                    timeSinceDamage=0;
+                }
+            }
+
+        }
+        else{
             player.b2body.setLinearVelocity(0,0);
         }
 
@@ -517,18 +553,13 @@ class Level extends MasterScreen {
             player.moveY(dy);
         }
         */
-        if (collidesWith(enemyRect, checkRectangle)) {
-            if(timeSinceDamage>2){
-                player.setHealth(player.getHealth()-1);
-                timeSinceDamage=0;
-            }
-        }
+
     }
 
 
     private void updateBullet(boolean update){
 
-        if (update) {
+        if (update && !bullets.isEmpty()) {
             for(int i =bullets.size()-1;i>=0;i--){
                 FriendlyBullet bullet = bullets.get(i);
                 Rectangle checkRectangle;
@@ -546,7 +577,7 @@ class Level extends MasterScreen {
                 for (int j = enemies.size()-1; j >= 0; j--){
                     if (checkRectangle.overlaps(enemies.get(j).getRectangle())) {
                         bullet.destroy();
-                        enemies.get(j).doDamage(1);
+                        enemies.get(j).doDamage(bullet.getDamage());
                         if (enemies.get(j).isDestroyed()) {
                             if (isSoundOn) {
                                 if (enemies.get(j).isBoss()){
@@ -568,6 +599,33 @@ class Level extends MasterScreen {
                         }
 
                     }
+                }
+            }
+        }
+    }
+
+    private void updateEnemyBullet(boolean update){
+
+        if (update && !enemyBullets.isEmpty()) {
+            for(int i =enemyBullets.size()-1;i>=0;i--){
+                EnemyBullet bullet = enemyBullets.get(i);
+                Rectangle checkRectangle;
+                checkRectangle = new Rectangle();
+                checkRectangle.set(bullet.getRectangle());
+                float newPosY = bullet.getSprite().getY() + bullet.getSpeed();
+                float newPosX = bullet.getSprite().getX() + bullet.getSpeed();
+                checkRectangle.setPosition(newPosX, newPosY);
+
+                if(collidesWith(walls,checkRectangle)) {
+                    bullet.destroy();
+                    enemyBullets.remove(i);
+                }
+
+                Rectangle playerRect = player.getRectangle();
+                if (checkRectangle.overlaps(playerRect)){
+                    player.doDamage(bullet.getDamage());
+                    bullet.destroy();
+                    enemyBullets.remove(i);
                 }
             }
         }
@@ -616,7 +674,9 @@ class Level extends MasterScreen {
             Texture playBttnTexture;
             //Texture restartButton;
 
-            Pixmap pixmap = new Pixmap((int) (WIDTH * 0.7f), (int) (HEIGHT * 0.8f), Pixmap.Format.RGBA8888);
+            float pixmapWidth = WIDTH * 0.7f;
+            float pixmapHeight = HEIGHT * 0.8f;
+            Pixmap pixmap = new Pixmap((int) (pixmapWidth), (int) (pixmapHeight), Pixmap.Format.RGBA8888);
             pixmap.setColor(1f, 1f, 1f, 0.75f);
             pixmap.fillRectangle(0, 0, pixmap.getWidth(), pixmap.getHeight());
             Texture texturaRectangulo = new Texture(pixmap);
@@ -628,7 +688,7 @@ class Level extends MasterScreen {
             homeBttnTexture = assetManager.get("Botones/Home_Bttn.png");
             TextureRegionDrawable trdSalir = new TextureRegionDrawable(new TextureRegion(homeBttnTexture));
             ImageButton homeButton = new ImageButton(trdSalir);
-            homeButton.setPosition((WIDTH/2 - homeButton.getWidth()/2)-250, (HEIGHT/2)+50);
+            homeButton.setPosition(pixmapWidth/6 + homeButton.getWidth()/2, pixmapHeight - homeButton.getHeight()/2);
             homeButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -646,7 +706,7 @@ class Level extends MasterScreen {
             TextureRegionDrawable trdContinuar = new TextureRegionDrawable(
                     new TextureRegion(playBttnTexture));
             ImageButton playButton = new ImageButton(trdContinuar);
-            playButton.setPosition(WIDTH / 2 - playButton.getWidth() / 2 , HEIGHT / 4);
+            playButton.setPosition(pixmapWidth - playButton.getWidth()/2 , pixmapHeight/6);
             playButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -658,30 +718,7 @@ class Level extends MasterScreen {
             });
             this.addActor(playButton);
 
-            // TODO now that we have the asset, create and place the level restart button for the pause menu
-            /*restartButton = assetManager.get("Botones/noAssetForThatYet.png");
 
-            TextureRegionDrawable trdRestart = new TextureRegionDrawable(new TextureRegion(restartButton));
-
-            ImageButton restartBtn = new ImageButton(trdRestart);
-
-            restartBtn.setPosition(WIDTH/2 - restartBtn.getWidth()/2 + 150, HEIGHT/4);
-
-            restartBtn.addListener(new ClickListener() {
-
-                @Override
-
-                public void clicked(InputEvent event, float x, float y) {
-                    if(isSoundOn) {
-                        music.stop();
-                    }
-                    game.setScreen(new Endless(game));
-
-                }
-
-            });
-
-            this.addActor(restartBtn);*/
         }
     }
 

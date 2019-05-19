@@ -141,6 +141,7 @@ class Endless extends MasterScreen {
         friendlyShotCooldown = player.getCooldown();
         spawn();
         getEnemies();
+        text = new Text();
 
 
 
