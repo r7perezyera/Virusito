@@ -136,7 +136,7 @@ class Endless extends MasterScreen {
         buildHUD();
         createJoysticks();
         getWalls();
-        player = new Player(300,300,3,this.world, weaponType.BAZOOKA);
+        player = new Player(300,300,3,this.world, weaponType.SHOTGUN);
         friendlyShotCooldown = player.getCooldown();
         spawn();
         getEnemies();

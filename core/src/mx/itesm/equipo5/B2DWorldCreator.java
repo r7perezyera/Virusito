@@ -34,18 +34,22 @@ public class B2DWorldCreator {
         }
 
         //Adds doors as physical objects
-        for (MapObject object : map.getLayers().get("Puertas").getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+        try {
+            for (MapObject object : map.getLayers().get("Puertas").getObjects().getByType(RectangleMapObject.class)) {
+                Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rect.getX()+rect.getWidth()/2)/PPM,(rect.getY()+rect.getHeight()/2)/PPM);
+                bdef.type = BodyDef.BodyType.StaticBody;
+                bdef.position.set((rect.getX() + rect.getWidth() / 2) / PPM, (rect.getY() + rect.getHeight() / 2) / PPM);
 
-            body = world.createBody(bdef);
+                body = world.createBody(bdef);
 
-            shape.setAsBox((rect.getWidth()/2)/PPM,(rect.getHeight()/2)/PPM);
-            fdef.shape = shape;
+                shape.setAsBox((rect.getWidth() / 2) / PPM, (rect.getHeight() / 2) / PPM);
+                fdef.shape = shape;
 
-            body.createFixture(fdef);
+                body.createFixture(fdef);
+            }
+        }catch (NullPointerException e){
+            System.out.println("No hay puertas en el nivel");
         }
 
         /*TODO JOAQUIN

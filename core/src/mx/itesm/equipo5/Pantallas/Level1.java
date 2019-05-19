@@ -139,7 +139,7 @@ class Level1 extends MasterScreen {
         getWalls();
         getDoors();
 
-        player = new Player(300,300,3,this.world, weaponType.BAZOOKA);
+        player = new Player(300,300,3,this.world, weaponType.PISTOL);
         friendlyShotCooldown = player.getCooldown();
         spawn();
         getEnemies();
@@ -328,8 +328,8 @@ class Level1 extends MasterScreen {
                     loadMap();
                     pilas = new LinkedList<Item>();
                     bullets = new LinkedList<FriendlyBullet>();
-                    player.setX(300);
-                    player.setX(300);
+                    player.b2body.setTransform(WIDTH/2,HEIGHT/2, 0f);
+
                 } else {
                     game.setScreen(new WinScreen(game));
                 }

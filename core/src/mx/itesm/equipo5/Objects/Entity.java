@@ -68,10 +68,12 @@ public abstract class Entity{
 
     public void setX(float x) {
         sprite.setX(x);
+        rectangle.setPosition(x-1,sprite.getY()-1);
     }
 
     public void setY(float y) {
         sprite.setY(y);
+        rectangle.setPosition(sprite.getX()-1,y-1);
     }
 
     public void setSpeed(float speed) {
