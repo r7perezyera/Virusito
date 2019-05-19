@@ -8,18 +8,6 @@ import mx.itesm.equipo5.Pantallas.SplashScreen;
 
 public class Virusito extends Game {
 
-    // Asset Manager
-    /*
-    will try initially to manage music and SFX
-    we could eventually turn it into THE only manager for the whole game,
-    i.e. for all the resources that require the asset manager
-     */
-    //private AssetManager audioManager;
-    /*private boolean canPlayMusic;
-    private boolean canPlaySound;*/
-
-    //private Music music;
-
     public Virusito() {
 
     }
@@ -30,26 +18,20 @@ public class Virusito extends Game {
         //assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
 
         // Pone la pantalla inicial
-        setScreen(new SplashScreen(this));     // original, keep this
-        /*setCanPlayMusic(true);
-        setCanPlaySound(true);*/
+        setScreen(new SplashScreen(this));
 
         // create prefs
         Preferences prefs = Gdx.app.getPreferences("userPrefs");
-
+        // initial sound prefs
         prefs.putBoolean("soundON", true);
-
-
+        // initial story progress (unlocked levels) prefs
         prefs.putBoolean("level1Passed", false);
-
         if (!prefs.getBoolean("level1Passed")) {
             prefs.putBoolean("level2Passed", false);
         }
         if (!prefs.getBoolean("level2Passed")) {
             prefs.putBoolean("level3Passed", false);
         }
-
-
         prefs.flush();
     }
 
