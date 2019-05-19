@@ -54,7 +54,7 @@ import mx.itesm.equipo5.Objects.weaponType;
 import mx.itesm.equipo5.Text;
 import mx.itesm.equipo5.Virusito;
 
-class Level extends MasterScreen {
+class Level1 extends MasterScreen {
 
     private AssetManager assetManager;
 
@@ -105,7 +105,7 @@ class Level extends MasterScreen {
     //rounds
     private difficulty diff = difficulty.EASY;
     private enemyType type;
-    private int round = 0;
+    private int room = 0;
 
 
     private GameState gameState;
@@ -118,7 +118,7 @@ class Level extends MasterScreen {
 
     //Box2D
 
-    public Level(Virusito juego) {
+    public Level1(Virusito juego) {
         super(juego);
 
     }
@@ -192,9 +192,9 @@ class Level extends MasterScreen {
     private void loadMap() {
         //AssetManager manager = new AssetManager();
         assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
-        assetManager.load("Mapa1/endless.tmx", TiledMap.class);
+        assetManager.load("Mapa1/1-1.tmx", TiledMap.class);
         assetManager.finishLoading();
-        map = assetManager.get("Mapa1/endless.tmx");
+        map = assetManager.get("Mapa1/1-1.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(map,1/PPM);
     }
 
@@ -276,8 +276,6 @@ class Level extends MasterScreen {
                 playerDeathSound.play();
                 music.stop();
             }
-            lvlPrefs.putInteger("endlessBestRound", round);
-            lvlPrefs.flush();
             game.setScreen(new LoseScreen(game));
         }
 
@@ -285,9 +283,6 @@ class Level extends MasterScreen {
         batch.begin();
         player.render(batch);
         batch.draw(life, WIDTH / 2 - (life.getWidth() / 2f), 650);
-
-        text.displayHUDText(batch, "Round: " + round, MasterScreen.WIDTH / 6, 5 * (MasterScreen.HEIGHT / 6) + 100);
-        text.displayHUDText(batch, "Enemies: " + enemies.size(), MasterScreen.WIDTH * 5 / 6, 5 * (MasterScreen.HEIGHT / 6) + 100);
 
 
 
@@ -370,7 +365,7 @@ class Level extends MasterScreen {
         batch.setProjectionMatrix(HUDcamera.combined);
         HUDstage.draw();
 
-        if (round == 10){
+        if (room == 10){
             game.setScreen(new WinScreen(game));
         }
 
@@ -392,19 +387,17 @@ class Level extends MasterScreen {
         enemies = new LinkedList<Minion>();
         int numEnemies = 0;
 
-        round++;
+        room++;
         if (diff == difficulty.EASY){
-            numEnemies = 5;
-            type = enemyType.FLOATER;
+            numEnemies = 3;
+
         }else if (diff == difficulty.MEDIUM){
-            numEnemies = 8;
-            type = enemyType.TEETH;
+            numEnemies = 3;
         }else if (diff == difficulty.HARD){
-            numEnemies = 10;
-            type = enemyType.CRAWLER;
+            numEnemies = 3;
         }
 
-        if (round%3 == 0){
+        if (room%3 == 0){
             numEnemies = 7;
             diff = diff.next();
             System.out.println(diff);

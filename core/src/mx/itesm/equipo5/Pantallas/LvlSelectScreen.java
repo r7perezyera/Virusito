@@ -75,7 +75,7 @@ public class LvlSelectScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                game.setScreen(new Endless(game));
+                game.setScreen(new Level1(game));
             }
         });
 
@@ -90,7 +90,7 @@ public class LvlSelectScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                game.setScreen(new Level(game));
+                game.setScreen(new Level1(game));
             }
         });
 
@@ -104,7 +104,7 @@ public class LvlSelectScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                game.setScreen(new Level(game));
+                game.setScreen(new Level1(game));
             }
         });
 
