@@ -94,11 +94,7 @@ public abstract class Entity{
     //This will use Box2d
     public void move(float dx,float dy){
         //Box2D movement
-<<<<<<< HEAD
         b2body.setLinearVelocity(dx*10000,dy*10000); //TODO
-=======
-        b2body.setLinearVelocity(dx*10000,dy*10000);
->>>>>>> parent of 1a19a50... max speed changed
         this.setX(b2body.getPosition().x-getWidth()/2);//Medio ineficiente, pone sprite donde esta body
         this.setY(b2body.getPosition().y-getHeight()/2);
     }
