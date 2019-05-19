@@ -139,7 +139,7 @@ class Level1 extends MasterScreen {
         getWalls();
         getDoors();
 
-        player = new Player(300,300,3,this.world, weaponType.PISTOL);
+        player = new Player(300,300,3,this.world, weaponType.BAZOOKA);
         friendlyShotCooldown = player.getCooldown();
         spawn();
         getEnemies();
