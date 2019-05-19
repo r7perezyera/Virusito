@@ -234,7 +234,9 @@ public class Minion extends Entity {
 
     public LinkedList<EnemyBullet>  shoot(float dir, LinkedList<EnemyBullet> bullets){
         Vector2 position = b2body.getPosition();
-        EnemyBullet bullet = new EnemyBullet(getX()+getWidth()/2, getY()+getHeight()/2, dir);
+        x = position.x;
+        y = position.y;
+        EnemyBullet bullet = new EnemyBullet(x+getWidth()/2, y+getHeight()/2, dir);
         bullets.add(bullet);
         return bullets;
     }
