@@ -190,7 +190,7 @@ public class Minion extends Entity {
                     }
                     avoiderVector = new Vector2(x - 100 + distanceAvoid * signX - position.x - width / 2, y - 100 + distanceAvoid * signY - position.y - height / 2);
                 }
-                if(avoiderTimer < 4) {
+                if(avoiderTimer < 2) {
                     float angle = avoiderVector.angle();
                     float dx = (float) (speed * Math.cos(angle));
                     float dy = (float) (speed * Math.sin(angle));

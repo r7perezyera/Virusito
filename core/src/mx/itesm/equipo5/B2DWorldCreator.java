@@ -18,7 +18,7 @@ public class B2DWorldCreator {
         FixtureDef fdef = new FixtureDef();
         Body body;
 
-
+        //Adds walls as physical objects
         for (MapObject object : map.getLayers().get("Paredes").getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
@@ -32,5 +32,38 @@ public class B2DWorldCreator {
 
             body.createFixture(fdef);
         }
+
+        //Adds doors as physical objects
+        for (MapObject object : map.getLayers().get("Puertas").getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            bdef.type = BodyDef.BodyType.StaticBody;
+            bdef.position.set((rect.getX()+rect.getWidth()/2)/PPM,(rect.getY()+rect.getHeight()/2)/PPM);
+
+            body = world.createBody(bdef);
+
+            shape.setAsBox((rect.getWidth()/2)/PPM,(rect.getHeight()/2)/PPM);
+            fdef.shape = shape;
+
+            body.createFixture(fdef);
+        }
+
+        /*TODO JOAQUIN
+        for (MapObject object : map.getLayers().get("Piso Resbala").getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            bdef.type = BodyDef.BodyType.StaticBody;
+            bdef.position.set((rect.getX()+rect.getWidth()/2)/PPM,(rect.getY()+rect.getHeight()/2)/PPM);
+
+            body = world.createBody(bdef);
+
+            shape.setAsBox((rect.getWidth()/2)/PPM,(rect.getHeight()/2)/PPM);
+            fdef.shape = shape;
+
+            fdef.isSensor = true;//el jugador puede caminar a través de piso
+
+            body.createFixture(fdef);
+        }
+        */
     }
 }

@@ -60,6 +60,8 @@ class Level1 extends MasterScreen {
 
     //Esto es para probar colisiones
     private LinkedList<Rectangle> walls;
+    private LinkedList<Rectangle> doors;
+
     private float timeSinceDamage;
 
     private LinkedList<FriendlyBullet> bullets = new LinkedList<FriendlyBullet>();
@@ -115,7 +117,6 @@ class Level1 extends MasterScreen {
     private PauseScene pauseScene;
 
 
-
     //Box2D
 
     public Level1(Virusito juego) {
@@ -137,7 +138,9 @@ class Level1 extends MasterScreen {
         buildHUD();
         createJoysticks();
         getWalls();
-        player = new Player(300,300,3,this.world, weaponType.BAZOOKA);
+        getDoors();
+
+        player = new Player(300,300,3,this.world, weaponType.PISTOL);
         friendlyShotCooldown = player.getCooldown();
         spawn();
         getEnemies();
@@ -320,11 +323,18 @@ class Level1 extends MasterScreen {
             }
         }
         else {
-            spawn();
-            getEnemies();
-            loadMap();
-            player.setX(300);
-            player.setX(300);
+            if (collidesWith(doors,player.getRectangle())) {
+                if (room < 4) {
+                    spawn();
+                    getEnemies();
+                    loadMap();
+                    pilas = new LinkedList<Item>();
+                    player.setX(300);
+                    player.setX(300);
+                } else {
+                    game.setScreen(new WinScreen(game));
+                }
+            }
         }
 
         if (!pilas.isEmpty()) {
@@ -388,9 +398,6 @@ class Level1 extends MasterScreen {
         batch.setProjectionMatrix(HUDcamera.combined);
         HUDstage.draw();
 
-        if (room == 10){
-            game.setScreen(new WinScreen(game));
-        }
 
 
         // pausa si presionamos Android Back
@@ -497,8 +504,15 @@ class Level1 extends MasterScreen {
         }
     }
 
-    private void getDoors(){ //TODO
-
+    //TODO JOAQUIN
+    private void getDoors(){
+        doors = new LinkedList<Rectangle>();
+        for(MapObject object : map.getLayers().get("Puertas").getObjects()){
+            if(object instanceof  RectangleMapObject){
+                Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                doors.add(rect);
+            }
+        }
     }
 
     private void getEnemies(){

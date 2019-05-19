@@ -8,7 +8,7 @@ public class EnemyBullet extends Projectile {
     public EnemyBullet(float x, float y, float direction) {
         super(x, y, direction);
         this.texture = new Texture("Balas/Bala_enemy.png");
-        this.speed = 10;
+        this.speed = 5;
         this.damage = 2;
 
         sprite = new Sprite(texture);
