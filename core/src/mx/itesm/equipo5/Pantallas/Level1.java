@@ -60,6 +60,8 @@ class Level1 extends MasterScreen {
 
     //Esto es para probar colisiones
     private LinkedList<Rectangle> walls;
+    private LinkedList<Rectangle> doors;
+
     private float timeSinceDamage;
 
     private LinkedList<FriendlyBullet> bullets = new LinkedList<FriendlyBullet>();
@@ -115,7 +117,6 @@ class Level1 extends MasterScreen {
     private PauseScene pauseScene;
 
 
-
     //Box2D
 
     public Level1(Virusito juego) {
@@ -137,7 +138,9 @@ class Level1 extends MasterScreen {
         buildHUD();
         createJoysticks();
         getWalls();
-        player = new Player(300,300,3,this.world, weaponType.BAZOOKA);
+        getDoors();
+
+        player = new Player(300,300,3,this.world, weaponType.PISTOL);
         friendlyShotCooldown = player.getCooldown();
         spawn();
         getEnemies();
@@ -497,8 +500,14 @@ class Level1 extends MasterScreen {
         }
     }
 
-    private void getDoors(){ //TODO
-
+    //TODO JOAQUIN
+    private void getDoors(){
+        doors = new LinkedList<Rectangle>();
+        for(MapObject object : map.getLayers().get("Puertas").getObjects()){
+            if(object instanceof  RectangleMapObject){
+                Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            }
+        }
     }
 
     private void getEnemies(){
