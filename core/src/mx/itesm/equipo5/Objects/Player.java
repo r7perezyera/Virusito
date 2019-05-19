@@ -2,6 +2,7 @@ package mx.itesm.equipo5.Objects;
 
 import static mx.itesm.equipo5.MasterScreen.PPM;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -39,9 +40,13 @@ public class Player extends Entity {
     private viewingDirection dir =  viewingDirection.FRONT;
     private weaponType weapon;
 
+    private Sound shootingSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Shoot.wav"));
+    private Sound shotgunSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/shotgun.wav"));
+    private Sound BFGSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/BFG.wav"));
+
+
 
     public Player(float x, float y, float health,World world, weaponType weapon) {
-
         width = 50;
         height = 57;
         this.health = health;
@@ -155,10 +160,13 @@ public class Player extends Entity {
         this.dir = view;
     }
 
-    public LinkedList<FriendlyBullet> shoot(float dir, LinkedList<FriendlyBullet> bullets){
+    public LinkedList<FriendlyBullet> shoot(float dir, LinkedList<FriendlyBullet> bullets, boolean sound){
        if (weapon == weaponType.PISTOL){
             FriendlyBullet bullet = new FriendlyBullet(getX()+getWidth()/2, getY()+getHeight()/2, dir, weapon);
             bullets.add(bullet);
+            if(sound){
+                shootingSound.play();
+            }
        }else if (weapon == weaponType.SHOTGUN){
            FriendlyBullet bullet = new FriendlyBullet(getX()+getWidth()/2, getY()+getHeight()/2, dir, weapon);
            bullets.add(bullet);
@@ -166,12 +174,20 @@ public class Player extends Entity {
            bullets.add(bullet);
            bullet = new FriendlyBullet(getX()+getWidth()/2, getY()+getHeight()/2, (float) (dir - (Math.PI/4)), weapon);
            bullets.add(bullet);
+           if(sound){
+               shotgunSound.play();
+           }
        }else if (weapon == weaponType.BAZOOKA){
            FriendlyBullet bullet = new FriendlyBullet(getX(), getY(), dir, weapon);
            bullets.add(bullet);
+           if(sound){
+               BFGSound.play();
+           }
        }
         return bullets;
 
     }
+
+
 
 }

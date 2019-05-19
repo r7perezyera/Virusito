@@ -93,7 +93,6 @@ class Level1 extends MasterScreen {
 
     private LinkedList<Rectangle> enemyRect;
     private Music music;
-    private Sound shootingSound;
     private Sound playerDeathSound;
     private Sound minionDeathSound;
     private Sound bossDeathSound;
@@ -186,7 +185,6 @@ class Level1 extends MasterScreen {
     }
 
     private void loadSFX(){
-        shootingSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Shoot.wav"));
         playerDeathSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/PlayerDeath.wav"));
         minionDeathSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/DeathMinion.wav"));
         bossDeathSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/DeathBoss.wav"));
@@ -456,29 +454,21 @@ class Level1 extends MasterScreen {
 
         if(timeSinceShot<=friendlyShotCooldown) {
             if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
-                bullets  = player.shoot(0.0f, bullets);
+                bullets  = player.shoot(0.0f, bullets, isSoundOn);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
-                if(isSoundOn){
-                    shootingSound.play();
-                }
+
             } else if (46 <= angle && angle <= 136) {
-                bullets  = player.shoot((float) Math.PI / 2, bullets);
+                bullets  = player.shoot((float) Math.PI / 2, bullets, isSoundOn);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
-                if(isSoundOn){
-                    shootingSound.play();
-                }
+
             } else if (136 <= angle && angle <= 225) {
-                bullets  = player.shoot((float) Math.PI, bullets);
+                bullets  = player.shoot((float) Math.PI, bullets, isSoundOn);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
-                if(isSoundOn){
-                    shootingSound.play();
-                }
+
             } else if (226 <= angle && angle <= 315) {
-                bullets  = player.shoot((float) (3*Math.PI) / 2, bullets);
+                bullets  = player.shoot((float) (3*Math.PI) / 2, bullets, isSoundOn);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
-                if(isSoundOn){
-                    shootingSound.play();
-                }
+
             }
 
         }else if (timeSinceShot >= 2*friendlyShotCooldown) {
