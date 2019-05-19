@@ -323,15 +323,16 @@ class Level1 extends MasterScreen {
             }
         }
         else {
-            
-            if (room<4) {
-                spawn();
-                getEnemies();
-                loadMap();
-                player.setX(300);
-                player.setX(300);
-            }else {
-                game.setScreen(new WinScreen(game));
+            if (collidesWith(doors,player.getRectangle())) {
+                if (room < 4) {
+                    spawn();
+                    getEnemies();
+                    loadMap();
+                    player.setX(300);
+                    player.setX(300);
+                } else {
+                    game.setScreen(new WinScreen(game));
+                }
             }
         }
 
