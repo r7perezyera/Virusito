@@ -191,11 +191,32 @@ class Level1 extends MasterScreen {
 
     private void loadMap() {
         //AssetManager manager = new AssetManager();
-        assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
-        assetManager.load("Mapa1/1-1.tmx", TiledMap.class);
-        assetManager.finishLoading();
-        map = assetManager.get("Mapa1/1-1.tmx");
-        mapRenderer = new OrthogonalTiledMapRenderer(map,1/PPM);
+        if (room <=1){
+            assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+            assetManager.load("Mapa1/1-1.tmx", TiledMap.class);
+            assetManager.finishLoading();
+            map = assetManager.get("Mapa1/1-1.tmx");
+            mapRenderer = new OrthogonalTiledMapRenderer(map,1/PPM);
+        }else if (room == 2){
+            assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+            assetManager.load("Mapa1/1-2.tmx", TiledMap.class);
+            assetManager.finishLoading();
+            map = assetManager.get("Mapa1/1-2.tmx");
+            mapRenderer = new OrthogonalTiledMapRenderer(map,1/PPM);
+        }else if (room == 3){
+            assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+            assetManager.load("Mapa1/1-3.tmx", TiledMap.class);
+            assetManager.finishLoading();
+            map = assetManager.get("Mapa1/1-3.tmx");
+            mapRenderer = new OrthogonalTiledMapRenderer(map,1/PPM);
+        }else if (room == 4){
+            assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+            assetManager.load("Mapa1/1-4.tmx", TiledMap.class);
+            assetManager.finishLoading();
+            map = assetManager.get("Mapa1/1-4.tmx");
+            mapRenderer = new OrthogonalTiledMapRenderer(map,1/PPM);
+        }
+
     }
 
     private void buildHUD() {
@@ -301,7 +322,9 @@ class Level1 extends MasterScreen {
         else {
             spawn();
             getEnemies();
-
+            loadMap();
+            player.setX(300);
+            player.setX(300);
         }
 
         if (!pilas.isEmpty()) {
@@ -386,21 +409,20 @@ class Level1 extends MasterScreen {
     private void spawn() {
         enemies = new LinkedList<Minion>();
         int numEnemies = 0;
+        type = enemyType.FLOATER;
 
         room++;
         if (diff == difficulty.EASY){
             numEnemies = 3;
 
         }else if (diff == difficulty.MEDIUM){
-            numEnemies = 3;
+            numEnemies = 4;
         }else if (diff == difficulty.HARD){
-            numEnemies = 3;
+            numEnemies = 4;
         }
 
-        if (room%3 == 0){
+        if (room%4 == 0){
             numEnemies = 7;
-            diff = diff.next();
-            System.out.println(diff);
             Minion minion = new Minion(type.next(), movementPattern.AVOIDER, diff, 500, 500,world);
             minion.setBoss();
             enemies.add(minion);
@@ -412,6 +434,7 @@ class Level1 extends MasterScreen {
             Minion minion = new Minion(type, movementPattern.ZIGZAG, diff, WIDTH*nivelX[i]/7, HEIGHT*nivelY[i]/9,world);
             enemies.add(minion);
         }
+        diff = diff.next();
 
 
     }
