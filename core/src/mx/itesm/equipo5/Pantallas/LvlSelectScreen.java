@@ -85,7 +85,7 @@ public class LvlSelectScreen extends MasterScreen {
                 if (isSoundOn) {
                     playSound.play();
                 }
-                game.setScreen(new Endless(game));
+                game.setScreen(new Level1(game));
             }
         });
 
@@ -103,7 +103,7 @@ public class LvlSelectScreen extends MasterScreen {
                 if (isSoundOn) {
                     playSound.play();
                 }
-                game.setScreen(new Level(game));
+                game.setScreen(new Level1(game));
             }
         });
 
@@ -120,7 +120,7 @@ public class LvlSelectScreen extends MasterScreen {
                 if (isSoundOn) {
                     playSound.play();
                 }
-                game.setScreen(new Level(game));
+                game.setScreen(new Level1(game));
             }
         });
 
