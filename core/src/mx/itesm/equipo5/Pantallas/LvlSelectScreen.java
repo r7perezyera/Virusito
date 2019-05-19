@@ -27,6 +27,8 @@ public class LvlSelectScreen extends MasterScreen {
     private ImageButton lvl2Button;
     private ImageButton lvl3Button;
     private ImageButton lvlEndlessButton;
+    private ImageButton cheatButton;
+
 
     private Preferences lvlPrefs = Gdx.app.getPreferences("userPrefs");
     boolean isSoundOn = lvlPrefs.getBoolean("soundOn");
@@ -71,13 +73,6 @@ public class LvlSelectScreen extends MasterScreen {
             }
         });
 
-        // unlock all levels
-        lvlPrefs.putBoolean("level1Passed", true);
-        lvlPrefs.putBoolean("level2Passed", true);
-        lvlPrefs.putBoolean("level3Passed", true);
-        lvlPrefs.flush();
-        // for test purposes - remove at end
-
         // level 1 button - should be ALWAYS available
         lvl1Button = new Button("Botones/Level_1.png").getiButton();
         lvl1Button.setPosition(MasterScreen.WIDTH/5-lvl1Button.getWidth()/2, (MasterScreen.HEIGHT/2-lvl1Button.getHeight()/2));
@@ -87,7 +82,9 @@ public class LvlSelectScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                playSound.play();
+                if (isSoundOn) {
+                    playSound.play();
+                }
                 game.setScreen(new Endless(game));
             }
         });
@@ -103,7 +100,9 @@ public class LvlSelectScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                playSound.play();
+                if (isSoundOn) {
+                    playSound.play();
+                }
                 game.setScreen(new Level(game));
             }
         });
@@ -118,7 +117,9 @@ public class LvlSelectScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                playSound.play();
+                if (isSoundOn) {
+                    playSound.play();
+                }
                 game.setScreen(new Level(game));
             }
         });
@@ -133,8 +134,30 @@ public class LvlSelectScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                playSound.play();
+                if (isSoundOn) {
+                    playSound.play();
+                }
                 game.setScreen(new Endless(game));
+            }
+        });
+
+        cheatButton = new Button("Botones/Level_Unblocked.png").getiButton();
+        cheatButton.setPosition(((MasterScreen.WIDTH/2)-cheatButton.getWidth()/2)+24, (MasterScreen.HEIGHT/2-cheatButton.getHeight()/2)-225);
+        lvlSelectStage.addActor(cheatButton);
+        cheatButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                // Responder al evento del boton
+                // unlock all levels
+                lvlPrefs.putBoolean("level1Passed", true);
+                lvlPrefs.putBoolean("level2Passed", true);
+                lvlPrefs.putBoolean("level3Passed", true);
+                lvlPrefs.flush();
+                lvlSelectStage.addActor(lvl2Button);
+                lvlSelectStage.addActor(lvl3Button);
+                lvlSelectStage.addActor(lvlEndlessButton);
+                // for test purposes - remove at end
             }
         });
     }
