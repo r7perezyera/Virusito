@@ -62,7 +62,9 @@ class Level1 extends MasterScreen {
     private LinkedList<Rectangle> walls;
     private LinkedList<Rectangle> doors;
 
+    //timers
     private float timeSinceDamage;
+    private float spawntimer= 2f;
 
     private LinkedList<FriendlyBullet> bullets = new LinkedList<FriendlyBullet>();
     private LinkedList<EnemyBullet> enemyBullets = new LinkedList<EnemyBullet>();
@@ -106,7 +108,7 @@ class Level1 extends MasterScreen {
     //rounds
     private difficulty diff = difficulty.EASY;
     private enemyType type;
-    private int room = 0;
+    private int room = 1;
 
 
     private GameState gameState;
@@ -321,10 +323,11 @@ class Level1 extends MasterScreen {
             }
         }
         else {
+            spawntimer += delta;
             if (collidesWith(doors,player.getRectangle())) {
-                if (room < 4) {
-                    spawn();
-                    getEnemies();
+                spawntimer = 0f;
+                if (room < 4 ) {
+                    room++;
                     loadMap();
                     pilas = new LinkedList<Item>();
                     bullets = new LinkedList<FriendlyBullet>();
@@ -333,6 +336,11 @@ class Level1 extends MasterScreen {
                 } else {
                     game.setScreen(new WinScreen(game));
                 }
+            }
+            if (spawntimer >= 1f && spawntimer <= 1.5f){
+                spawn();
+                getEnemies();
+                spawntimer = 2;
             }
         }
 
@@ -417,7 +425,7 @@ class Level1 extends MasterScreen {
         int numEnemies = 0;
         type = enemyType.FLOATER;
 
-        room++;
+
         if (diff == difficulty.EASY){
             numEnemies = 3;
 
