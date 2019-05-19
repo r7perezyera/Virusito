@@ -328,6 +328,7 @@ class Level1 extends MasterScreen {
                     spawn();
                     getEnemies();
                     loadMap();
+                    pilas = new LinkedList<Item>();
                     player.setX(300);
                     player.setX(300);
                 } else {
