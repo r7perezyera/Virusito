@@ -148,8 +148,7 @@ public class LvlSelectScreen extends MasterScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                // Responder al evento del boton
-                // unlock all levels
+                // unlock all levels - for jury to test all levels within demo time
                 lvlPrefs.putBoolean("level1Passed", true);
                 lvlPrefs.putBoolean("level2Passed", true);
                 lvlPrefs.putBoolean("level3Passed", true);
@@ -157,7 +156,6 @@ public class LvlSelectScreen extends MasterScreen {
                 lvlSelectStage.addActor(lvl2Button);
                 lvlSelectStage.addActor(lvl3Button);
                 lvlSelectStage.addActor(lvlEndlessButton);
-                // for test purposes - remove at end
             }
         });
     }
