@@ -506,6 +506,7 @@ class Level1 extends MasterScreen {
         for(MapObject object : map.getLayers().get("Puertas").getObjects()){
             if(object instanceof  RectangleMapObject){
                 Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                doors.add(rect);
             }
         }
     }
