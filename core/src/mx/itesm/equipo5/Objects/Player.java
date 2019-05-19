@@ -52,7 +52,7 @@ public class Player extends Entity {
         }else if (weapon == weaponType.SHOTGUN){
             cooldown = 0.75f;
         }else if (weapon == weaponType.BAZOOKA){
-            cooldown = 1f;
+            cooldown = 1.5f;
         }
         //Load texture front
         texture = new Texture("Animaciones/Principal_Animacion.png");
@@ -167,7 +167,7 @@ public class Player extends Entity {
            bullet = new FriendlyBullet(getX()+getWidth()/2, getY()+getHeight()/2, (float) (dir - (Math.PI/4)), weapon);
            bullets.add(bullet);
        }else if (weapon == weaponType.BAZOOKA){
-           FriendlyBullet bullet = new FriendlyBullet(getX()+getWidth()/2, getY()+getHeight()/2, dir, weapon);
+           FriendlyBullet bullet = new FriendlyBullet(getX(), getY(), dir, weapon);
            bullets.add(bullet);
        }
         return bullets;

@@ -11,14 +11,17 @@ public class FriendlyBullet extends Projectile {
         if (weapon == weaponType.PISTOL){
             this.texture = new Texture("Balas/Bala.png");
             this.damage = 1;
+            this.speed = 10;
         }else if (weapon == weaponType.SHOTGUN){
             this.texture = new Texture("Balas/Bala_3.png");
             this.damage = 2;
+            this.speed = 10;
         }else if (weapon == weaponType.BAZOOKA){
-            this.texture = new Texture("Balas/Bala_big.png");
-            this.damage = 4;
+            this.texture = new Texture("Balas/Bala_big2.png");
+            this.damage = 5;
+            this.speed = 5;
         }
-        this.speed = 10;
+
 
         sprite = new Sprite(texture);
         sprite.setPosition(x,y);
