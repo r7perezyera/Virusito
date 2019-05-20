@@ -198,7 +198,7 @@ public class Minion extends Entity {
                     avoiderTimer += .05f;
                 }else{
                     avoiderTimer =0;
-                    Vector2 vector = new Vector2( x+50/2-position.x,  y+57/2-position.y);
+                    Vector2 vector = new Vector2( x - position.x - width / 2, y - position.y - height / 2);  //TODO angulo de disparo
                     float angle = vector.angle();
                     bullets = shoot(MathUtils.degreesToRadians * angle, bullets);
                 }
