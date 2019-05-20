@@ -328,13 +328,17 @@ class Level1 extends MasterScreen {
         batch.draw(life, WIDTH / 2 - (life.getWidth() / 2f), 650);
 
 
-        textTimer += delta;
-        if (textTimer > 0 && textTimer < 6f) {
-            text.displayDialogText(batch, "You need a weapon!", (MasterScreen.WIDTH/2), (MasterScreen.HEIGHT/2)+250);
-            if (textTimer > 1 && textTimer < 2 || textTimer > 3 && textTimer < 4 || textTimer > 5 && textTimer < 6) {
-                text.displayDialogText(batch, "Quick!\nGrab me!", (MasterScreen.WIDTH/2)-300, (MasterScreen.HEIGHT/2)-175);
+
+        if (player.getWeapon() == weaponType.NONE) {
+            textTimer += delta;
+            text.displayDialogText(batch, "You need a weapon!", (MasterScreen.WIDTH / 2), (MasterScreen.HEIGHT / 2) + 250);
+                if (textTimer>= 1f) {
+                    text.displayDialogText(batch, "Quick!\nGrab me!", (MasterScreen.WIDTH / 2) - 300, (MasterScreen.HEIGHT / 2) - 175);
+                    if (textTimer>= 2f){
+                        textTimer = 0;
+                    }
+                }
             }
-        }
         if (!enemies.isEmpty()) {
             for (Minion minion : enemies) {
                 minion.render(batch);

@@ -50,6 +50,10 @@ public class Player extends Entity {
         }
     }
 
+    public weaponType getWeapon() {
+        return weapon;
+    }
+
     private weaponType weapon;
 
     private Sound shootingSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Shoot.wav"));
