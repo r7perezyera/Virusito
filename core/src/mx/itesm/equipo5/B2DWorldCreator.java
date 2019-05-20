@@ -51,7 +51,7 @@ public class B2DWorldCreator {
         }catch (NullPointerException e){
             System.out.println("No hay puertas en el nivel");
         }
-
+/*
         try {
             for (MapObject object : map.getLayers().get("Piso Resbala").getObjects().getByType(RectangleMapObject.class)) {
                 Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -69,7 +69,8 @@ public class B2DWorldCreator {
                 body.createFixture(fdef);
             }
         }catch (NullPointerException e){
+            System.out.println("no hay piso resbaloso");
         }
-
+*/
     }
 }
