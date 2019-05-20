@@ -61,7 +61,7 @@ class Level3 extends MasterScreen {
     //Esto es para probar colisiones
     private LinkedList<Rectangle> walls;
     private LinkedList<Rectangle> doors;
-    private LinkedList<Rectangle> slideFloors;
+    private LinkedList<Rectangle> slowFloors;
     private LinkedList<Rectangle> TVS;
 
     //timers
@@ -143,7 +143,7 @@ class Level3 extends MasterScreen {
         createJoysticks();
         getWalls();
         getDoors();
-        getSlidingFloors();
+        getSlowFloors();
         getTVS();
 
         player = new Player(WIDTH/2,HEIGHT/2,3,this.world, weaponType.NONE);
@@ -213,9 +213,9 @@ class Level3 extends MasterScreen {
         //AssetManager manager = new AssetManager();
         if (room <=1){
             assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
-            assetManager.load("Mapa1/1-1.tmx", TiledMap.class);
+            assetManager.load("Mapa3/3-1.tmx", TiledMap.class);
             assetManager.finishLoading();
-            map = assetManager.get("Mapa1/1-1.tmx");
+            map = assetManager.get("Mapa3/3-1.tmx");
             mapRenderer = new OrthogonalTiledMapRenderer(map,1/PPM);
         }else if (room == 2){
             assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
@@ -346,7 +346,8 @@ class Level3 extends MasterScreen {
                 if (room < 4 ) {
                     room++;
                     loadMap();
-                    getSlidingFloors(); //TODO tipo de piso
+                    getSlowFloors(); //TODO tipo de piso
+                    getTVS();
                     pilas = new LinkedList<Item>();
                     bullets = new LinkedList<FriendlyBullet>();
                     player.b2body.setTransform(WIDTH/2,HEIGHT/2, 0f);
@@ -538,34 +539,37 @@ class Level3 extends MasterScreen {
         }
     }
 
-    private void getSlidingFloors(){
-        slideFloors = new LinkedList<Rectangle>();
+    private void getSlowFloors(){
+        slowFloors = new LinkedList<Rectangle>();
         try {
-            for (MapObject object : map.getLayers().get("Piso Resbala").getObjects()) {
+            for (MapObject object : map.getLayers().get("Piso Lento").getObjects()) {
                 if (object instanceof RectangleMapObject) {
                     Rectangle rect = ((RectangleMapObject) object).getRectangle();
-                    slideFloors.add(rect);
+                    slowFloors.add(rect);
                 }
             }
        }catch(NullPointerException e){}
     }
 
     private String checkFloorType(){
-        if(collidesWith(slideFloors,player.getRectangle())){
-            return "slide";
+        if(collidesWith(slowFloors,player.getRectangle())){
+            System.out.println("slow");
+            return "slow";
         }else{
-            if (player.getRectangle().overlaps(TVS.get(1))){
-                System.out.println("pistol equipped");
-                player.setWeapon(weaponType.PISTOL);
-                friendlyShotCooldown = player.getCooldown();
-            }else if (player.getRectangle().overlaps(TVS.get(0))){
-                System.out.println("shotgun equipped");
-                player.setWeapon(weaponType.SHOTGUN);
-                friendlyShotCooldown = player.getCooldown();
-            }else if (player.getRectangle().overlaps(TVS.get(2))){
-                System.out.println("BAZOOKA equipped");
-                player.setWeapon(weaponType.BAZOOKA); //TODO add sound
-                friendlyShotCooldown = player.getCooldown();
+            if(!TVS.isEmpty()) {
+                if (player.getRectangle().overlaps(TVS.get(1))) {
+                    System.out.println("pistol equipped");
+                    player.setWeapon(weaponType.PISTOL);
+                    friendlyShotCooldown = player.getCooldown();
+                } else if (player.getRectangle().overlaps(TVS.get(0))) {
+                    System.out.println("shotgun equipped");
+                    player.setWeapon(weaponType.SHOTGUN);
+                    friendlyShotCooldown = player.getCooldown();
+                } else if (player.getRectangle().overlaps(TVS.get(2))) {
+                    System.out.println("BAZOOKA equipped");
+                    player.setWeapon(weaponType.BAZOOKA); //TODO add sound
+                    friendlyShotCooldown = player.getCooldown();
+                }
             }
             return "move";
         }
@@ -601,6 +605,9 @@ class Level3 extends MasterScreen {
 
             }else if(movementType=="slide"){
                 player.slide(changeX,changeY);
+            }else if(movementType=="slow") {
+                System.out.println("slow");
+                player.slowMove(changeX, changeY);
             }
 
 

@@ -61,7 +61,7 @@ class Level2 extends MasterScreen {
     //Esto es para probar colisiones
     private LinkedList<Rectangle> walls;
     private LinkedList<Rectangle> doors;
-    private LinkedList<Rectangle> slideFloors;
+    private LinkedList<Rectangle> damageFloors;
     private LinkedList<Rectangle> TVS;
 
     //timers
@@ -142,7 +142,7 @@ class Level2 extends MasterScreen {
         createJoysticks();
         getWalls();
         getDoors();
-        getSlidingFloors();
+        getDamageFloors();
         getTVs();
 
         player = new Player(WIDTH/2,HEIGHT/2,3,this.world, weaponType.NONE);
@@ -345,7 +345,8 @@ class Level2 extends MasterScreen {
                 if (room < 4 ) {
                     room++;
                     loadMap();
-                    getSlidingFloors(); //TODO cambiar tipo de piso
+                    getDamageFloors(); //TODO cambiar tipo de piso
+                    getTVs();
                     pilas = new LinkedList<Item>();
                     bullets = new LinkedList<FriendlyBullet>();
                     player.b2body.setTransform(WIDTH/2,HEIGHT/2, 0f);
@@ -536,30 +537,36 @@ class Level2 extends MasterScreen {
         }
     }
 
-    private void getSlidingFloors(){
-        slideFloors = new LinkedList<Rectangle>();
+    private void getDamageFloors(){
+        damageFloors = new LinkedList<Rectangle>();
         try {
-            for (MapObject object : map.getLayers().get("Piso Resbala").getObjects()) {
+            for (MapObject object : map.getLayers().get("Piso Lastima").getObjects()) {
                 if (object instanceof RectangleMapObject) {
                     Rectangle rect = ((RectangleMapObject) object).getRectangle();
-                    slideFloors.add(rect);
+                    damageFloors.add(rect);
                 }
             }
        }catch(NullPointerException e){}
     }
 
     private String checkFloorType(){
-        if(collidesWith(slideFloors,player.getRectangle())){
-            return "slide";
+        if(collidesWith(damageFloors,player.getRectangle())){
+            if(timeSinceDamage>2) {
+                player.doDamage(1);
+                timeSinceDamage = 0;
+            }
+            return "move";
         }else{
-            if (player.getRectangle().overlaps(TVS.get(1))){
-                System.out.println("pistol equipped");
-                player.setWeapon(weaponType.PISTOL);
-                friendlyShotCooldown = player.getCooldown();
-            }else if (player.getRectangle().overlaps(TVS.get(0))){
-                System.out.println("shotgun equipped");
-                player.setWeapon(weaponType.SHOTGUN); //TODO add sound
-                friendlyShotCooldown = player.getCooldown();
+            if (!TVS.isEmpty()){
+                if (player.getRectangle().overlaps(TVS.get(1))){
+                    System.out.println("pistol equipped");
+                    player.setWeapon(weaponType.PISTOL);
+                    friendlyShotCooldown = player.getCooldown();
+                }else if (player.getRectangle().overlaps(TVS.get(0))){
+                    System.out.println("shotgun equipped");
+                    player.setWeapon(weaponType.SHOTGUN); //TODO add sound
+                    friendlyShotCooldown = player.getCooldown();
+                }
             }
             return "move";
         }

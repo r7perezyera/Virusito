@@ -18,21 +18,25 @@ public class Virusito extends Game {
         //assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
 
         // Pone la pantalla inicial
-        setScreen(new SplashScreen(this));
+
 
         // create prefs
         Preferences prefs = Gdx.app.getPreferences("userPrefs");
         // initial sound prefs
         prefs.putBoolean("soundON", true);
         // initial story progress (unlocked levels) prefs
-        prefs.putBoolean("level1Passed", false);
+
         if (!prefs.getBoolean("level1Passed")) {
+            prefs.putBoolean("level1Passed", false);
             prefs.putBoolean("level2Passed", false);
+            if (!prefs.getBoolean("level2Passed")) {
+                System.out.println("false");
+                prefs.putBoolean("level3Passed", false);
+            }
         }
-        if (!prefs.getBoolean("level2Passed")) {
-            prefs.putBoolean("level3Passed", false);
-        }
+
         prefs.flush();
+        setScreen(new SplashScreen(this));
     }
 
 

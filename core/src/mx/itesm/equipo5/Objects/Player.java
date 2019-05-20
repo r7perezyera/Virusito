@@ -150,6 +150,13 @@ public class Player extends Entity {
         this.setY(b2body.getPosition().y-getHeight()/2);
     }
 
+    public void slowMove(float dx,float dy){
+        //Box2D movement
+        b2body.setLinearVelocity(dx*70,dy*70);
+        this.setX(b2body.getPosition().x-getWidth()/2);//Medio ineficiente, pone sprite donde esta body
+        this.setY(b2body.getPosition().y-getHeight()/2);
+    }
+
     public void render(SpriteBatch batch) {
         animationTimer += Gdx.graphics.getDeltaTime();
         Vector2 position = b2body.getPosition();

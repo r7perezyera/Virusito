@@ -39,7 +39,7 @@ class StoryScreen extends MasterScreen {
 
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                timer = 2f;
+                timer = 3f;
                 return true;
             }
 

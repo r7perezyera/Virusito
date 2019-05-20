@@ -348,6 +348,7 @@ class Level1 extends MasterScreen {
                     room++;
                     loadMap();
                     getSlidingFloors();
+                    getTVs();
                     pilas = new LinkedList<Item>();
                     bullets = new LinkedList<FriendlyBullet>();
                     player.b2body.setTransform(WIDTH/2,HEIGHT/2, 0f);
@@ -555,10 +556,12 @@ class Level1 extends MasterScreen {
         if(collidesWith(slideFloors,player.getRectangle())){
             return "slide";
         }else{
-            if (player.getRectangle().overlaps(TVS.get(1))){
-                System.out.println("pistol equipped");
-                player.setWeapon(weaponType.PISTOL); //TODO add sound
-                friendlyShotCooldown = player.getCooldown();
+            if(!TVS.isEmpty()) {
+                if (player.getRectangle().overlaps(TVS.get(1))) {
+                    System.out.println("pistol equipped");
+                    player.setWeapon(weaponType.PISTOL); //TODO add sound
+                    friendlyShotCooldown = player.getCooldown();
+                }
             }
             return "move";
         }

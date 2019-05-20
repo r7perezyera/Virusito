@@ -29,22 +29,22 @@ class LoseScreen extends MasterScreen {
     public void show() {
         menuStage = new Stage(view);
         createButtons();
-        background = new Texture("Pantallas/gameover.jpg");
+        background = new Texture("Pantallas/GameOver_Screen.png");
         Gdx.input.setInputProcessor(menuStage);
         Gdx.input.setCatchBackKey(true);
     }
 
     private void createButtons() {
         // Play Button
-        playBoton = new Button("Botones/Play_Bttn.png").getiButton();
-        playBoton.setPosition(MasterScreen.WIDTH / 2 - playBoton.getWidth() / 2, MasterScreen.HEIGHT / 2 - playBoton.getHeight() / 2);
+        playBoton = new Button("Botones/Continue_Bttn.png").getiButton();
+        playBoton.setPosition(MasterScreen.WIDTH / 2 - playBoton.getWidth() / 2, MasterScreen.HEIGHT / 3 - playBoton.getHeight() / 2);
         menuStage.addActor(playBoton);
         playBoton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                game.setScreen(new MenuScreen(game));
+                game.setScreen(new LvlSelectScreen(game));
             }
         });
     }
