@@ -131,6 +131,13 @@ public class Player extends Entity {
         b2body.createFixture(fdef);
     }
 
+    public void slide(float dx,float dy){
+        //Box2D movement
+        b2body.applyLinearImpulse(dx*140,dy*140,b2body.getPosition().x,b2body.getPosition().y,true);
+        this.setX(b2body.getPosition().x-getWidth()/2);//Medio ineficiente, pone sprite donde esta body
+        this.setY(b2body.getPosition().y-getHeight()/2);
+    }
+
     public void render(SpriteBatch batch) {
         animationTimer += Gdx.graphics.getDeltaTime();
         Vector2 position = b2body.getPosition();

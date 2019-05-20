@@ -61,6 +61,7 @@ class Level1 extends MasterScreen {
     //Esto es para probar colisiones
     private LinkedList<Rectangle> walls;
     private LinkedList<Rectangle> doors;
+    private LinkedList<Rectangle> slideFloors;
 
     //timers
     private float timeSinceDamage;
@@ -116,6 +117,7 @@ class Level1 extends MasterScreen {
     private ImageButton pauseButton;
 
     private PauseScene pauseScene;
+    private String movementType;
 
 
     //Box2D
@@ -140,6 +142,7 @@ class Level1 extends MasterScreen {
         createJoysticks();
         getWalls();
         getDoors();
+        getSlidingFloors();
 
         player = new Player(300,300,3,this.world, weaponType.PISTOL);
         friendlyShotCooldown = player.getCooldown();
@@ -329,6 +332,7 @@ class Level1 extends MasterScreen {
                 if (room < 4 ) {
                     room++;
                     loadMap();
+                    getSlidingFloors(); //TODO hay que buscar pisos cada que se cambia de CUARTO
                     pilas = new LinkedList<Item>();
                     bullets = new LinkedList<FriendlyBullet>();
                     player.b2body.setTransform(WIDTH/2,HEIGHT/2, 0f);
@@ -516,6 +520,26 @@ class Level1 extends MasterScreen {
         }
     }
 
+    private void getSlidingFloors(){
+        slideFloors = new LinkedList<Rectangle>();
+        try {
+            for (MapObject object : map.getLayers().get("Piso Resbala").getObjects()) {
+                if (object instanceof RectangleMapObject) {
+                    Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                    slideFloors.add(rect);
+                }
+            }
+       }catch(NullPointerException e){}
+    }
+
+    private String checkFloorType(){
+        if(collidesWith(slideFloors,player.getRectangle())){
+            return "slide";
+        }else{
+            return "move";
+        }
+    }
+
     private void getEnemies(){
         enemyRect = new LinkedList<Rectangle>();
         for(Minion enemy : enemies){
@@ -539,10 +563,14 @@ class Level1 extends MasterScreen {
             float angle = vector.angle();
 
 
+            movementType = checkFloorType();
             //Box2D movement
-            player.b2body.setLinearVelocity(changeX*10000,changeY*10000);
-            player.setX(player.b2body.getPosition().x-player.getWidth()/2);//Medio ineficiente, pone sprite donde esta body
-            player.setY(player.b2body.getPosition().y-player.getHeight()/2);
+            if(movementType=="move") {
+                player.move(changeX, changeY);
+
+            }else if(movementType=="slide"){
+                player.slide(changeX,changeY);
+            }
 
 
             float newPosY = player.getSprite().getY() + (dy * player.getSpeed());
