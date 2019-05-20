@@ -348,7 +348,6 @@ class Level1 extends MasterScreen {
         }
         else {
             spawntimer += delta;
-            text.displayDialogText(batch, "  --\\\n-----\\\n-----/\n  --/", (MasterScreen.WIDTH/2)+400, (MasterScreen.HEIGHT/2)+100);
             if (collidesWith(doors,player.getRectangle())) {
                 spawntimer = 0f;
                 if (room < 4 ) {
@@ -370,6 +369,9 @@ class Level1 extends MasterScreen {
                     lvlPrefs.flush();
                     game.setScreen(new WinScreen(game));
                 }
+            }
+            if (room == 1) {
+                text.displayDialogText(batch, "  --\\\n-----\\\n-----/\n  --/", (MasterScreen.WIDTH/2)+400, (MasterScreen.HEIGHT/2)+100);
             }
             if (spawntimer >= 1f && spawntimer <= 1.5f){
                 spawn();
