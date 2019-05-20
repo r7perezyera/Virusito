@@ -205,21 +205,21 @@ class Level2 extends MasterScreen {
             mapRenderer = new OrthogonalTiledMapRenderer(map,1/PPM);
         }else if (room == 2){
             assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
-            assetManager.load("Mapa1/2-2.tmx", TiledMap.class);
+            assetManager.load("Mapa2/2-2.tmx", TiledMap.class);
             assetManager.finishLoading();
-            map = assetManager.get("Mapa1/2-2.tmx");
+            map = assetManager.get("Mapa2/2-2.tmx");
             mapRenderer = new OrthogonalTiledMapRenderer(map,1/PPM);
         }else if (room == 3){
             assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
-            assetManager.load("Mapa1/2-3.tmx", TiledMap.class);
+            assetManager.load("Mapa2/2-3.tmx", TiledMap.class);
             assetManager.finishLoading();
-            map = assetManager.get("Mapa1/2-3.tmx");
+            map = assetManager.get("Mapa2/2-3.tmx");
             mapRenderer = new OrthogonalTiledMapRenderer(map,1/PPM);
         }else if (room == 4){
             assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
-            assetManager.load("Mapa1/2-4.tmx", TiledMap.class);
+            assetManager.load("Mapa2/2-4.tmx", TiledMap.class);
             assetManager.finishLoading();
-            map = assetManager.get("Mapa1/2-4.tmx");
+            map = assetManager.get("Mapa2/2-4.tmx");
             mapRenderer = new OrthogonalTiledMapRenderer(map,1/PPM);
         }
 
