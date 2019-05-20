@@ -332,7 +332,7 @@ class Level1 extends MasterScreen {
                 if (room < 4 ) {
                     room++;
                     loadMap();
-                    getSlidingFloors(); //TODO hay que buscar pisos cada que se cambia de CUARTO
+                    getSlidingFloors();
                     pilas = new LinkedList<Item>();
                     bullets = new LinkedList<FriendlyBullet>();
                     player.b2body.setTransform(WIDTH/2,HEIGHT/2, 0f);
@@ -509,7 +509,6 @@ class Level1 extends MasterScreen {
         }
     }
 
-    //TODO JOAQUIN
     private void getDoors(){
         doors = new LinkedList<Rectangle>();
         for(MapObject object : map.getLayers().get("Puertas").getObjects()){

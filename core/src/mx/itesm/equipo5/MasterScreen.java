@@ -26,7 +26,7 @@ public abstract class MasterScreen implements Screen
     // Atributos disponibles solo en las subclases
     // Todas las pantallas tienen una cámara y una view
     protected OrthographicCamera camera;
-    protected Viewport view;        // TODO could be renamed to viewport, review w/ team
+    protected Viewport view;        
     // Todas las pantallas dibujan algo
     protected SpriteBatch batch;
 
