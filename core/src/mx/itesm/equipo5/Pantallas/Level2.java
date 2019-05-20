@@ -145,7 +145,7 @@ class Level2 extends MasterScreen {
         getSlidingFloors();
         getTVs();
 
-        player = new Player(300,300,3,this.world, weaponType.NONE);
+        player = new Player(WIDTH/2,HEIGHT/2,3,this.world, weaponType.NONE);
         friendlyShotCooldown = player.getCooldown();
         spawn();
         getEnemies();

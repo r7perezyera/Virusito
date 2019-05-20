@@ -124,14 +124,14 @@ public class Player extends Entity {
 
         //Box2D
         this.world = world;
-        definePlayer();
+        definePlayer(x,y);
 
 
     }
 
-    private void definePlayer() {
+    private void definePlayer(float x,float y) {
         BodyDef bdef = new BodyDef();
-        bdef.position.set(640,360);
+        bdef.position.set(x,y);
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
 
