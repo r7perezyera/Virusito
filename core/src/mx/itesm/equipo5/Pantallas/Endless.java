@@ -113,12 +113,14 @@ class Endless extends MasterScreen {
 
     private PauseScene pauseScene;
 
+    private weaponType weapon;
 
 
     //Box2D
 
-    public Endless(Virusito juego) {
+    public Endless(Virusito juego, weaponType weapon) {
         super(juego);
+        this.weapon = weapon;
 
     }
 
@@ -136,7 +138,7 @@ class Endless extends MasterScreen {
         buildHUD();
         createJoysticks();
         getWalls();
-        player = new Player(300,300,3,this.world, weaponType.SHOTGUN);
+        player = new Player(300,300,3,this.world, weapon);
         friendlyShotCooldown = player.getCooldown();
         spawn();
         getEnemies();

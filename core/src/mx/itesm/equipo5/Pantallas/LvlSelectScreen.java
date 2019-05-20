@@ -137,7 +137,7 @@ public class LvlSelectScreen extends MasterScreen {
                 if (isSoundOn) {
                     playSound.play();
                 }
-                game.setScreen(new Endless(game));
+                game.setScreen(new WeaponSelectScreen(game));
             }
         });
 
