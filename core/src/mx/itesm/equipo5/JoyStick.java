@@ -20,8 +20,8 @@ public class JoyStick {
 
     public JoyStick(String fondo, String boton, Body cuerpo){
         this.cuerpo = cuerpo;
-        skin.add("fondo", new Texture(fondo));
-        skin.add("boton", new Texture(boton));
+        skin.add("fondo", new Texture("invicible.png"));
+        skin.add("boton", new Texture("invicible.png"));
 
         style.background = skin.getDrawable("fondo");
         style.knob = skin.getDrawable("boton");

@@ -307,11 +307,11 @@ class Level3 extends MasterScreen {
 
 
         if (player.getHealth() == 3) {
-            life = new Texture("HUD/Bateria/Bateria_Llena.png");
+            life = new Texture("invicible.png");
         } else if (player.getHealth() == 2) {
-            life = new Texture("HUD/Bateria/Bateria_Agotando.png");
+            life = new Texture("invicible.png");
         } else if (player.getHealth() == 1) {
-            life = new Texture("HUD/Bateria/Bateria_Ultima.png");
+            life = new Texture("invicible.png");
         } else {
             if (isSoundOn) {
                 playerDeathSound.play();
@@ -592,8 +592,8 @@ class Level3 extends MasterScreen {
         if (update) {
             // code to move
             //animation
-            float changeX = movingStick.getKnobPercentX();
-            float changeY = movingStick.getKnobPercentY();
+            float changeX = movingStick.getKnobPercentX()*-10;
+            float changeY = movingStick.getKnobPercentY()*-10;
             Vector2 vector = new Vector2(changeX,changeY);
             float angle = vector.angle();
 
