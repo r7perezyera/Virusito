@@ -72,7 +72,7 @@ public class WeaponSelectScreen extends MasterScreen {
         });
 
         // level 1 button - should be ALWAYS available
-        shotgunButton = new Button("Items/Weapon_SHOTGUN.png").getiButton();
+        shotgunButton = new Button("Botones/WeaponSHOTGUN_bttn.png").getiButton();
         shotgunButton.setPosition(MasterScreen.WIDTH/5-shotgunButton.getWidth()/2, (MasterScreen.HEIGHT/2-shotgunButton.getHeight()/2));
         lvlSelectStage.addActor(shotgunButton);
         shotgunButton.addListener(new ClickListener() {
@@ -88,7 +88,7 @@ public class WeaponSelectScreen extends MasterScreen {
         });
 
         // level 2 button
-        pistolButton = new Button("Items/Weapon_PISTOL.png").getiButton();
+        pistolButton = new Button("Botones/WeaponPISTOL_bttn.png").getiButton();
         pistolButton.setPosition((MasterScreen.WIDTH/3- pistolButton.getWidth()/2)+100, (MasterScreen.HEIGHT/2- pistolButton.getHeight()/2));
             lvlSelectStage.addActor(pistolButton);
         pistolButton.addListener(new ClickListener() {
@@ -103,7 +103,7 @@ public class WeaponSelectScreen extends MasterScreen {
             }
         });
 
-        bazookaButton = new Button("Items/Weapon_BAZOOKA.png").getiButton();
+        bazookaButton = new Button("Botones/WeaponBAZOOKA_bttn.png").getiButton();
         bazookaButton.setPosition((MasterScreen.WIDTH/2- bazookaButton.getWidth()/2)+150, (MasterScreen.HEIGHT/2- bazookaButton.getHeight()/2));
         lvlSelectStage.addActor(bazookaButton);
         bazookaButton.addListener(new ClickListener() {
