@@ -62,6 +62,7 @@ class Level2 extends MasterScreen {
     private LinkedList<Rectangle> walls;
     private LinkedList<Rectangle> doors;
     private LinkedList<Rectangle> slideFloors;
+    private LinkedList<Rectangle> TVS;
 
     //timers
     private float timeSinceDamage;
@@ -104,7 +105,6 @@ class Level2 extends MasterScreen {
     // Users preferences
     private Preferences lvlPrefs = Gdx.app.getPreferences("userPrefs");
     private boolean isSoundOn = lvlPrefs.getBoolean("soundOn");
-    private int highestRound = lvlPrefs.getInteger("endlessBestRound");
 
     //rounds
     private difficulty diff = difficulty.EASY;
@@ -143,8 +143,9 @@ class Level2 extends MasterScreen {
         getWalls();
         getDoors();
         getSlidingFloors();
+        getTVs();
 
-        player = new Player(300,300,3,this.world, weaponType.PISTOL);
+        player = new Player(300,300,3,this.world, weaponType.NONE);
         friendlyShotCooldown = player.getCooldown();
         spawn();
         getEnemies();
@@ -164,6 +165,18 @@ class Level2 extends MasterScreen {
 
 
         Gdx.input.setCatchBackKey(true);
+    }
+
+    private void getTVs() {
+        TVS = new LinkedList<Rectangle>();
+        try {
+            for (MapObject object : map.getLayers().get("TVS").getObjects()) {
+                if (object instanceof RectangleMapObject) {
+                    Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                    TVS.add(rect);
+                }
+            }
+        }catch(NullPointerException e){}
     }
 
     private void loadTextures() {
@@ -199,9 +212,9 @@ class Level2 extends MasterScreen {
         //AssetManager manager = new AssetManager();
         if (room <=1){
             assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
-            assetManager.load("Mapa1/1-1.tmx", TiledMap.class);
+            assetManager.load("Mapa2/2-1.tmx", TiledMap.class);
             assetManager.finishLoading();
-            map = assetManager.get("Mapa1/1-1.tmx");
+            map = assetManager.get("Mapa2/2-1.tmx");
             mapRenderer = new OrthogonalTiledMapRenderer(map,1/PPM);
         }else if (room == 2){
             assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
@@ -535,6 +548,15 @@ class Level2 extends MasterScreen {
         if(collidesWith(slideFloors,player.getRectangle())){
             return "slide";
         }else{
+            if (player.getRectangle().overlaps(TVS.get(1))){
+                System.out.println("pistol equipped");
+                player.setWeapon(weaponType.PISTOL);
+                friendlyShotCooldown = player.getCooldown();
+            }else if (player.getRectangle().overlaps(TVS.get(0))){
+                System.out.println("shotgun equipped");
+                player.setWeapon(weaponType.SHOTGUN); //TODO add sound
+                friendlyShotCooldown = player.getCooldown();
+            }
             return "move";
         }
     }

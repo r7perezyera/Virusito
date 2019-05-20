@@ -38,6 +38,18 @@ public class Player extends Entity {
     private Animation animationBack;
     private float animationTimer;
     private viewingDirection dir =  viewingDirection.FRONT;
+
+    public void setWeapon(weaponType weapon) {
+        this.weapon = weapon;
+        if (weapon == weaponType.PISTOL){
+            cooldown = 0.25f;
+        }else if (weapon == weaponType.SHOTGUN){
+            cooldown = 0.75f;
+        }else if (weapon == weaponType.BAZOOKA){
+            cooldown = 1.5f;
+        }
+    }
+
     private weaponType weapon;
 
     private Sound shootingSound = Gdx.audio.newSound(Gdx.files.internal("Music/SFX/Shoot.wav"));

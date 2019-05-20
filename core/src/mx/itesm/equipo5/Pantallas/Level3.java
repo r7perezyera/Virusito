@@ -62,6 +62,7 @@ class Level3 extends MasterScreen {
     private LinkedList<Rectangle> walls;
     private LinkedList<Rectangle> doors;
     private LinkedList<Rectangle> slideFloors;
+    private LinkedList<Rectangle> TVS;
 
     //timers
     private float timeSinceDamage;
@@ -143,8 +144,9 @@ class Level3 extends MasterScreen {
         getWalls();
         getDoors();
         getSlidingFloors();
+        getTVS();
 
-        player = new Player(300,300,3,this.world, weaponType.PISTOL);
+        player = new Player(300,300,3,this.world, weaponType.NONE);
         friendlyShotCooldown = player.getCooldown();
         spawn();
         getEnemies();
@@ -164,6 +166,18 @@ class Level3 extends MasterScreen {
 
 
         Gdx.input.setCatchBackKey(true);
+    }
+
+    private void getTVS() {
+        TVS = new LinkedList<Rectangle>();
+        try {
+            for (MapObject object : map.getLayers().get("TVS").getObjects()) {
+                if (object instanceof RectangleMapObject) {
+                    Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                    TVS.add(rect);
+                }
+            }
+        }catch(NullPointerException e){}
     }
 
     private void loadTextures() {
@@ -535,6 +549,19 @@ class Level3 extends MasterScreen {
         if(collidesWith(slideFloors,player.getRectangle())){
             return "slide";
         }else{
+            if (player.getRectangle().overlaps(TVS.get(1))){
+                System.out.println("pistol equipped");
+                player.setWeapon(weaponType.PISTOL);
+                friendlyShotCooldown = player.getCooldown();
+            }else if (player.getRectangle().overlaps(TVS.get(0))){
+                System.out.println("shotgun equipped");
+                player.setWeapon(weaponType.SHOTGUN);
+                friendlyShotCooldown = player.getCooldown();
+            }else if (player.getRectangle().overlaps(TVS.get(2))){
+                System.out.println("BAZOOKA equipped");
+                player.setWeapon(weaponType.BAZOOKA); //TODO add sound
+                friendlyShotCooldown = player.getCooldown();
+            }
             return "move";
         }
     }
