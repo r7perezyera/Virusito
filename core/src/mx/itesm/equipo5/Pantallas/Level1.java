@@ -335,6 +335,8 @@ class Level1 extends MasterScreen {
 
                 } else {
                     game.setScreen(new WinScreen(game));
+                    lvlPrefs.putBoolean("level1Passed", true);
+                    lvlPrefs.flush();
                 }
             }
             if (spawntimer >= 1f && spawntimer <= 1.5f){
