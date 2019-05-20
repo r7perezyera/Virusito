@@ -485,22 +485,37 @@ class Level2 extends MasterScreen {
         float angle = vector.angle();
 
         if(timeSinceShot<=friendlyShotCooldown) {
-            if ((0 < angle && angle <= 45) || (316 <= angle && angle <= 360)) {
+            if ((0 < angle && angle <= 22.5) || (337.5 <= angle && angle <= 360)) {
                 bullets  = player.shoot(0.0f, bullets, isSoundOn);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
 
-            } else if (46 <= angle && angle <= 136) {
+            } else if (22.5 <= angle && angle <= 67.5) {
+                bullets  = player.shoot((float) Math.PI / 4, bullets, isSoundOn);
+                timeSinceShot=friendlyShotCooldown+ 0.1f;
+
+            } else if (67.5 <= angle && angle <= 112.5) {
                 bullets  = player.shoot((float) Math.PI / 2, bullets, isSoundOn);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
 
-            } else if (136 <= angle && angle <= 225) {
+            } else if (112.5 <= angle && angle <= 157.5) {
+                bullets  = player.shoot((float) (3 * Math.PI / 4), bullets, isSoundOn);
+                timeSinceShot=friendlyShotCooldown+ 0.1f;
+
+            } else if (157.5 <= angle && angle <= 202.5) {
                 bullets  = player.shoot((float) Math.PI, bullets, isSoundOn);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
 
-            } else if (226 <= angle && angle <= 315) {
+            } else if (202.5 <= angle && angle <= 247.5) {
+                bullets  = player.shoot((float) (5*Math.PI / 4), bullets, isSoundOn);
+                timeSinceShot=friendlyShotCooldown+ 0.1f;
+
+            } else if (247.5 <= angle && angle <= 292.5) {
                 bullets  = player.shoot((float) (3*Math.PI) / 2, bullets, isSoundOn);
                 timeSinceShot=friendlyShotCooldown+ 0.1f;
 
+            } else if (292.5 <= angle && angle <= 337.5) {
+                bullets = player.shoot((float) (7*Math.PI / 4), bullets, isSoundOn);
+                timeSinceShot = friendlyShotCooldown + 0.1f;
             }
 
         }else if (timeSinceShot >= 2*friendlyShotCooldown) {
