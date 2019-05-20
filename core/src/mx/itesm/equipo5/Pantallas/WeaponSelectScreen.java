@@ -118,7 +118,7 @@ public class WeaponSelectScreen extends MasterScreen {
             }
         });
 
-        randomButton = new Button("Botones/Endless_Bttn.png").getiButton();
+        randomButton = new Button("Botones/Random_Bttn.png").getiButton();
         randomButton.setPosition((4*MasterScreen.WIDTH/5)- randomButton.getWidth()/2+35, (MasterScreen.HEIGHT/2- randomButton.getHeight()/2));
         lvlSelectStage.addActor(randomButton);
 
@@ -130,7 +130,9 @@ public class WeaponSelectScreen extends MasterScreen {
                 if (isSoundOn) {
                     playSound.play();
                 }
-                game.setScreen(new Endless(game, weaponType.randomLetter()));
+                weaponType weapon = weaponType.randomWeapon();
+                game.setScreen(new Endless(game, weapon));
+
             }
         });
 

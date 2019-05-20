@@ -12,7 +12,7 @@ import mx.itesm.equipo5.Virusito;
 class StoryScreen extends MasterScreen {
 
     private Texture slides;
-    private float timer = 2f;
+    private float timer = 3f;
 
     private Preferences lvlPrefs = Gdx.app.getPreferences("userPrefs");
     boolean isSoundOn = lvlPrefs.getBoolean("soundOn");
@@ -39,9 +39,7 @@ class StoryScreen extends MasterScreen {
 
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
                 timer = 2f;
-
                 return true;
             }
 
@@ -55,9 +53,9 @@ class StoryScreen extends MasterScreen {
 
     @Override
     public void render(float delta) {
-        if (timer>=2) {
+        if (timer>=3) {
             System.out.println(currentSlide);
-            if(currentSlide == 9){
+            if(currentSlide == 10){
                 game.setScreen(new LvlSelectScreen(game));
                 if (isSoundOn) {
                     music.stop();

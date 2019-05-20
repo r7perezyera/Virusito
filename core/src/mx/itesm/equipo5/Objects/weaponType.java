@@ -20,8 +20,12 @@ public enum weaponType {
     private static final int SIZE = VALUES.size();
     private static final Random RANDOM = new Random();
 
-    public static weaponType randomLetter()  {
-        return VALUES.get(RANDOM.nextInt(SIZE));
+    public static weaponType randomWeapon()  {
+        weaponType value = NONE;
+        while (value == NONE){
+        value = VALUES.get(RANDOM.nextInt(SIZE));
+        }
+        return value;
     }
 
 }

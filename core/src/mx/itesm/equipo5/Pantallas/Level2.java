@@ -351,9 +351,13 @@ class Level2 extends MasterScreen {
                     player.b2body.setTransform(WIDTH/2,HEIGHT/2, 0f);
 
                 } else {
-                    game.setScreen(new WinScreen(game));
+                    if (isSoundOn) {
+                        playerDeathSound.play();
+                        music.stop();
+                    }
                     lvlPrefs.putBoolean("level1Passed", true);
                     lvlPrefs.flush();
+                    game.setScreen(new WinScreen(game));
                 }
             }
             if (spawntimer >= 1f && spawntimer <= 1.5f){
