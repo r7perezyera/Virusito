@@ -124,7 +124,6 @@ class SettingsScreen extends MasterScreen {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // Responder al evento del boton
-                System.out.println("level1Passed pref set to false !!");
                 lvlPrefs.putBoolean("level1Passed", false);
                 lvlPrefs.putBoolean("level2Passed", false);
                 lvlPrefs.putBoolean("level3Passed", false);
