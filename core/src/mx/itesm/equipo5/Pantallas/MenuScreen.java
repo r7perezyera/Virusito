@@ -72,7 +72,7 @@ public class MenuScreen extends MasterScreen {
                     music.stop();
                 }
                 if (!lvlPrefs.getBoolean("level1Passed") && !lvlPrefs.getBoolean("level2Passed") && !lvlPrefs.getBoolean("level3Passed")) {
-                    game.setScreen(new StoryScreen(game));
+                    game.setScreen(new LvlSelectScreen(game)); //TODO StoryScreen no existe todavia
                 } else {
                     game.setScreen(new LvlSelectScreen(game));
                 }
