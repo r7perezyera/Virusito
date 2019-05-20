@@ -67,7 +67,8 @@ class Level1 extends MasterScreen {
 
     //timers
     private float timeSinceDamage;
-    private float spawntimer= 2f;
+    private float spawntimer = 2f;
+    private float textTimer = 0;
 
     private LinkedList<FriendlyBullet> bullets = new LinkedList<FriendlyBullet>();
     private LinkedList<EnemyBullet> enemyBullets = new LinkedList<EnemyBullet>();
@@ -327,8 +328,13 @@ class Level1 extends MasterScreen {
         batch.draw(life, WIDTH / 2 - (life.getWidth() / 2f), 650);
 
 
-
-
+        textTimer += delta;
+        if (textTimer > 0 && textTimer < 6f) {
+            text.displayDialogText(batch, "You need a weapon!", (MasterScreen.WIDTH/2), (MasterScreen.HEIGHT/2)+250);
+            if (textTimer > 1 && textTimer < 2 || textTimer > 3 && textTimer < 4 || textTimer > 5 && textTimer < 6) {
+                text.displayDialogText(batch, "Quick!\nGrab me!", (MasterScreen.WIDTH/2)-300, (MasterScreen.HEIGHT/2)-175);
+            }
+        }
         if (!enemies.isEmpty()) {
             for (Minion minion : enemies) {
                 minion.render(batch);
@@ -342,6 +348,7 @@ class Level1 extends MasterScreen {
         }
         else {
             spawntimer += delta;
+            text.displayDialogText(batch, "  --\\\n-----\\\n-----/\n  --/", (MasterScreen.WIDTH/2)+400, (MasterScreen.HEIGHT/2)+100);
             if (collidesWith(doors,player.getRectangle())) {
                 spawntimer = 0f;
                 if (room < 4 ) {
