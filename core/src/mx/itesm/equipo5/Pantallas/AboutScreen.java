@@ -19,9 +19,6 @@ class AboutScreen extends MasterScreen {
 
     private Stage aboutStage;
 
-    private ImageButton homeButton;
-
-    //private Text text;
 
     public AboutScreen(Virusito juego) {
         super(juego);
@@ -42,8 +39,8 @@ class AboutScreen extends MasterScreen {
     }
 
     private void createButtons() {
-        homeButton = new Button("Botones/Home_Bttn.png").getiButton();
-        homeButton.setPosition(15, (MasterScreen.HEIGHT-homeButton.getHeight())-10);
+        ImageButton homeButton = new Button("Botones/Home_Bttn.png").getiButton();
+        homeButton.setPosition(15, (MasterScreen.HEIGHT- homeButton.getHeight())-10);
         aboutStage.addActor(homeButton);
         homeButton.addListener(new ClickListener() {
             @Override
@@ -61,20 +58,6 @@ class AboutScreen extends MasterScreen {
 
         batch.begin();
         batch.draw(background, 0, 0);
-        /*
-        text.displayText(batch, "ABOUT US", MasterScreen.WIDTH/2, 5*(MasterScreen.HEIGHT/6)+100);
-
-        // screen left-hand side
-        text.displayHUDText(batch, "Rudolf Fanchini\nISC\nDeveloper", MasterScreen.WIDTH/4, 4*(MasterScreen.HEIGHT/6));
-        text.displayHUDText(batch, "Joaquin Rios\nISC\nDeveloper", MasterScreen.WIDTH/4, 2*(MasterScreen.HEIGHT/6)-50);
-
-        // screen right-hand side
-        text.displayHUDText(batch, "Daniela Belmonte\nLAD\nGame Art", MasterScreen.WIDTH/2+140, 4*(MasterScreen.HEIGHT/6));
-        text.displayHUDText(batch, "Roberto Tellez\nISC\nDeveloper", (MasterScreen.WIDTH/2)+140, 2*(MasterScreen.HEIGHT/6)-50);
-
-        text.displayHUDText(batch, "Contact\nanborgesa.studios@gmail.com", 2*(MasterScreen.WIDTH/3)+140, 5*(MasterScreen.HEIGHT/6)+15);
-        */
-
         batch.end();
 
         aboutStage.draw();
