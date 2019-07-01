@@ -9,4 +9,4 @@ We are developing a mobile game using Android Studio and LibGDX in about three m
 * **Joaquin Rios** - *Developer :computer:* - [Joaquin's GitHub](https://github.com/joaquinrios)
 * **Roberto Tellez** - *Developer :computer:* - [Roberto's GitHub](https://github.com/r7perezyera)
 
-![[Click Here](https://play.google.com/store/apps/details?id=mx.itesm.equipo5)](https://seeklogo.net/wp-content/uploads/2015/07/get-it-on-google-play-vector-200x200.png)
+[Get it on the google play store!](https://play.google.com/store/apps/details?id=mx.itesm.equipo5)
